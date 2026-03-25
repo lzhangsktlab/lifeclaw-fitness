@@ -409,11 +409,11 @@
   <div id="today" class="tab-content active">
 
     <!-- Status banner -->
-    <div class="status-banner" style="background:linear-gradient(135deg, var(--yellow-dim), #1a1a0a); border:1px solid #5a4a1a;">
+    <div class="status-banner" style="background:linear-gradient(135deg, var(--accent-dim), #1a2a0a); border:1px solid #2a5a2a;">
       <span class="status-icon">&#x2615;</span>
       <div>
-        <strong style="color:var(--yellow);">Zone 2 Easy &mdash; Coffee + Heat Adjusted</strong><br>
-        <span style="font-size:12px; color:#8ab4f8;">Midday session ~12:10 PM</span>
+        <strong style="color:var(--accent);">Zone 2 Easy &mdash; Coffee Adjusted</strong><br>
+        <span style="font-size:12px; color:#8ab4f8;">Garage 74&#xB0;F &mdash; coolest this week!</span>
       </div>
     </div>
 
@@ -433,24 +433,24 @@
         </div>
         <div class="cond-item">
           <div class="cond-icon">&#x1F3E0;</div>
-          <div class="cond-value">~84&#xB0;</div>
-          <div class="cond-label">Garage PM</div>
+          <div class="cond-value" style="color:var(--accent);">74&#xB0;</div>
+          <div class="cond-label">Garage Now</div>
         </div>
       </div>
       <div style="margin-top:10px; font-size:11px; color:var(--text-dim); text-align:center;">
-        Sleep 6.5h = your normal range &mdash; no adjustment needed
+        Sleep 6.5h = normal &bull; Garage 74&#xB0;F = no heat penalty &bull; Coffee only adjustment
       </div>
     </div>
 
     <!-- Today's factors -->
     <div class="card" style="background:linear-gradient(135deg, #2a1a0a, var(--card)); border-color:#5a3a1a;">
-      <div class="card-title" style="color:var(--orange);">&#x2615; Coffee + Heat Adjustment</div>
+      <div class="card-title" style="color:var(--orange);">&#x2615; Coffee Adjustment Only</div>
       <div style="font-size:13px; line-height:1.7; color:#ccc;">
         <strong style="color:var(--yellow);">Coffee:</strong> adds +5-10 bpm &rarr; drop incline 1%, HR target -5 bpm<br>
-        <strong style="color:var(--yellow);">Garage ~82-84&#xB0;F:</strong> heat adds +5-15 bpm<br>
+        <strong style="color:var(--accent);">Garage 74&#xB0;F:</strong> no heat penalty &mdash; coolest session this week!<br>
         <strong style="color:var(--accent);">Sleep 6.5h:</strong> normal &rarr; no change<br>
         <div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-size:12px;">
-          Two stressors stacked (coffee + heat) &rarr; conservative settings below
+          Only one stressor (coffee) &rarr; bumped up from earlier plan
         </div>
       </div>
     </div>
@@ -464,39 +464,39 @@
     </div>
 
     <!-- Workout plan -->
-    <div class="card" style="border-color:#5a3a1a;">
-      <div class="card-title" style="color:var(--orange);">&#x2615; Today's Plan &mdash; 35 min</div>
+    <div class="card" style="border-color:#2a5a2a;">
+      <div class="card-title" style="color:var(--accent);">&#x2615; Today's Plan &mdash; 40 min</div>
       <table class="mini-table">
         <tr>
           <td><span class="phase" style="color:var(--accent);">Warm-up</span></td>
           <td>0-7 min</td>
-          <td class="val">2.3 mph / 0%</td>
+          <td class="val">2.5 mph / 0%</td>
         </tr>
         <tr>
           <td><span class="phase" style="color:var(--yellow);">Main 1</span></td>
           <td>7-17 min</td>
-          <td class="val">2.6 mph / 1%</td>
+          <td class="val">2.8 mph / 2%</td>
         </tr>
         <tr>
           <td><span class="phase" style="color:var(--orange);">Main 2</span></td>
-          <td>17-25 min</td>
-          <td class="val">2.6 mph / 2%</td>
+          <td>17-27 min</td>
+          <td class="val">2.8 mph / 3%</td>
         </tr>
         <tr>
           <td><span class="phase" style="color:var(--yellow);">Main 3</span></td>
-          <td>25-30 min</td>
-          <td class="val">2.5 mph / 1%</td>
+          <td>27-33 min</td>
+          <td class="val">2.8 mph / 2%</td>
         </tr>
         <tr>
           <td><span class="phase" style="color:var(--blue);">Cool-down</span></td>
-          <td>30-35 min</td>
+          <td>33-40 min</td>
           <td class="val">2.3 mph / 0%</td>
         </tr>
       </table>
       <div style="margin-top:12px; font-size:12px; color:var(--text-dim); line-height:1.5;">
-        <strong style="color:var(--text);">Target HR:</strong> 105-118 bpm (cap 123 due to coffee)<br>
-        <strong style="color:var(--text);">Adjustments:</strong> Coffee (-1% incline, -5 bpm ceiling) + heat (~82-84&#xB0;F garage)<br>
-        <strong style="color:var(--text);">Strategy:</strong> Start at 1%, build to 2%, step back down &mdash; avoid late HR creep
+        <strong style="color:var(--text);">Target HR:</strong> 105-120 bpm (cap 125 due to coffee)<br>
+        <strong style="color:var(--text);">Adjustments:</strong> Coffee only (-1% incline from standard, -5 bpm ceiling)<br>
+        <strong style="color:var(--text);">No heat penalty:</strong> 74&#xB0;F garage = standard Zone 2 template with coffee adjustment
       </div>
     </div>
 
@@ -504,15 +504,15 @@
     <div class="card">
       <div class="card-title">HR Guardrails</div>
       <div class="guardrail-row">
-        <span class="gr-badge" style="color:var(--accent);">118</span>
-        <div>Monitor closely &mdash; approaching coffee-adjusted ceiling</div>
+        <span class="gr-badge" style="color:var(--accent);">120</span>
+        <div>Stay at current settings, monitor</div>
       </div>
       <div class="guardrail-row">
-        <span class="gr-badge" style="color:var(--yellow);">123</span>
-        <div>Drop incline to <strong>0%</strong>, reduce speed to 2.3 mph</div>
+        <span class="gr-badge" style="color:var(--yellow);">125</span>
+        <div>Drop incline to <strong>1%</strong>, reduce speed to 2.5 mph</div>
       </div>
       <div class="guardrail-row">
-        <span class="gr-badge gr-stop">125</span>
+        <span class="gr-badge gr-stop">128</span>
         <div><strong>Hard cap</strong> &mdash; flat cool-down at 2.0 mph until HR &lt; 110</div>
       </div>
     </div>

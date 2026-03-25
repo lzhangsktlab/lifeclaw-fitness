@@ -409,11 +409,11 @@
   <div id="today" class="tab-content active">
 
     <!-- Status banner -->
-    <div class="status-banner" style="background:linear-gradient(135deg, var(--accent-dim), #1a2a1a); border:1px solid #2a5a2a;">
-      <span class="status-icon">&#x1F3AF;</span>
+    <div class="status-banner" style="background:linear-gradient(135deg, var(--yellow-dim), #1a1a0a); border:1px solid #5a4a1a;">
+      <span class="status-icon">&#x2615;</span>
       <div>
-        <strong style="color:var(--accent);">Zone 2 Easy Day</strong><br>
-        <span style="font-size:12px; color:#8ab4f8;">Evening session recommended — cooler garage</span>
+        <strong style="color:var(--yellow);">Zone 2 Easy &mdash; Coffee + Heat Adjusted</strong><br>
+        <span style="font-size:12px; color:#8ab4f8;">Midday session ~12:10 PM</span>
       </div>
     </div>
 
@@ -442,23 +442,15 @@
       </div>
     </div>
 
-    <!-- Timing recommendation -->
-    <div class="card" style="background:linear-gradient(135deg, #1a2a2a, var(--card)); border-color:#2a4a5a;">
-      <div class="card-title" style="color:var(--blue);">&#x23F0; When to Work Out</div>
-      <div style="font-size:13px; line-height:1.7;">
-        <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;">
-          <span style="font-size:18px;">&#x1F319;</span>
-          <div>
-            <strong style="color:var(--accent);">Evening (after 8 PM) &mdash; Best option</strong><br>
-            <span style="color:var(--text-dim); font-size:12px;">Garage ~77&#xB0;F &bull; Last night: HR stayed at 124 max</span>
-          </div>
-        </div>
-        <div style="display:flex; gap:10px; align-items:center;">
-          <span style="font-size:18px;">&#x2600;&#xFE0F;</span>
-          <div>
-            <strong style="color:var(--yellow);">Afternoon (now-5 PM) &mdash; OK with caution</strong><br>
-            <span style="color:var(--text-dim); font-size:12px;">Garage ~82-84&#xB0;F &bull; Use afternoon plan below</span>
-          </div>
+    <!-- Today's factors -->
+    <div class="card" style="background:linear-gradient(135deg, #2a1a0a, var(--card)); border-color:#5a3a1a;">
+      <div class="card-title" style="color:var(--orange);">&#x2615; Coffee + Heat Adjustment</div>
+      <div style="font-size:13px; line-height:1.7; color:#ccc;">
+        <strong style="color:var(--yellow);">Coffee:</strong> adds +5-10 bpm &rarr; drop incline 1%, HR target -5 bpm<br>
+        <strong style="color:var(--yellow);">Garage ~82-84&#xB0;F:</strong> heat adds +5-15 bpm<br>
+        <strong style="color:var(--accent);">Sleep 6.5h:</strong> normal &rarr; no change<br>
+        <div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-size:12px;">
+          Two stressors stacked (coffee + heat) &rarr; conservative settings below
         </div>
       </div>
     </div>
@@ -471,39 +463,40 @@
       </div>
     </div>
 
-    <!-- Workout plan - Evening -->
-    <div class="card">
-      <div class="card-title">&#x1F319; Evening Plan &mdash; 40 min</div>
+    <!-- Workout plan -->
+    <div class="card" style="border-color:#5a3a1a;">
+      <div class="card-title" style="color:var(--orange);">&#x2615; Today's Plan &mdash; 35 min</div>
       <table class="mini-table">
         <tr>
           <td><span class="phase" style="color:var(--accent);">Warm-up</span></td>
           <td>0-7 min</td>
-          <td class="val">2.5 mph / 0%</td>
+          <td class="val">2.3 mph / 0%</td>
         </tr>
         <tr>
           <td><span class="phase" style="color:var(--yellow);">Main 1</span></td>
           <td>7-17 min</td>
-          <td class="val">2.8 mph / 2%</td>
+          <td class="val">2.6 mph / 1%</td>
         </tr>
         <tr>
           <td><span class="phase" style="color:var(--orange);">Main 2</span></td>
-          <td>17-27 min</td>
-          <td class="val">2.8 mph / 3%</td>
+          <td>17-25 min</td>
+          <td class="val">2.6 mph / 2%</td>
         </tr>
         <tr>
           <td><span class="phase" style="color:var(--yellow);">Main 3</span></td>
-          <td>27-33 min</td>
-          <td class="val">2.8 mph / 2%</td>
+          <td>25-30 min</td>
+          <td class="val">2.5 mph / 1%</td>
         </tr>
         <tr>
           <td><span class="phase" style="color:var(--blue);">Cool-down</span></td>
-          <td>33-40 min</td>
+          <td>30-35 min</td>
           <td class="val">2.3 mph / 0%</td>
         </tr>
       </table>
       <div style="margin-top:12px; font-size:12px; color:var(--text-dim); line-height:1.5;">
-        <strong style="color:var(--text);">Target HR:</strong> 108-120 bpm<br>
-        <strong style="color:var(--text);">Why evening:</strong> Mar 24 evening = HR 124 max vs Mar 22-23 afternoon = HR 128 max
+        <strong style="color:var(--text);">Target HR:</strong> 105-118 bpm (cap 123 due to coffee)<br>
+        <strong style="color:var(--text);">Adjustments:</strong> Coffee (-1% incline, -5 bpm ceiling) + heat (~82-84&#xB0;F garage)<br>
+        <strong style="color:var(--text);">Strategy:</strong> Start at 1%, build to 2%, step back down &mdash; avoid late HR creep
       </div>
     </div>
 
@@ -511,46 +504,16 @@
     <div class="card">
       <div class="card-title">HR Guardrails</div>
       <div class="guardrail-row">
-        <span class="gr-badge" style="color:var(--accent);">120</span>
-        <div>Stay at current settings, monitor</div>
+        <span class="gr-badge" style="color:var(--accent);">118</span>
+        <div>Monitor closely &mdash; approaching coffee-adjusted ceiling</div>
       </div>
       <div class="guardrail-row">
-        <span class="gr-badge" style="color:var(--yellow);">125</span>
-        <div>Drop incline to <strong>1%</strong></div>
+        <span class="gr-badge" style="color:var(--yellow);">123</span>
+        <div>Drop incline to <strong>0%</strong>, reduce speed to 2.3 mph</div>
       </div>
       <div class="guardrail-row">
-        <span class="gr-badge gr-stop">128</span>
-        <div><strong>Hard cap</strong> &mdash; flat cool-down at 2.0 mph</div>
-      </div>
-    </div>
-
-    <!-- Afternoon alternative -->
-    <div class="card" style="border-color:#78350f;">
-      <div class="card-title" style="color:var(--yellow);">&#x2600;&#xFE0F; Afternoon Plan &mdash; 35 min (if garage &gt;80&#xB0;F)</div>
-      <table class="mini-table">
-        <tr>
-          <td><span class="phase" style="color:var(--accent);">Warm-up</span></td>
-          <td>0-7 min</td>
-          <td class="val">2.3 mph / 0%</td>
-        </tr>
-        <tr>
-          <td><span class="phase" style="color:var(--yellow);">Main 1</span></td>
-          <td>7-17 min</td>
-          <td class="val">2.6 mph / 2%</td>
-        </tr>
-        <tr>
-          <td><span class="phase" style="color:var(--yellow);">Main 2</span></td>
-          <td>17-27 min</td>
-          <td class="val">2.6 mph / 1%</td>
-        </tr>
-        <tr>
-          <td><span class="phase" style="color:var(--blue);">Cool-down</span></td>
-          <td>27-35 min</td>
-          <td class="val">2.3 mph / 0%</td>
-        </tr>
-      </table>
-      <div style="margin-top:10px; font-size:11px; color:var(--text-dim); line-height:1.5;">
-        Reduced from evening plan: slower speed (2.6 vs 2.8), lower incline (2% max vs 3%), shorter duration (35 vs 40 min), step-down to 1% to prevent late-session HR creep.
+        <span class="gr-badge gr-stop">125</span>
+        <div><strong>Hard cap</strong> &mdash; flat cool-down at 2.0 mph until HR &lt; 110</div>
       </div>
     </div>
 

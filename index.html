@@ -422,6 +422,11 @@
       <div class="card-title">Today's Conditions</div>
       <div class="conditions">
         <div class="cond-item">
+          <div class="cond-icon">&#x1F4A4;</div>
+          <div class="cond-value" style="color:var(--accent);">6.5h</div>
+          <div class="cond-label">Sleep</div>
+        </div>
+        <div class="cond-item">
           <div class="cond-icon">&#x2600;&#xFE0F;</div>
           <div class="cond-value">78&#xB0;</div>
           <div class="cond-label">Outside</div>
@@ -431,10 +436,29 @@
           <div class="cond-value">~84&#xB0;</div>
           <div class="cond-label">Garage PM</div>
         </div>
-        <div class="cond-item">
-          <div class="cond-icon">&#x1F319;</div>
-          <div class="cond-value" style="color:var(--accent);">~77&#xB0;</div>
-          <div class="cond-label">Garage Eve</div>
+      </div>
+      <div style="margin-top:10px; font-size:11px; color:var(--text-dim); text-align:center;">
+        Sleep 6.5h = your normal range &mdash; no adjustment needed
+      </div>
+    </div>
+
+    <!-- Timing recommendation -->
+    <div class="card" style="background:linear-gradient(135deg, #1a2a2a, var(--card)); border-color:#2a4a5a;">
+      <div class="card-title" style="color:var(--blue);">&#x23F0; When to Work Out</div>
+      <div style="font-size:13px; line-height:1.7;">
+        <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;">
+          <span style="font-size:18px;">&#x1F319;</span>
+          <div>
+            <strong style="color:var(--accent);">Evening (after 8 PM) &mdash; Best option</strong><br>
+            <span style="color:var(--text-dim); font-size:12px;">Garage ~77&#xB0;F &bull; Last night: HR stayed at 124 max</span>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <span style="font-size:18px;">&#x2600;&#xFE0F;</span>
+          <div>
+            <strong style="color:var(--yellow);">Afternoon (now-5 PM) &mdash; OK with caution</strong><br>
+            <span style="color:var(--text-dim); font-size:12px;">Garage ~82-84&#xB0;F &bull; Use afternoon plan below</span>
+          </div>
         </div>
       </div>
     </div>
@@ -447,9 +471,9 @@
       </div>
     </div>
 
-    <!-- Workout plan -->
+    <!-- Workout plan - Evening -->
     <div class="card">
-      <div class="card-title">Workout Plan &mdash; 40 min (Evening)</div>
+      <div class="card-title">&#x1F319; Evening Plan &mdash; 40 min</div>
       <table class="mini-table">
         <tr>
           <td><span class="phase" style="color:var(--accent);">Warm-up</span></td>
@@ -497,6 +521,36 @@
       <div class="guardrail-row">
         <span class="gr-badge gr-stop">128</span>
         <div><strong>Hard cap</strong> &mdash; flat cool-down at 2.0 mph</div>
+      </div>
+    </div>
+
+    <!-- Afternoon alternative -->
+    <div class="card" style="border-color:#78350f;">
+      <div class="card-title" style="color:var(--yellow);">&#x2600;&#xFE0F; Afternoon Plan &mdash; 35 min (if garage &gt;80&#xB0;F)</div>
+      <table class="mini-table">
+        <tr>
+          <td><span class="phase" style="color:var(--accent);">Warm-up</span></td>
+          <td>0-7 min</td>
+          <td class="val">2.3 mph / 0%</td>
+        </tr>
+        <tr>
+          <td><span class="phase" style="color:var(--yellow);">Main 1</span></td>
+          <td>7-17 min</td>
+          <td class="val">2.6 mph / 2%</td>
+        </tr>
+        <tr>
+          <td><span class="phase" style="color:var(--yellow);">Main 2</span></td>
+          <td>17-27 min</td>
+          <td class="val">2.6 mph / 1%</td>
+        </tr>
+        <tr>
+          <td><span class="phase" style="color:var(--blue);">Cool-down</span></td>
+          <td>27-35 min</td>
+          <td class="val">2.3 mph / 0%</td>
+        </tr>
+      </table>
+      <div style="margin-top:10px; font-size:11px; color:var(--text-dim); line-height:1.5;">
+        Reduced from evening plan: slower speed (2.6 vs 2.8), lower incline (2% max vs 3%), shorter duration (35 vs 40 min), step-down to 1% to prevent late-session HR creep.
       </div>
     </div>
 

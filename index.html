@@ -384,18 +384,18 @@
   <div class="header">
     <div class="header-icon">&#x1F3CB;&#xFE0F;</div>
     <h1>Lifeclaw Fitness</h1>
-    <div class="date">Tuesday, March 24, 2026</div>
+    <div class="date">Wednesday, March 25, 2026</div>
   </div>
 
   <!-- Week streak -->
   <div class="streak">
-    <div class="streak-dot streak-done" title="Mar 18">18</div>
     <div class="streak-dot streak-rest" title="Mar 19 Rest">19</div>
     <div class="streak-dot streak-done" title="Mar 20">20</div>
     <div class="streak-dot streak-done" title="Mar 21">21</div>
     <div class="streak-dot streak-done" title="Mar 22">22</div>
     <div class="streak-dot streak-done" title="Mar 23">23</div>
-    <div class="streak-dot streak-today" title="Mar 24 Today">24</div>
+    <div class="streak-dot streak-done" title="Mar 24">24</div>
+    <div class="streak-dot streak-today" title="Mar 25 Today">25</div>
   </div>
 
   <!-- Tabs -->
@@ -409,11 +409,11 @@
   <div id="today" class="tab-content active">
 
     <!-- Status banner -->
-    <div class="status-banner status-rest">
-      <span class="status-icon">&#x1F9D8;</span>
+    <div class="status-banner" style="background:linear-gradient(135deg, var(--accent-dim), #1a2a1a); border:1px solid #2a5a2a;">
+      <span class="status-icon">&#x1F3AF;</span>
       <div>
-        <strong>Recommended: Rest Day</strong><br>
-        <span style="font-size:12px; color:#8ab4f8;">4 consecutive workout days + 2 days at HR cap</span>
+        <strong style="color:var(--accent);">Zone 2 Easy Day</strong><br>
+        <span style="font-size:12px; color:#8ab4f8;">Evening session recommended — cooler garage</span>
       </div>
     </div>
 
@@ -423,55 +423,88 @@
       <div class="conditions">
         <div class="cond-item">
           <div class="cond-icon">&#x2600;&#xFE0F;</div>
-          <div class="cond-value">75&#xB0;</div>
+          <div class="cond-value">78&#xB0;</div>
           <div class="cond-label">Outside</div>
         </div>
         <div class="cond-item">
           <div class="cond-icon">&#x1F3E0;</div>
-          <div class="cond-value">~81&#xB0;</div>
-          <div class="cond-label">Garage Est.</div>
+          <div class="cond-value">~84&#xB0;</div>
+          <div class="cond-label">Garage PM</div>
         </div>
         <div class="cond-item">
-          <div class="cond-icon">&#x26A0;&#xFE0F;</div>
-          <div class="cond-value" style="color:var(--yellow);">HOT</div>
-          <div class="cond-label">Caution</div>
+          <div class="cond-icon">&#x1F319;</div>
+          <div class="cond-value" style="color:var(--accent);">~77&#xB0;</div>
+          <div class="cond-label">Garage Eve</div>
         </div>
       </div>
     </div>
 
-    <!-- Recommendation -->
-    <div class="card rec-card">
-      <div class="card-title">Why Rest Today?</div>
+    <!-- Yesterday's win -->
+    <div class="card" style="background:linear-gradient(135deg, #1a2a1a, var(--card)); border-color:#2a5a2a;">
+      <div class="card-title" style="color:var(--accent);">&#x2705; Yesterday's Win</div>
       <div class="rec-text">
-        You've worked out <strong>4 days straight</strong> (Mar 20-23). Both March 22 and 23 hit your <strong>128 BPM cap</strong> despite reducing speed and incline — the <strong>81&#xB0;F garage heat</strong> is pushing your HR beyond Zone 2 targets.
-        <br><br>
-        Your coaching protocol says: <strong>"Avoid stacking stress"</strong> and take <strong>1-2 rest days per week</strong>. Today is that day.
-        <br><br>
-        Tomorrow with fresh recovery, you can do a proper <strong>Zone 2 session</strong> with better HR control.
+        Last night's <strong>evening session</strong> was your best in 3 days: HR <strong>107-124</strong> (max 124) — first time staying <strong>under the 125 cap</strong> since Mar 21. The cooler evening garage made the difference.
       </div>
     </div>
 
-    <!-- If you must move -->
+    <!-- Workout plan -->
     <div class="card">
-      <div class="if-move-header">&#x1F6B6; If You Must Move</div>
+      <div class="card-title">Workout Plan &mdash; 40 min (Evening)</div>
       <table class="mini-table">
         <tr>
-          <td><span class="phase phase-walk">Easy Walk</span></td>
-          <td>15-20 min</td>
-          <td class="val">2.3 mph / 0%</td>
+          <td><span class="phase" style="color:var(--accent);">Warm-up</span></td>
+          <td>0-7 min</td>
+          <td class="val">2.5 mph / 0%</td>
         </tr>
         <tr>
-          <td><span class="phase phase-flat">HR Cap</span></td>
-          <td colspan="2" class="val">Stay under 100 BPM</td>
+          <td><span class="phase" style="color:var(--yellow);">Main 1</span></td>
+          <td>7-17 min</td>
+          <td class="val">2.8 mph / 2%</td>
+        </tr>
+        <tr>
+          <td><span class="phase" style="color:var(--orange);">Main 2</span></td>
+          <td>17-27 min</td>
+          <td class="val">2.8 mph / 3%</td>
+        </tr>
+        <tr>
+          <td><span class="phase" style="color:var(--yellow);">Main 3</span></td>
+          <td>27-33 min</td>
+          <td class="val">2.8 mph / 2%</td>
+        </tr>
+        <tr>
+          <td><span class="phase" style="color:var(--blue);">Cool-down</span></td>
+          <td>33-40 min</td>
+          <td class="val">2.3 mph / 0%</td>
         </tr>
       </table>
+      <div style="margin-top:12px; font-size:12px; color:var(--text-dim); line-height:1.5;">
+        <strong style="color:var(--text);">Target HR:</strong> 108-120 bpm<br>
+        <strong style="color:var(--text);">Why evening:</strong> Mar 24 evening = HR 124 max vs Mar 22-23 afternoon = HR 128 max
+      </div>
+    </div>
+
+    <!-- HR Guardrails -->
+    <div class="card">
+      <div class="card-title">HR Guardrails</div>
+      <div class="guardrail-row">
+        <span class="gr-badge" style="color:var(--accent);">120</span>
+        <div>Stay at current settings, monitor</div>
+      </div>
+      <div class="guardrail-row">
+        <span class="gr-badge" style="color:var(--yellow);">125</span>
+        <div>Drop incline to <strong>1%</strong></div>
+      </div>
+      <div class="guardrail-row">
+        <span class="gr-badge gr-stop">128</span>
+        <div><strong>Hard cap</strong> &mdash; flat cool-down at 2.0 mph</div>
+      </div>
     </div>
 
     <!-- Hydration -->
     <div class="hydration">
       <span class="hydration-icon">&#x1F4A7;</span>
       <div>
-        <strong>Stay hydrated even on rest days.</strong><br>
+        <strong>500ml before, sips every 10 min, 500ml after.</strong><br>
         ET + heat = extra clot risk when dehydrated.
       </div>
     </div>
@@ -483,6 +516,21 @@
 
     <div class="card">
       <div class="card-title">Recent Workouts</div>
+
+      <div class="history-entry">
+        <div class="hist-date">
+          <div class="hist-day">24</div>
+          <div class="hist-month">Mar</div>
+        </div>
+        <div class="hist-details">
+          <div class="hist-type">Late Evening Session</div>
+          <div class="hist-stats">
+            ~20 min &bull; 10:00 PM<br>
+            HR: 107-124 &nbsp;<span class="hr-pill hr-ok">124 max</span><br>
+            Cooler evening garage &bull; Best HR in 3 days
+          </div>
+        </div>
+      </div>
 
       <div class="history-entry">
         <div class="hist-date">

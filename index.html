@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Lifeclaw Fitness</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #0f0f0f;
+    --card: #1a1a1a;
+    --card-alt: #222;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --text-dim: #888;
+    --accent: #4ade80;
+    --accent-dim: #22543d;
+    --red: #f87171;
+    --red-dim: #7f1d1d;
+    --yellow: #fbbf24;
+    --yellow-dim: #78350f;
+    --blue: #60a5fa;
+    --blue-dim: #1e3a5f;
+    --orange: #fb923c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 0;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 16px;
+    padding-bottom: 80px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 24px 0 20px;
+  }
+
+  .header-icon { font-size: 36px; margin-bottom: 8px; }
+
+  .header h1 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #4ade80, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .header .date {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  /* Status banner */
+  .status-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .status-rest {
+    background: linear-gradient(135deg, var(--blue-dim), #1a1a3a);
+    border: 1px solid #2a4a6a;
+  }
+
+  .status-icon { font-size: 22px; }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+
+  .card-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+
+  /* Conditions row */
+  .conditions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  .cond-item {
+    text-align: center;
+    padding: 12px 8px;
+    background: var(--card-alt);
+    border-radius: 12px;
+  }
+
+  .cond-icon { font-size: 20px; margin-bottom: 4px; }
+  .cond-value { font-size: 18px; font-weight: 700; }
+  .cond-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+  /* Recommendation card */
+  .rec-card {
+    background: linear-gradient(135deg, #1a2a1a, #1a1a2a);
+    border: 1px solid #2a4a2a;
+  }
+
+  .rec-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #ccc;
+  }
+
+  .rec-text strong { color: var(--accent); }
+
+  /* If-move card */
+  .if-move-header {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--yellow);
+  }
+
+  .mini-table {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .mini-table td {
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mini-table tr:last-child td { border-bottom: none; }
+
+  .mini-table .phase {
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .phase-walk { color: var(--blue); }
+  .phase-flat { color: var(--text-dim); }
+
+  .mini-table .val { text-align: right; color: var(--text-dim); }
+
+  /* Guardrails */
+  .guardrail-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .guardrail-row:last-child { border-bottom: none; }
+
+  .gr-badge {
+    font-size: 15px;
+    font-weight: 800;
+    min-width: 36px;
+    text-align: center;
+  }
+
+  .gr-100 { color: var(--accent); }
+  .gr-stop { color: var(--red); }
+
+  /* History section */
+  .history-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .history-entry:last-child { border-bottom: none; }
+
+  .hist-date {
+    min-width: 52px;
+    text-align: center;
+  }
+
+  .hist-day {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .hist-month {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .hist-details { flex: 1; }
+
+  .hist-type {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .hist-stats {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .hr-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .hr-ok { background: var(--accent-dim); color: var(--accent); }
+  .hr-high { background: var(--red-dim); color: var(--red); }
+  .hr-mid { background: var(--yellow-dim); color: var(--yellow); }
+
+  /* Hydration */
+  .hydration {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--blue-dim);
+    border: 1px solid #2a4a6a;
+    border-radius: 14px;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  .hydration-icon { font-size: 24px; }
+
+  /* Profile summary */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .profile-item {
+    padding: 10px 12px;
+    background: var(--card-alt);
+    border-radius: 10px;
+  }
+
+  .profile-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .profile-value {
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  /* HR Zone legend */
+  .zone-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .zone-row:last-child { border-bottom: none; }
+
+  .zone-bar {
+    width: 4px;
+    height: 28px;
+    border-radius: 2px;
+  }
+
+  .z1 { background: var(--blue); }
+  .z2 { background: var(--accent); }
+  .z3 { background: var(--yellow); }
+  .z4 { background: var(--orange); }
+  .z5 { background: var(--red); }
+
+  .zone-name { font-weight: 600; min-width: 90px; }
+  .zone-range { color: var(--text-dim); }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 18px;
+    background: var(--card);
+    padding: 4px;
+    border-radius: 12px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--text-dim);
+    transition: all 0.2s;
+    border: none;
+    background: none;
+  }
+
+  .tab.active {
+    background: var(--card-alt);
+    color: var(--text);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Streak */
+  .streak {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .streak-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .streak-done { background: var(--accent-dim); color: var(--accent); }
+  .streak-rest { background: var(--card-alt); color: var(--text-dim); }
+  .streak-today { background: var(--blue-dim); color: var(--blue); border: 2px solid var(--blue); }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: #444;
+    padding: 20px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-icon">&#x1F3CB;&#xFE0F;</div>
+    <h1>Lifeclaw Fitness</h1>
+    <div class="date">Tuesday, March 24, 2026</div>
+  </div>
+
+  <!-- Week streak -->
+  <div class="streak">
+    <div class="streak-dot streak-done" title="Mar 18">18</div>
+    <div class="streak-dot streak-rest" title="Mar 19 Rest">19</div>
+    <div class="streak-dot streak-done" title="Mar 20">20</div>
+    <div class="streak-dot streak-done" title="Mar 21">21</div>
+    <div class="streak-dot streak-done" title="Mar 22">22</div>
+    <div class="streak-dot streak-done" title="Mar 23">23</div>
+    <div class="streak-dot streak-today" title="Mar 24 Today">24</div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('today')">Today</button>
+    <button class="tab" onclick="showTab('history')">History</button>
+    <button class="tab" onclick="showTab('profile')">Profile</button>
+  </div>
+
+  <!-- TODAY TAB -->
+  <div id="today" class="tab-content active">
+
+    <!-- Status banner -->
+    <div class="status-banner status-rest">
+      <span class="status-icon">&#x1F9D8;</span>
+      <div>
+        <strong>Recommended: Rest Day</strong><br>
+        <span style="font-size:12px; color:#8ab4f8;">4 consecutive workout days + 2 days at HR cap</span>
+      </div>
+    </div>
+
+    <!-- Conditions -->
+    <div class="card">
+      <div class="card-title">Today's Conditions</div>
+      <div class="conditions">
+        <div class="cond-item">
+          <div class="cond-icon">&#x2600;&#xFE0F;</div>
+          <div class="cond-value">75&#xB0;</div>
+          <div class="cond-label">Outside</div>
+        </div>
+        <div class="cond-item">
+          <div class="cond-icon">&#x1F3E0;</div>
+          <div class="cond-value">~81&#xB0;</div>
+          <div class="cond-label">Garage Est.</div>
+        </div>
+        <div class="cond-item">
+          <div class="cond-icon">&#x26A0;&#xFE0F;</div>
+          <div class="cond-value" style="color:var(--yellow);">HOT</div>
+          <div class="cond-label">Caution</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation -->
+    <div class="card rec-card">
+      <div class="card-title">Why Rest Today?</div>
+      <div class="rec-text">
+        You've worked out <strong>4 days straight</strong> (Mar 20-23). Both March 22 and 23 hit your <strong>128 BPM cap</strong> despite reducing speed and incline — the <strong>81&#xB0;F garage heat</strong> is pushing your HR beyond Zone 2 targets.
+        <br><br>
+        Your coaching protocol says: <strong>"Avoid stacking stress"</strong> and take <strong>1-2 rest days per week</strong>. Today is that day.
+        <br><br>
+        Tomorrow with fresh recovery, you can do a proper <strong>Zone 2 session</strong> with better HR control.
+      </div>
+    </div>
+
+    <!-- If you must move -->
+    <div class="card">
+      <div class="if-move-header">&#x1F6B6; If You Must Move</div>
+      <table class="mini-table">
+        <tr>
+          <td><span class="phase phase-walk">Easy Walk</span></td>
+          <td>15-20 min</td>
+          <td class="val">2.3 mph / 0%</td>
+        </tr>
+        <tr>
+          <td><span class="phase phase-flat">HR Cap</span></td>
+          <td colspan="2" class="val">Stay under 100 BPM</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Hydration -->
+    <div class="hydration">
+      <span class="hydration-icon">&#x1F4A7;</span>
+      <div>
+        <strong>Stay hydrated even on rest days.</strong><br>
+        ET + heat = extra clot risk when dehydrated.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HISTORY TAB -->
+  <div id="history" class="tab-content">
+
+    <div class="card">
+      <div class="card-title">Recent Workouts</div>
+
+      <div class="history-entry">
+        <div class="hist-date">
+          <div class="hist-day">23</div>
+          <div class="hist-month">Mar</div>
+        </div>
+        <div class="hist-details">
+          <div class="hist-type">Zone 2 Easy (Heat Adjusted)</div>
+          <div class="hist-stats">
+            2.7 mph / 2% max &bull; ~45 min<br>
+            HR: 99-128 &nbsp;<span class="hr-pill hr-high">128 max</span><br>
+            Garage ~81-83&#xB0;F &bull; Better pattern than Mar 22
+          </div>
+        </div>
+      </div>
+
+      <div class="history-entry">
+        <div class="hist-date">
+          <div class="hist-day">22</div>
+          <div class="hist-month">Mar</div>
+        </div>
+        <div class="hist-details">
+          <div class="hist-type">Zone 2 Attempt</div>
+          <div class="hist-stats">
+            2.9 mph / 2-3% &bull; ~50 min<br>
+            HR: 92-128 &nbsp;<span class="hr-pill hr-high">128 max</span><br>
+            Garage 81&#xB0;F &bull; HR ran too high for zone 2
+          </div>
+        </div>
+      </div>
+
+      <div class="history-entry">
+        <div class="hist-date">
+          <div class="hist-day">21</div>
+          <div class="hist-month">Mar</div>
+        </div>
+        <div class="hist-details">
+          <div class="hist-type">Controlled Aerobic + Coffee PM</div>
+          <div class="hist-stats">
+            AM: HR 103-127 &bull; Garage 72&#xB0;F<br>
+            PM: 3.2-3.6 mph / 2-4% &bull; 35-40 min<br>
+            77&#xB0;F / 45% humidity &nbsp;<span class="hr-pill hr-mid">coffee adj</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="history-entry">
+        <div class="hist-date">
+          <div class="hist-day">20</div>
+          <div class="hist-month">Mar</div>
+        </div>
+        <div class="hist-details">
+          <div class="hist-type">Moderate Day</div>
+          <div class="hist-stats">
+            HR: 97-137 &nbsp;<span class="hr-pill hr-high">137 max</span><br>
+            Warm garage ~81&#xB0;F outside &bull; Adjusted for heat
+          </div>
+        </div>
+      </div>
+
+      <div class="history-entry">
+        <div class="hist-date">
+          <div class="hist-day">19</div>
+          <div class="hist-month">Mar</div>
+        </div>
+        <div class="hist-details">
+          <div class="hist-type" style="color:var(--blue);">Rest Day</div>
+          <div class="hist-stats">No workout</div>
+        </div>
+      </div>
+
+      <div class="history-entry">
+        <div class="hist-date">
+          <div class="hist-day">18</div>
+          <div class="hist-month">Mar</div>
+        </div>
+        <div class="hist-details">
+          <div class="hist-type">Moderate Incline</div>
+          <div class="hist-stats">
+            HR: 97-134 &nbsp;<span class="hr-pill hr-mid">134 max</span><br>
+            Steady plateau at 125-130
+          </div>
+        </div>
+      </div>
+
+      <div class="history-entry">
+        <div class="hist-date">
+          <div class="hist-day">13</div>
+          <div class="hist-month">Mar</div>
+        </div>
+        <div class="hist-details">
+          <div class="hist-type">Post-Recovery Moderate</div>
+          <div class="hist-stats">
+            3.0-3.2 mph / 5-7% &bull; 45-50 min<br>
+            HR: 90-118 &nbsp;<span class="hr-pill hr-ok">smooth</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="history-entry">
+        <div class="hist-date">
+          <div class="hist-day">12</div>
+          <div class="hist-month">Mar</div>
+        </div>
+        <div class="hist-details">
+          <div class="hist-type">Jet Lag Recovery</div>
+          <div class="hist-stats">
+            2.9-3.1 mph / 2-3% &bull; 35-40 min<br>
+            Target HR: 100-115 &nbsp;<span class="hr-pill hr-ok">recovery</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PROFILE TAB -->
+  <div id="profile" class="tab-content">
+
+    <div class="card">
+      <div class="card-title">Your Profile</div>
+      <div class="profile-grid">
+        <div class="profile-item">
+          <div class="profile-label">Age</div>
+          <div class="profile-value">57</div>
+        </div>
+        <div class="profile-item">
+          <div class="profile-label">Weight</div>
+          <div class="profile-value">143 lbs</div>
+        </div>
+        <div class="profile-item">
+          <div class="profile-label">Resting HR</div>
+          <div class="profile-value">~64 bpm</div>
+        </div>
+        <div class="profile-item">
+          <div class="profile-label">Max HR</div>
+          <div class="profile-value">~163 bpm</div>
+        </div>
+        <div class="profile-item">
+          <div class="profile-label">VO2 Max</div>
+          <div class="profile-value">~40</div>
+        </div>
+        <div class="profile-item">
+          <div class="profile-label">Condition</div>
+          <div class="profile-value" style="font-size:12px;">ET / CALR+</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Heart Rate Zones</div>
+      <div class="zone-row">
+        <div class="zone-bar z1"></div>
+        <div class="zone-name" style="color:var(--blue);">Recovery</div>
+        <div class="zone-range">95-105 bpm</div>
+      </div>
+      <div class="zone-row">
+        <div class="zone-bar z2"></div>
+        <div class="zone-name" style="color:var(--accent);">Zone 2 Base</div>
+        <div class="zone-range">105-120 bpm</div>
+      </div>
+      <div class="zone-row">
+        <div class="zone-bar z3"></div>
+        <div class="zone-name" style="color:var(--yellow);">Moderate</div>
+        <div class="zone-range">120-135 bpm</div>
+      </div>
+      <div class="zone-row">
+        <div class="zone-bar z4"></div>
+        <div class="zone-name" style="color:var(--orange);">Hard</div>
+        <div class="zone-range">135-145 bpm</div>
+      </div>
+      <div class="zone-row">
+        <div class="zone-bar z5"></div>
+        <div class="zone-name" style="color:var(--red);">Avoid</div>
+        <div class="zone-range">&gt;145 bpm</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Workout Templates</div>
+
+      <div style="margin-bottom:16px;">
+        <div style="font-size:14px; font-weight:600; margin-bottom:6px; color:var(--yellow);">Moderate Incline (45 min)</div>
+        <div style="font-size:12px; color:var(--text-dim); line-height:1.6;">
+          Warm-up 8 min: 2.5 mph, 0-1%<br>
+          Main 30 min: 3.0-3.2 mph, 5%&rarr;6-7%&rarr;5%<br>
+          Cool-down 7 min: 2.4-2.6 mph, flat<br>
+          HR: 115-130 (cap 135)
+        </div>
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <div style="font-size:14px; font-weight:600; margin-bottom:6px; color:var(--accent);">Zone 2 Easy (45-50 min)</div>
+        <div style="font-size:12px; color:var(--text-dim); line-height:1.6;">
+          Warm-up 8 min: 2.5 mph, 0-1%<br>
+          Main 30-35 min: 2.9-3.0 mph, 2%&rarr;3%&rarr;2%<br>
+          Cool-down 8 min: 2.4-2.5 mph, flat<br>
+          HR: 105-118 (stay under 120)
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:14px; font-weight:600; margin-bottom:6px; color:var(--blue);">Recovery (35-40 min)</div>
+        <div style="font-size:12px; color:var(--text-dim); line-height:1.6;">
+          Warm-up 8 min: 2.5 mph, 0-1%<br>
+          Main 25 min: 2.9-3.1 mph, 2-3%<br>
+          Cool-down 7 min: 2.3-2.5 mph, flat<br>
+          HR: 100-115
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Daily Adjustment Rules</div>
+      <div style="font-size:12px; color:var(--text-dim); line-height:1.8;">
+        <strong style="color:var(--text);">Sleep:</strong> 7.5h+ = full moderate | 6-7h = moderate-light | &lt;6h = easy | 4h = skip<br>
+        <strong style="color:var(--text);">Heat:</strong> Garage 81&#xB0;F+ = drop incline 1-2%, HR ceiling -5-10 bpm<br>
+        <strong style="color:var(--text);">Coffee:</strong> Drop incline 1%, HR target -5 bpm<br>
+        <strong style="color:var(--text);">Post-travel:</strong> Day 1 recovery, ramp over 3-5 days<br>
+        <strong style="color:var(--text);">Evening:</strong> 20-30 min max, 2.5-2.9 mph, 0-2%, HR &lt;115<br>
+        <strong style="color:var(--text);">Key rule:</strong> Never stack poor sleep + heat + caffeine
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Lifeclaw Fitness &bull; Powered by Claude Code
+  </div>
+
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>

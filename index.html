@@ -384,18 +384,18 @@
   <div class="header">
     <div class="header-icon">&#x1F3CB;&#xFE0F;</div>
     <h1>Lifeclaw Fitness</h1>
-    <div class="date">Wednesday, March 25, 2026</div>
+    <div class="date">Friday, March 27, 2026</div>
   </div>
 
   <!-- Week streak -->
   <div class="streak">
-    <div class="streak-dot streak-rest" title="Mar 19 Rest">19</div>
-    <div class="streak-dot streak-done" title="Mar 20">20</div>
     <div class="streak-dot streak-done" title="Mar 21">21</div>
     <div class="streak-dot streak-done" title="Mar 22">22</div>
     <div class="streak-dot streak-done" title="Mar 23">23</div>
     <div class="streak-dot streak-done" title="Mar 24">24</div>
-    <div class="streak-dot streak-today" title="Mar 25 Today">25</div>
+    <div class="streak-dot streak-done" title="Mar 25">25</div>
+    <div class="streak-dot streak-done" title="Mar 26">26</div>
+    <div class="streak-dot streak-today" title="Mar 27 Today">27</div>
   </div>
 
   <!-- Tabs -->
@@ -409,11 +409,11 @@
   <div id="today" class="tab-content active">
 
     <!-- Status banner -->
-    <div class="status-banner" style="background:linear-gradient(135deg, var(--accent-dim), #1a2a0a); border:1px solid #2a5a2a;">
-      <span class="status-icon">&#x2615;</span>
+    <div class="status-banner status-rest">
+      <span class="status-icon">&#x1F9D8;</span>
       <div>
-        <strong style="color:var(--accent);">Zone 2 Easy &mdash; Coffee Adjusted</strong><br>
-        <span style="font-size:12px; color:#8ab4f8;">Garage 74&#xB0;F &mdash; coolest this week!</span>
+        <strong>Recommended: Rest Day</strong><br>
+        <span style="font-size:12px; color:#8ab4f8;">7 straight workout days &bull; Garage will hit ~87&#xB0;F</span>
       </div>
     </div>
 
@@ -422,107 +422,68 @@
       <div class="card-title">Today's Conditions</div>
       <div class="conditions">
         <div class="cond-item">
-          <div class="cond-icon">&#x1F4A4;</div>
-          <div class="cond-value" style="color:var(--accent);">6.5h</div>
-          <div class="cond-label">Sleep</div>
-        </div>
-        <div class="cond-item">
           <div class="cond-icon">&#x2600;&#xFE0F;</div>
-          <div class="cond-value">78&#xB0;</div>
+          <div class="cond-value">81&#xB0;</div>
           <div class="cond-label">Outside</div>
         </div>
         <div class="cond-item">
           <div class="cond-icon">&#x1F3E0;</div>
-          <div class="cond-value" style="color:var(--accent);">74&#xB0;</div>
-          <div class="cond-label">Garage Now</div>
+          <div class="cond-value" style="color:var(--red);">~87&#xB0;</div>
+          <div class="cond-label">Garage Est.</div>
         </div>
-      </div>
-      <div style="margin-top:10px; font-size:11px; color:var(--text-dim); text-align:center;">
-        Sleep 6.5h = normal &bull; Garage 74&#xB0;F = no heat penalty &bull; Coffee only adjustment
-      </div>
-    </div>
-
-    <!-- Today's factors -->
-    <div class="card" style="background:linear-gradient(135deg, #2a1a0a, var(--card)); border-color:#5a3a1a;">
-      <div class="card-title" style="color:var(--orange);">&#x2615; Coffee Adjustment Only</div>
-      <div style="font-size:13px; line-height:1.7; color:#ccc;">
-        <strong style="color:var(--yellow);">Coffee:</strong> adds +5-10 bpm &rarr; drop incline 1%, HR target -5 bpm<br>
-        <strong style="color:var(--accent);">Garage 74&#xB0;F:</strong> no heat penalty &mdash; coolest session this week!<br>
-        <strong style="color:var(--accent);">Sleep 6.5h:</strong> normal &rarr; no change<br>
-        <div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border); font-size:12px;">
-          Only one stressor (coffee) &rarr; bumped up from earlier plan
+        <div class="cond-item">
+          <div class="cond-icon">&#x1F525;</div>
+          <div class="cond-value" style="color:var(--red);">HOT</div>
+          <div class="cond-label">Hottest Yet</div>
         </div>
       </div>
     </div>
 
-    <!-- Yesterday's win -->
+    <!-- Yesterday's session -->
     <div class="card" style="background:linear-gradient(135deg, #1a2a1a, var(--card)); border-color:#2a5a2a;">
-      <div class="card-title" style="color:var(--accent);">&#x2705; Yesterday's Win</div>
+      <div class="card-title" style="color:var(--accent);">&#x1F309; Yesterday: SF Waterfront Walk</div>
       <div class="rec-text">
-        Last night's <strong>evening session</strong> was your best in 3 days: HR <strong>107-124</strong> (max 124) — first time staying <strong>under the 125 cap</strong> since Mar 21. The cooler evening garage made the difference.
+        <strong>57 min</strong> along the Embarcadero &bull; HR <strong>103-129</strong> (max 129)<br>
+        <strong>10,275 steps</strong> (2.3x your daily average)<br>
+        <strong>80 exercise minutes</strong> &bull; All rings closed<br>
+        <div style="margin-top:8px; font-size:12px; color:var(--text-dim);">
+          Biggest session this week &mdash; your body earned a rest day.
+        </div>
       </div>
     </div>
 
-    <!-- Workout plan -->
-    <div class="card" style="border-color:#2a5a2a;">
-      <div class="card-title" style="color:var(--accent);">&#x2615; Today's Plan &mdash; 40 min</div>
+    <!-- Why rest -->
+    <div class="card rec-card">
+      <div class="card-title">Why Rest Today?</div>
+      <div class="rec-text">
+        <strong>7 consecutive workout days</strong> (Mar 21-27). Protocol says 1-2 rest days/week &mdash; you've taken zero.<br><br>
+        <strong>Garage will hit ~87&#xB0;F</strong> &mdash; hottest day of the week. Even at reduced settings, heat + accumulated fatigue = stacking stress.<br><br>
+        Yesterday's SF walk was your <strong>most intense session</strong> (129 max, 57 min, 10K steps). Recovery today means a <strong>stronger session Saturday</strong>.
+      </div>
+    </div>
+
+    <!-- If you must move -->
+    <div class="card">
+      <div class="if-move-header">&#x1F6B6; If You Must Move</div>
       <table class="mini-table">
         <tr>
-          <td><span class="phase" style="color:var(--accent);">Warm-up</span></td>
-          <td>0-7 min</td>
-          <td class="val">2.5 mph / 0%</td>
-        </tr>
-        <tr>
-          <td><span class="phase" style="color:var(--yellow);">Main 1</span></td>
-          <td>7-17 min</td>
-          <td class="val">2.8 mph / 2%</td>
-        </tr>
-        <tr>
-          <td><span class="phase" style="color:var(--orange);">Main 2</span></td>
-          <td>17-27 min</td>
-          <td class="val">2.8 mph / 3%</td>
-        </tr>
-        <tr>
-          <td><span class="phase" style="color:var(--yellow);">Main 3</span></td>
-          <td>27-33 min</td>
-          <td class="val">2.8 mph / 2%</td>
-        </tr>
-        <tr>
-          <td><span class="phase" style="color:var(--blue);">Cool-down</span></td>
-          <td>33-40 min</td>
+          <td><span class="phase phase-walk">Easy Walk</span></td>
+          <td>15-20 min</td>
           <td class="val">2.3 mph / 0%</td>
         </tr>
+        <tr>
+          <td><span class="phase phase-flat">HR Cap</span></td>
+          <td colspan="2" class="val">Stay under 100 BPM</td>
+        </tr>
       </table>
-      <div style="margin-top:12px; font-size:12px; color:var(--text-dim); line-height:1.5;">
-        <strong style="color:var(--text);">Target HR:</strong> 105-120 bpm (cap 125 due to coffee)<br>
-        <strong style="color:var(--text);">Adjustments:</strong> Coffee only (-1% incline from standard, -5 bpm ceiling)<br>
-        <strong style="color:var(--text);">No heat penalty:</strong> 74&#xB0;F garage = standard Zone 2 template with coffee adjustment
-      </div>
-    </div>
-
-    <!-- HR Guardrails -->
-    <div class="card">
-      <div class="card-title">HR Guardrails</div>
-      <div class="guardrail-row">
-        <span class="gr-badge" style="color:var(--accent);">120</span>
-        <div>Stay at current settings, monitor</div>
-      </div>
-      <div class="guardrail-row">
-        <span class="gr-badge" style="color:var(--yellow);">125</span>
-        <div>Drop incline to <strong>1%</strong>, reduce speed to 2.5 mph</div>
-      </div>
-      <div class="guardrail-row">
-        <span class="gr-badge gr-stop">128</span>
-        <div><strong>Hard cap</strong> &mdash; flat cool-down at 2.0 mph until HR &lt; 110</div>
-      </div>
     </div>
 
     <!-- Hydration -->
     <div class="hydration">
       <span class="hydration-icon">&#x1F4A7;</span>
       <div>
-        <strong>500ml before, sips every 10 min, 500ml after.</strong><br>
-        ET + heat = extra clot risk when dehydrated.
+        <strong>Stay hydrated even on rest days.</strong><br>
+        ET + 87&#xB0;F heat = extra clot risk when dehydrated.
       </div>
     </div>
 
@@ -533,6 +494,36 @@
 
     <div class="card">
       <div class="card-title">Recent Workouts</div>
+
+      <div class="history-entry">
+        <div class="hist-date">
+          <div class="hist-day">26</div>
+          <div class="hist-month">Mar</div>
+        </div>
+        <div class="hist-details">
+          <div class="hist-type">SF Waterfront Walk &#x1F309;</div>
+          <div class="hist-stats">
+            57 min &bull; Embarcadero &bull; 10,275 steps<br>
+            HR: 103-129 &nbsp;<span class="hr-pill hr-mid">129 max</span><br>
+            Cool ~60&#xB0;F &bull; All rings closed &bull; 80 exercise min
+          </div>
+        </div>
+      </div>
+
+      <div class="history-entry">
+        <div class="hist-date">
+          <div class="hist-day">25</div>
+          <div class="hist-month">Mar</div>
+        </div>
+        <div class="hist-details">
+          <div class="hist-type">Zone 2 Easy (Coffee Adj.)</div>
+          <div class="hist-stats">
+            2.8 mph / 3% max &bull; 40 min<br>
+            HR: 108-125 &nbsp;<span class="hr-pill hr-ok">125 max</span><br>
+            Garage 74&#xB0;F &bull; Best controlled daytime session
+          </div>
+        </div>
+      </div>
 
       <div class="history-entry">
         <div class="hist-date">

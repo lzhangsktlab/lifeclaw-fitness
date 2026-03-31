@@ -174,22 +174,22 @@ body {
 .style-timeline .phase-table { display: block; padding: 8px 22px 12px; }
 .style-timeline .pt-row {
   display: grid;
-  grid-template-columns: 14px 72px 52px 1fr auto;
+  grid-template-columns: 10px 1fr auto auto auto;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   padding: 10px 0;
   border-bottom: 1px solid #eae8e0;
-  font-size: 14px;
+  font-size: 13px;
 }
 .style-timeline .pt-row:last-child { border-bottom: none; }
 .style-timeline .pt-dot {
-  width: 12px; height: 12px;
-  border-radius: 4px;
+  width: 10px; height: 10px;
+  border-radius: 3px;
 }
-.style-timeline .pt-name { font-weight: 600; }
-.style-timeline .pt-time { color: #9a9a8a; font-size: 13px; }
-.style-timeline .pt-set { color: #5a5a4a; font-size: 13px; }
-.style-timeline .pt-hr { font-weight: 700; text-align: right; }
+.style-timeline .pt-name { font-weight: 600; font-size: 13px; }
+.style-timeline .pt-time { color: #9a9a8a; font-size: 12px; }
+.style-timeline .pt-set { color: #5a5a4a; font-size: 12px; }
+.style-timeline .pt-hr { font-weight: 700; text-align: right; font-size: 13px; white-space: nowrap; }
 
 .style-timeline .start-btn { background: #2a5a3a; color: #fff; }
 
@@ -239,7 +239,7 @@ body {
 .style-dark .phase-table { display: block; padding: 8px 22px 12px; }
 .style-dark .pt-row {
   display: grid;
-  grid-template-columns: 4px 80px 52px auto auto auto;
+  grid-template-columns: 4px 1fr auto auto;
   align-items: center;
   gap: 8px;
   padding: 12px 0;
@@ -252,8 +252,9 @@ body {
   height: 28px;
   border-radius: 2px;
 }
-.style-dark .pt-name { font-weight: 600; color: #ccc; }
-.style-dark .pt-time { color: #666; font-size: 13px; }
+.style-dark .pt-name { font-weight: 600; color: #ccc; font-size: 13px; }
+.style-dark .pt-time { color: #666; font-size: 12px; }
+.style-dark .pt-name-wrap { display: flex; flex-direction: column; gap: 1px; }
 .style-dark .pt-pill {
   background: #2a2a2a;
   padding: 4px 10px;
@@ -263,7 +264,7 @@ body {
   text-align: center;
 }
 .style-dark .pt-pill-main { background: #1a3a1a; color: #4ade80; }
-.style-dark .pt-hr { font-weight: 700; text-align: right; color: #888; }
+.style-dark .pt-hr { font-weight: 700; text-align: right; color: #888; white-space: nowrap; }
 .style-dark .pt-hr-main { color: #4ade80; font-weight: 800; }
 
 .style-dark .sum-box { background: #1a1a1a; border: 1px solid #2a2a2a; }
@@ -424,50 +425,40 @@ body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; b
 
   <!-- STYLE 2 & 3: Phase table -->
   <div class="phase-table">
-    <!-- Row 1: Warm -->
     <div class="pt-row">
       <div class="pt-dot" style="background:#c8d8c0;"></div>
       <div class="pt-name">Warm up</div>
       <div class="pt-time">0&ndash;8m</div>
-      <div class="pt-set"><span class="pt-pill">2.5</span></div>
-      <div class="pt-set"><span class="pt-pill">0%</span></div>
-      <div class="pt-hr">&lt;105 bpm</div>
+      <div class="pt-set"><span class="pt-pill">2.5</span> <span class="pt-pill">0%</span></div>
+      <div class="pt-hr">&lt;105</div>
     </div>
-    <!-- Row 2: Build -->
     <div class="pt-row">
       <div class="pt-dot" style="background:#8aaa78;"></div>
       <div class="pt-name">Build</div>
       <div class="pt-time">8&ndash;15m</div>
-      <div class="pt-set"><span class="pt-pill">2.7</span></div>
-      <div class="pt-set"><span class="pt-pill">2%</span></div>
-      <div class="pt-hr">105&ndash;115 bpm</div>
+      <div class="pt-set"><span class="pt-pill">2.7</span> <span class="pt-pill">2%</span></div>
+      <div class="pt-hr">105&ndash;115</div>
     </div>
-    <!-- Row 3: Steady (main) -->
     <div class="pt-row">
       <div class="pt-dot" style="background:#4ade80;"></div>
       <div class="pt-name" style="font-weight:800;">Steady</div>
       <div class="pt-time">15&ndash;32m</div>
-      <div class="pt-set"><span class="pt-pill pt-pill-main">2.7</span></div>
-      <div class="pt-set"><span class="pt-pill pt-pill-main">3%</span></div>
-      <div class="pt-hr pt-hr-main">115&ndash;122 bpm</div>
+      <div class="pt-set"><span class="pt-pill pt-pill-main">2.7</span> <span class="pt-pill pt-pill-main">3%</span></div>
+      <div class="pt-hr pt-hr-main">115&ndash;122</div>
     </div>
-    <!-- Row 4: Ease -->
     <div class="pt-row">
       <div class="pt-dot" style="background:#8aaa78;"></div>
       <div class="pt-name">Ease off</div>
       <div class="pt-time">32&ndash;42m</div>
-      <div class="pt-set"><span class="pt-pill">2.7</span></div>
-      <div class="pt-set"><span class="pt-pill">2%</span></div>
-      <div class="pt-hr">110&ndash;118 bpm</div>
+      <div class="pt-set"><span class="pt-pill">2.7</span> <span class="pt-pill">2%</span></div>
+      <div class="pt-hr">110&ndash;118</div>
     </div>
-    <!-- Row 5: Cool -->
     <div class="pt-row">
       <div class="pt-dot" style="background:#b8cca8;"></div>
       <div class="pt-name">Cool down</div>
       <div class="pt-time">42&ndash;50m</div>
-      <div class="pt-set"><span class="pt-pill">2.3</span></div>
-      <div class="pt-set"><span class="pt-pill">0%</span></div>
-      <div class="pt-hr">&lt;105 bpm</div>
+      <div class="pt-set"><span class="pt-pill">2.3</span> <span class="pt-pill">0%</span></div>
+      <div class="pt-hr">&lt;105</div>
     </div>
   </div>
 

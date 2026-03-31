@@ -59,17 +59,22 @@ body {
 /* ==================== ZOOM OVERLAY ==================== */
 .zoom-overlay {
   display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.88); z-index: 1000;
-  align-items: center; justify-content: center; padding: 32px;
+  background: rgba(0,0,0,0.5); z-index: 1000;
+  align-items: center; justify-content: center; padding: 24px;
   -webkit-tap-highlight-color: transparent;
 }
 .zoom-overlay.show { display: flex; }
-.zoom-content { text-align: center; color: #fff; max-width: 380px; }
-.zoom-phase { font-size: 22px; font-weight: 700; opacity: 0.5; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
-.zoom-main { font-size: 52px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; }
-.zoom-hr { font-size: 48px; font-weight: 800; margin-top: 20px; color: #4ade80; }
-.zoom-sub { font-size: 18px; opacity: 0.4; margin-top: 12px; }
-.zoom-hint { font-size: 13px; opacity: 0.25; margin-top: 32px; }
+.zoom-content {
+  text-align: center; color: #fff; max-width: 340px; width: 100%;
+  background: #1a1a1a; border-radius: 20px; padding: 32px 24px 24px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  border: 1px solid #333;
+}
+.zoom-phase { font-size: 18px; font-weight: 700; opacity: 0.5; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.zoom-main { font-size: 44px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; }
+.zoom-hr { font-size: 40px; font-weight: 800; margin-top: 16px; color: #4ade80; }
+.zoom-sub { font-size: 16px; opacity: 0.4; margin-top: 10px; }
+.zoom-hint { font-size: 12px; opacity: 0.25; margin-top: 20px; }
 
 /* ==================== STYLE 1: WARM ==================== */
 .style-warm { background: #faf8f4; color: #2a2a22; }

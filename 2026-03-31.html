@@ -5,152 +5,521 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Today's Workout</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-  :root {
-    --bg: #0f0f0f; --card: #1a1a1a; --border: #2a2a2a; --text: #e8e8e8;
-    --dim: #777; --green: #4ade80; --green-d: #22543d; --yellow: #fbbf24;
-    --yellow-d: #78350f; --orange: #fb923c; --red: #f87171; --blue: #60a5fa;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: 'Inter', -apple-system, system-ui, sans-serif;
-    background: var(--bg); color: var(--text);
-    min-height: 100vh; display: flex; justify-content: center;
-    padding: 12px; -webkit-font-smoothing: antialiased;
-  }
-  .card { width: 100%; max-width: 400px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-  /* Header */
-  .hdr { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px 12px; border-bottom: 1px solid var(--border); }
-  .hdr-day { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; }
-  .hdr-sub { font-size: 11px; color: var(--dim); margin-top: 1px; }
-  .badge { font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
-  /* HR Hero - compact */
-  .hr-hero { display: flex; align-items: center; justify-content: center; gap: 24px; padding: 16px 20px; background: linear-gradient(135deg, #0f1a0f, #0f0f1a); border-bottom: 1px solid var(--border); }
-  .hr-block { text-align: center; }
-  .hr-label { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
-  .hr-val { font-size: 26px; font-weight: 900; line-height: 1; letter-spacing: -1px; }
-  .hr-divider { width: 1px; height: 36px; background: var(--border); }
+body {
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+  -webkit-font-smoothing: antialiased;
+  background: #e8e4de;
+}
 
-  /* Plan - THE HERO */
-  .plan { padding: 16px 20px; border-bottom: 1px solid var(--border); }
-  .plan-title { font-size: 10px; font-weight: 700; color: var(--dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
-  .p-row {
-    display: grid;
-    grid-template-columns: 50px 60px 1fr 80px;
-    align-items: center;
-    padding: 11px 0;
-    font-size: 15px;
-    border-bottom: 1px solid #1f1f1f;
-  }
-  .p-row:last-child { border-bottom: none; }
-  .p-phase { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; }
-  .p-time { color: var(--dim); font-size: 14px; }
-  .p-set { font-weight: 800; font-size: 17px; }
-  .p-hr { text-align: right; font-size: 15px; font-weight: 700; }
-  .p-row-main {
-    background: rgba(251,146,60,0.08);
-    margin: 0 -20px;
-    padding: 9px 20px;
-    border-radius: 6px;
-  }
+.page { width: 100%; max-width: 430px; }
 
-  /* Guardrails */
-  .rails { padding: 12px 20px; border-bottom: 1px solid var(--border); }
-  .rails-title { font-size: 10px; font-weight: 700; color: var(--dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .rail { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
-  .rail-hr { font-size: 16px; font-weight: 900; min-width: 34px; text-align: center; }
-  .rail-arrow { color: var(--dim); font-size: 12px; }
-  .rail-act { font-size: 12px; font-weight: 500; }
-  .rail-divider { border-top: 1px solid #1f1f1f; }
+/* ==================== SHARED ==================== */
+.card {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: background 0.3s, color 0.3s;
+}
 
-  /* Footer */
-  .foot { padding: 12px 20px; font-size: 12px; color: var(--yellow); text-align: center; line-height: 1.5; font-weight: 500; }
+/* Header */
+.hdr { padding: 24px 22px 16px; }
+.hdr h1 { font-size: 24px; font-weight: 900; letter-spacing: -0.5px; }
+.hdr-sub { font-size: 13px; margin-top: 3px; opacity: 0.5; }
+.tags { display: flex; gap: 8px; padding: 0 22px 18px; flex-wrap: wrap; }
+.tag {
+  font-size: 12px; font-weight: 600;
+  padding: 5px 14px; border-radius: 20px;
+}
+
+/* Summary boxes */
+.summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 16px 22px;
+}
+.sum-box { text-align: center; padding: 12px 8px; border-radius: 12px; }
+.sum-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; }
+.sum-val { font-size: 22px; font-weight: 900; margin-top: 2px; letter-spacing: -0.5px; }
+.sum-unit { font-size: 10px; opacity: 0.5; margin-top: 1px; }
+
+/* Start button */
+.start-btn {
+  display: block;
+  margin: 8px 22px 16px;
+  padding: 16px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  width: calc(100% - 44px);
+}
+
+/* Warning */
+.warning {
+  padding: 0 22px 20px;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.4;
+}
+
+/* Phase rows - shared data attrs */
+.phases { padding: 0 22px; }
+
+/* Style-specific elements hidden by default */
+.timeline-bar, .intensity-chart { display: none; }
+
+/* ==================== STYLE 1: WARM ==================== */
+.style-warm { background: #faf8f4; color: #2a2a22; }
+.style-warm .hdr-sub { color: #8a8a7a; }
+.style-warm .tag { background: #eae8df; color: #5a5a4a; }
+.style-warm .tag-coffee { background: #e8dfc8; color: #6b5b2e; }
+.style-warm .tag-type { background: #dde8d8; color: #3a5a2e; }
+
+.style-warm .phases { display: flex; flex-direction: column; gap: 10px; padding-bottom: 12px; }
+.style-warm .phase-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: #f0eee6;
+}
+.style-warm .phase-card.phase-main {
+  background: #e8f0e4;
+  border: 2px dashed #6a9a5a;
+}
+.style-warm .ph-left {}
+.style-warm .ph-name { font-size: 16px; font-weight: 800; color: #2a2a22; }
+.style-warm .ph-settings { font-size: 13px; color: #7a8a6a; margin-top: 2px; }
+.style-warm .ph-right { text-align: right; }
+.style-warm .ph-time { font-size: 13px; color: #8a8a7a; }
+.style-warm .ph-hr { font-size: 17px; font-weight: 800; color: #2a2a22; margin-top: 1px; }
+
+.style-warm .sum-box { background: #f0eee6; border: 1px solid #e0ddd4; }
+.style-warm .sum-val-cap { color: #c44; }
+
+.style-warm .start-btn { background: #2a5a3a; color: #fff; }
+
+/* Hide elements not used in warm */
+.style-warm .phase-table, .style-warm .timeline-bar, .style-warm .intensity-chart { display: none; }
+.style-warm .phase-card { display: flex; }
+
+/* ==================== STYLE 2: TIMELINE ==================== */
+.style-timeline { background: #faf8f4; color: #2a2a22; }
+.style-timeline .hdr-sub { color: #8a8a7a; }
+.style-timeline .tag { background: #eae8df; color: #5a5a4a; }
+.style-timeline .tag-coffee { background: #e8dfc8; color: #6b5b2e; }
+.style-timeline .tag-type { background: #dde8d8; color: #3a5a2e; }
+
+.style-timeline .timeline-bar { display: block; padding: 16px 22px 8px; }
+.style-timeline .tl-row {
+  display: flex;
+  gap: 3px;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 44px;
+}
+.style-timeline .tl-seg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+}
+.style-timeline .tl-seg span { font-size: 10px; font-weight: 500; opacity: 0.8; }
+.style-timeline .tl-s1 { flex: 8; background: #c8d8c0; color: #3a5a2e; }
+.style-timeline .tl-s2 { flex: 7; background: #8aaa78; }
+.style-timeline .tl-s3 { flex: 17; background: #4a8a3a; }
+.style-timeline .tl-s4 { flex: 10; background: #8aaa78; }
+.style-timeline .tl-s5 { flex: 8; background: #b8cca8; color: #3a5a2e; }
+
+.style-timeline .tl-settings {
+  display: flex;
+  gap: 3px;
+  margin-top: 6px;
+}
+.style-timeline .tl-set {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4a4a3a;
+}
+.style-timeline .tl-set span { font-size: 11px; color: #9a9a8a; }
+.style-timeline .tl-set.s1 { flex: 8; }
+.style-timeline .tl-set.s2 { flex: 7; }
+.style-timeline .tl-set.s3 { flex: 17; }
+.style-timeline .tl-set.s4 { flex: 10; }
+.style-timeline .tl-set.s5 { flex: 8; }
+
+.style-timeline .sum-box { background: #f0eee6; border: 1px solid #e0ddd4; }
+.style-timeline .sum-val-cap { color: #c44; }
+
+/* Phase table for timeline */
+.style-timeline .phase-table { display: block; padding: 8px 22px 12px; }
+.style-timeline .pt-row {
+  display: grid;
+  grid-template-columns: 14px 72px 52px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eae8e0;
+  font-size: 14px;
+}
+.style-timeline .pt-row:last-child { border-bottom: none; }
+.style-timeline .pt-dot {
+  width: 12px; height: 12px;
+  border-radius: 4px;
+}
+.style-timeline .pt-name { font-weight: 600; }
+.style-timeline .pt-time { color: #9a9a8a; font-size: 13px; }
+.style-timeline .pt-set { color: #5a5a4a; font-size: 13px; }
+.style-timeline .pt-hr { font-weight: 700; text-align: right; }
+
+.style-timeline .start-btn { background: #2a5a3a; color: #fff; }
+
+/* Hide elements not used in timeline */
+.style-timeline .phase-card { display: none !important; }
+.style-timeline .intensity-chart { display: none; }
+
+/* ==================== STYLE 3: DARK ==================== */
+.style-dark { background: #111; color: #e8e8e8; }
+.style-dark .hdr-sub { color: #777; }
+.style-dark .tag { background: #2a2a2a; color: #999; }
+.style-dark .tag-coffee { background: #3a3020; color: #d4a030; }
+.style-dark .tag-type { background: #1a2a1a; color: #6a9a5a; }
+
+.style-dark .intensity-chart { display: block; padding: 16px 22px 8px; }
+.style-dark .ic-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-bottom: 10px; }
+.style-dark .ic-bars {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  height: 60px;
+  margin-bottom: 6px;
+}
+.style-dark .ic-bar {
+  flex: 1;
+  border-radius: 4px 4px 0 0;
+}
+.style-dark .ic-labels {
+  display: flex;
+  gap: 6px;
+  font-size: 11px;
+  color: #666;
+}
+.style-dark .ic-labels span {
+  flex: 1;
+  text-align: center;
+}
+.style-dark .ic-labels .ic-active { color: #4ade80; font-weight: 700; }
+
+.style-dark .ic-b1 { height: 30%; background: #3a5a3a; }
+.style-dark .ic-b2 { height: 55%; background: #4a6a3a; }
+.style-dark .ic-b3 { height: 85%; background: #4ade80; }
+.style-dark .ic-b4 { height: 45%; background: #3a6a3a; }
+.style-dark .ic-b5 { height: 25%; background: #2a4a2a; }
+
+/* Dark phase table */
+.style-dark .phase-table { display: block; padding: 8px 22px 12px; }
+.style-dark .pt-row {
+  display: grid;
+  grid-template-columns: 4px 80px 52px auto auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid #222;
+  font-size: 14px;
+}
+.style-dark .pt-row:last-child { border-bottom: none; }
+.style-dark .pt-dot {
+  width: 4px;
+  height: 28px;
+  border-radius: 2px;
+}
+.style-dark .pt-name { font-weight: 600; color: #ccc; }
+.style-dark .pt-time { color: #666; font-size: 13px; }
+.style-dark .pt-pill {
+  background: #2a2a2a;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 14px;
+  text-align: center;
+}
+.style-dark .pt-pill-main { background: #1a3a1a; color: #4ade80; }
+.style-dark .pt-hr { font-weight: 700; text-align: right; color: #888; }
+.style-dark .pt-hr-main { color: #4ade80; font-weight: 800; }
+
+.style-dark .sum-box { background: #1a1a1a; border: 1px solid #2a2a2a; }
+.style-dark .sum-box-dur { border-color: #3a5a3a; }
+.style-dark .sum-box-peak { border-color: #5a4a1a; }
+.style-dark .sum-box-cap { border-color: #5a1a1a; }
+.style-dark .sum-val-peak { color: #fb923c; }
+.style-dark .sum-val-cap { color: #f87171; }
+
+.style-dark .start-btn {
+  background: transparent;
+  color: #4ade80;
+  border: 2px solid #4ade80;
+}
+
+.style-dark .warning { color: #666; }
+
+/* Hide elements not used in dark */
+.style-dark .phase-card { display: none !important; }
+.style-dark .timeline-bar { display: none; }
+
+/* ==================== STYLE SELECTOR ==================== */
+.style-selector {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 24px 0 16px;
+}
+.style-selector button {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  background: #fff;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.style-selector button.active {
+  background: #2a5a3a;
+  color: #fff;
+  border-color: #2a5a3a;
+}
+.style-dark ~ .style-selector { }
+body.bg-dark { background: #0a0a0a; }
+body.bg-dark .style-selector button { background: #222; color: #999; border-color: #333; }
+body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; border-color: #4ade80; }
 </style>
 </head>
 <body>
-<div class="card">
+<div class="page">
 
+<div class="card style-warm" id="card">
+
+  <!-- HEADER -->
   <div class="hdr">
-    <div>
-      <div class="hdr-day">Tue, Mar 31 &bull; ~12:30 PM</div>
-      <div class="hdr-sub">Garage ~74-76&#xB0;F &bull; Coffee adj &bull; Sleep 6.5h</div>
-    </div>
-    <span class="badge" style="background:var(--yellow-d); color:var(--orange);">Moderate</span>
+    <h1>Today's session</h1>
+    <div class="hdr-sub">Tue Mar 31 &middot; 12:30 PM &middot; Garage 75&deg;F</div>
+  </div>
+  <div class="tags">
+    <span class="tag tag-type">moderate &middot; 50 min</span>
+    <span class="tag tag-coffee">coffee adj</span>
+    <span class="tag">sleep 6.5h</span>
   </div>
 
-  <div class="hr-hero">
-    <div class="hr-block">
-      <div class="hr-label" style="color:var(--green);">Target</div>
-      <div class="hr-val" style="color:var(--green);">108-122</div>
+  <!-- STYLE 2: Timeline bar -->
+  <div class="timeline-bar">
+    <div class="tl-row">
+      <div class="tl-seg tl-s1">Warm<span>8m</span></div>
+      <div class="tl-seg tl-s2">Build<span>7m</span></div>
+      <div class="tl-seg tl-s3">Steady<span>17m</span></div>
+      <div class="tl-seg tl-s4">Ease<span>10m</span></div>
+      <div class="tl-seg tl-s5">Cool<span>8m</span></div>
     </div>
-    <div class="hr-divider"></div>
-    <div class="hr-block">
-      <div class="hr-label" style="color:var(--red);">Cap</div>
-      <div class="hr-val" style="color:var(--red);">128</div>
-    </div>
-  </div>
-
-  <div class="plan">
-    <div class="plan-title">Workout &mdash; 50 min</div>
-    <div class="p-row">
-      <span class="p-phase" style="color:var(--green);">Warm</span>
-      <span class="p-time">0-8m</span>
-      <span class="p-set">2.5 / 0%</span>
-      <span class="p-hr" style="color:var(--green);">&lt;105</span>
-    </div>
-    <div class="p-row">
-      <span class="p-phase" style="color:var(--yellow);">Build</span>
-      <span class="p-time">8-15m</span>
-      <span class="p-set">2.7 / 2%</span>
-      <span class="p-hr" style="color:var(--yellow);">105-115</span>
-    </div>
-    <div class="p-row p-row-main">
-      <span class="p-phase" style="color:var(--orange);">Main</span>
-      <span class="p-time">15-32m</span>
-      <span class="p-set" style="color:var(--orange);">2.7 / 3%</span>
-      <span class="p-hr" style="color:var(--orange);">115-122</span>
-    </div>
-    <div class="p-row">
-      <span class="p-phase" style="color:var(--yellow);">Ease</span>
-      <span class="p-time">32-42m</span>
-      <span class="p-set">2.7 / 2%</span>
-      <span class="p-hr" style="color:var(--yellow);">110-118</span>
-    </div>
-    <div class="p-row">
-      <span class="p-phase" style="color:var(--blue);">Cool</span>
-      <span class="p-time">42-50m</span>
-      <span class="p-set">2.3 / 0%</span>
-      <span class="p-hr" style="color:var(--blue);">&lt;105</span>
+    <div class="tl-settings">
+      <div class="tl-set s1">2.5<span>0%</span></div>
+      <div class="tl-set s2">2.7<span>2%</span></div>
+      <div class="tl-set s3">2.7<span>3%</span></div>
+      <div class="tl-set s4">2.7<span>2%</span></div>
+      <div class="tl-set s5">2.3<span>0%</span></div>
     </div>
   </div>
 
-  <div class="rails">
-    <div class="rails-title">HR Guardrails</div>
-    <div class="rail">
-      <span class="rail-hr" style="color:var(--yellow);">122</span>
-      <span class="rail-arrow">&rarr;</span>
-      <span class="rail-act">Drop incline to <strong>1%</strong></span>
+  <!-- STYLE 3: Intensity chart -->
+  <div class="intensity-chart">
+    <div class="ic-label">Intensity Profile</div>
+    <div class="ic-bars">
+      <div class="ic-bar ic-b1"></div>
+      <div class="ic-bar ic-b2"></div>
+      <div class="ic-bar ic-b3"></div>
+      <div class="ic-bar ic-b4"></div>
+      <div class="ic-bar ic-b5"></div>
     </div>
-    <div class="rail-divider"></div>
-    <div class="rail">
-      <span class="rail-hr" style="color:var(--orange);">125</span>
-      <span class="rail-arrow">&rarr;</span>
-      <span class="rail-act">Drop to <strong>2.5 / 0%</strong></span>
-    </div>
-    <div class="rail-divider"></div>
-    <div class="rail">
-      <span class="rail-hr" style="color:var(--red);">128</span>
-      <span class="rail-arrow">&rarr;</span>
-      <span class="rail-act"><strong>Stop</strong> &mdash; flat 2.0 mph</span>
+    <div class="ic-labels">
+      <span>Warm</span>
+      <span>Build</span>
+      <span class="ic-active">Steady</span>
+      <span>Ease</span>
+      <span>Cool</span>
     </div>
   </div>
 
-  <div class="foot">
-    500ml water before &bull; Sip every 10m &bull; Stop if headache, vision changes, or calf pain
+  <!-- STYLE 1: Phase cards -->
+  <div class="phases">
+    <div class="phase-card">
+      <div class="ph-left">
+        <div class="ph-name">Warm up</div>
+        <div class="ph-settings">2.5 mph &middot; 0% incline</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">0 &ndash; 8 min</div>
+        <div class="ph-hr">&lt;105 bpm</div>
+      </div>
+    </div>
+    <div class="phase-card">
+      <div class="ph-left">
+        <div class="ph-name">Build</div>
+        <div class="ph-settings">2.7 mph &middot; 2% incline</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">8 &ndash; 15 min</div>
+        <div class="ph-hr">105&ndash;115 bpm</div>
+      </div>
+    </div>
+    <div class="phase-card phase-main">
+      <div class="ph-left">
+        <div class="ph-name">Steady aerobic</div>
+        <div class="ph-settings">2.7 mph &middot; 3% incline</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">15 &ndash; 32 min</div>
+        <div class="ph-hr">115&ndash;122 bpm</div>
+      </div>
+    </div>
+    <div class="phase-card">
+      <div class="ph-left">
+        <div class="ph-name">Ease off</div>
+        <div class="ph-settings">2.7 mph &middot; 2% incline</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">32 &ndash; 42 min</div>
+        <div class="ph-hr">110&ndash;118 bpm</div>
+      </div>
+    </div>
+    <div class="phase-card">
+      <div class="ph-left">
+        <div class="ph-name">Cool down</div>
+        <div class="ph-settings">2.3 mph &middot; 0% incline</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">42 &ndash; 50 min</div>
+        <div class="ph-hr">&lt;105 bpm</div>
+      </div>
+    </div>
   </div>
+
+  <!-- STYLE 2 & 3: Phase table -->
+  <div class="phase-table">
+    <!-- Row 1: Warm -->
+    <div class="pt-row">
+      <div class="pt-dot" style="background:#c8d8c0;"></div>
+      <div class="pt-name">Warm up</div>
+      <div class="pt-time">0&ndash;8m</div>
+      <div class="pt-set"><span class="pt-pill">2.5</span></div>
+      <div class="pt-set"><span class="pt-pill">0%</span></div>
+      <div class="pt-hr">&lt;105 bpm</div>
+    </div>
+    <!-- Row 2: Build -->
+    <div class="pt-row">
+      <div class="pt-dot" style="background:#8aaa78;"></div>
+      <div class="pt-name">Build</div>
+      <div class="pt-time">8&ndash;15m</div>
+      <div class="pt-set"><span class="pt-pill">2.7</span></div>
+      <div class="pt-set"><span class="pt-pill">2%</span></div>
+      <div class="pt-hr">105&ndash;115 bpm</div>
+    </div>
+    <!-- Row 3: Steady (main) -->
+    <div class="pt-row">
+      <div class="pt-dot" style="background:#4ade80;"></div>
+      <div class="pt-name" style="font-weight:800;">Steady</div>
+      <div class="pt-time">15&ndash;32m</div>
+      <div class="pt-set"><span class="pt-pill pt-pill-main">2.7</span></div>
+      <div class="pt-set"><span class="pt-pill pt-pill-main">3%</span></div>
+      <div class="pt-hr pt-hr-main">115&ndash;122 bpm</div>
+    </div>
+    <!-- Row 4: Ease -->
+    <div class="pt-row">
+      <div class="pt-dot" style="background:#8aaa78;"></div>
+      <div class="pt-name">Ease off</div>
+      <div class="pt-time">32&ndash;42m</div>
+      <div class="pt-set"><span class="pt-pill">2.7</span></div>
+      <div class="pt-set"><span class="pt-pill">2%</span></div>
+      <div class="pt-hr">110&ndash;118 bpm</div>
+    </div>
+    <!-- Row 5: Cool -->
+    <div class="pt-row">
+      <div class="pt-dot" style="background:#b8cca8;"></div>
+      <div class="pt-name">Cool down</div>
+      <div class="pt-time">42&ndash;50m</div>
+      <div class="pt-set"><span class="pt-pill">2.3</span></div>
+      <div class="pt-set"><span class="pt-pill">0%</span></div>
+      <div class="pt-hr">&lt;105 bpm</div>
+    </div>
+  </div>
+
+  <!-- SUMMARY BOXES -->
+  <div class="summary">
+    <div class="sum-box sum-box-dur">
+      <div class="sum-label">Duration</div>
+      <div class="sum-val">50</div>
+      <div class="sum-unit">min</div>
+    </div>
+    <div class="sum-box sum-box-peak">
+      <div class="sum-label">Peak HR</div>
+      <div class="sum-val sum-val-peak">115&ndash;122</div>
+      <div class="sum-unit">bpm</div>
+    </div>
+    <div class="sum-box sum-box-cap">
+      <div class="sum-label">Cap</div>
+      <div class="sum-val sum-val-cap">128</div>
+      <div class="sum-unit">hard stop</div>
+    </div>
+  </div>
+
+  <!-- START BUTTON -->
+  <button class="start-btn">Start session</button>
+
+  <!-- WARNING -->
+  <div class="warning">500ml before &middot; sip every 10m &middot; stop if headache, vision changes, or calf pain</div>
 
 </div>
+
+<!-- STYLE SELECTOR -->
+<div class="style-selector">
+  <button class="active" onclick="setStyle('warm')">Warm</button>
+  <button onclick="setStyle('timeline')">Timeline</button>
+  <button onclick="setStyle('dark')">Dark</button>
+</div>
+
+</div>
+
+<script>
+function setStyle(style) {
+  const card = document.getElementById('card');
+  card.className = 'card style-' + style;
+  document.body.classList.toggle('bg-dark', style === 'dark');
+  document.querySelectorAll('.style-selector button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  localStorage.setItem('cardStyle', style);
+}
+// Restore saved preference
+const saved = localStorage.getItem('cardStyle');
+if (saved) setStyle(saved);
+</script>
+
 </body>
 </html>

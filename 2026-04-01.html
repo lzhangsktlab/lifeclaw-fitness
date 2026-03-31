@@ -59,22 +59,35 @@ body {
 /* ==================== ZOOM OVERLAY ==================== */
 .zoom-overlay {
   display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5); z-index: 1000;
-  align-items: center; justify-content: center; padding: 24px;
+  background: rgba(0,0,0,0.4); z-index: 1000;
   -webkit-tap-highlight-color: transparent;
 }
-.zoom-overlay.show { display: flex; }
+.zoom-overlay.show { display: block; }
 .zoom-content {
-  text-align: center; color: #fff; max-width: 340px; width: 100%;
-  background: #1a1a1a; border-radius: 20px; padding: 32px 24px 24px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  position: absolute;
+  text-align: center; color: #fff;
+  background: #1a1a1a; border-radius: 16px; padding: 28px 22px 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
   border: 1px solid #333;
+  min-width: 200px; max-width: 300px;
+  transition: opacity 0.15s;
 }
-.zoom-phase { font-size: 18px; font-weight: 700; opacity: 0.5; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-.zoom-main { font-size: 44px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; }
-.zoom-hr { font-size: 40px; font-weight: 800; margin-top: 16px; color: #4ade80; }
-.zoom-sub { font-size: 16px; opacity: 0.4; margin-top: 10px; }
-.zoom-hint { font-size: 12px; opacity: 0.25; margin-top: 20px; }
+.zoom-content::before {
+  content: '';
+  position: absolute;
+  width: 12px; height: 12px;
+  background: #1a1a1a;
+  border-left: 1px solid #333;
+  border-top: 1px solid #333;
+  transform: rotate(45deg);
+}
+.zoom-content.arrow-top::before { top: -7px; left: var(--arrow-left, 50%); margin-left: -6px; }
+.zoom-content.arrow-bottom::before { bottom: -7px; left: var(--arrow-left, 50%); margin-left: -6px; transform: rotate(225deg); }
+.zoom-phase { font-size: 14px; font-weight: 700; opacity: 0.5; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+.zoom-main { font-size: 36px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; }
+.zoom-hr { font-size: 32px; font-weight: 800; margin-top: 12px; color: #4ade80; }
+.zoom-sub { font-size: 14px; opacity: 0.4; margin-top: 8px; }
+.zoom-hint { display: none; }
 
 /* ==================== STYLE 1: WARM ==================== */
 .style-warm { background: #faf8f4; color: #2a2a22; }
@@ -400,14 +413,53 @@ function showZoom(el) {
   const main = el.dataset.zoomMain || '';
   const hr = el.dataset.zoomHr || '';
   const sub = el.dataset.zoomSub || '';
+  const content = document.getElementById('zoom-content');
+  const overlay = document.getElementById('zoom');
+
   let html = '';
   if (phase) html += '<div class="zoom-phase">' + phase + '</div>';
   html += '<div class="zoom-main">' + main + '</div>';
   if (hr) html += '<div class="zoom-hr">' + hr + '</div>';
   if (sub) html += '<div class="zoom-sub">' + sub + '</div>';
-  html += '<div class="zoom-hint">tap anywhere to close</div>';
-  document.getElementById('zoom-content').innerHTML = html;
-  document.getElementById('zoom').classList.add('show');
+  content.innerHTML = html;
+
+  // Position near the tapped element
+  const rect = el.getBoundingClientRect();
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  overlay.classList.add('show');
+
+  // Measure popup after rendering
+  const pw = content.offsetWidth;
+  const ph = content.offsetHeight;
+
+  // Center horizontally on the element, clamp to viewport
+  let left = rect.left + rect.width / 2 - pw / 2;
+  left = Math.max(12, Math.min(left, vw - pw - 12));
+
+  // Show below element by default, above if not enough space below
+  const gap = 10;
+  let top = rect.bottom + gap;
+  let arrowClass = 'arrow-top';
+
+  if (top + ph > vh - 12) {
+    top = rect.top - ph - gap;
+    arrowClass = 'arrow-bottom';
+  }
+  // Clamp vertically
+  top = Math.max(12, Math.min(top, vh - ph - 12));
+
+  content.style.left = left + 'px';
+  content.style.top = top + 'px';
+  content.className = 'zoom-content ' + arrowClass;
+
+  // Position arrow to point at element center
+  const arrowLeft = rect.left + rect.width / 2 - left;
+  const clamped = Math.max(20, Math.min(arrowLeft, pw - 20));
+  content.style.setProperty('--arrow-left', clamped + 'px');
+  const arrow = content.querySelector('::before');
+
   event.stopPropagation();
 }
 

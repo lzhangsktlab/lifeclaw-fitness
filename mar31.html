@@ -41,7 +41,9 @@
   .ph { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; width: 54px; flex-shrink: 0; }
   .tm { width: 68px; color: var(--dim); font-size: 12px; }
   .st { flex: 1; text-align: right; font-weight: 600; }
-  .row-main { background: rgba(74,222,128,0.06); margin: 0 -20px; padding: 6px 20px; border-radius: 6px; }
+  .row-main { background: rgba(251,146,60,0.08); margin: 0 -20px; padding: 6px 20px; border-radius: 6px; }
+  .note { padding: 12px 20px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--dim); line-height: 1.5; }
+  .note strong { color: var(--text); }
   .foot { padding: 10px 20px; font-size: 10px; color: #555; text-align: center; line-height: 1.4; }
 </style>
 </head>
@@ -51,65 +53,70 @@
   <div class="hdr">
     <div>
       <div class="hdr-day">Tue, Mar 31 &bull; ~12:30 PM</div>
-      <div class="hdr-sub">Garage ~74-76&#xB0;F &bull; 40 min &bull; AM coffee baseline</div>
+      <div class="hdr-sub">Coffee adj &bull; Sleep 6.5h &bull; Updated protocol</div>
     </div>
-    <span class="badge" style="background:var(--green-d); color:var(--green);">Zone 2</span>
+    <span class="badge" style="background:#78350f; color:var(--orange);">Moderate</span>
   </div>
 
   <div class="hr-hero">
     <div class="hr-block">
       <div class="hr-label" style="color:var(--green);">Target Zone</div>
-      <div class="hr-range">105-118</div>
+      <div class="hr-range">108-122</div>
     </div>
     <div class="hr-divider"></div>
     <div class="hr-block">
       <div class="hr-label" style="color:var(--red);">Hard Cap</div>
-      <div class="hr-num" style="color:var(--red);">125</div>
+      <div class="hr-num" style="color:var(--red);">128</div>
     </div>
   </div>
 
   <div class="rails">
     <div class="rail">
-      <span class="rail-hr" style="color:var(--green);">112</span>
+      <span class="rail-hr" style="color:var(--green);">115</span>
       <span class="rail-arrow">&rarr;</span>
       <span class="rail-act">Sweet spot &mdash; hold settings</span>
     </div>
     <div class="rail-divider"></div>
     <div class="rail">
-      <span class="rail-hr" style="color:var(--yellow);">118</span>
+      <span class="rail-hr" style="color:var(--yellow);">122</span>
       <span class="rail-arrow">&rarr;</span>
-      <span class="rail-act">Drop incline to <strong>0%</strong></span>
+      <span class="rail-act">Drop incline to <strong>1%</strong></span>
     </div>
     <div class="rail-divider"></div>
     <div class="rail">
-      <span class="rail-hr" style="color:var(--orange);">122</span>
+      <span class="rail-hr" style="color:var(--orange);">125</span>
       <span class="rail-arrow">&rarr;</span>
-      <span class="rail-act">Drop speed to <strong>2.3 mph</strong></span>
+      <span class="rail-act">Drop speed to <strong>2.5 mph / 0%</strong></span>
     </div>
     <div class="rail-divider"></div>
     <div class="rail">
-      <span class="rail-hr" style="color:var(--red);">125</span>
+      <span class="rail-hr" style="color:var(--red);">128</span>
       <span class="rail-arrow">&rarr;</span>
       <span class="rail-act"><strong>Stop</strong> &mdash; flat at 2.0 mph</span>
     </div>
   </div>
 
   <div class="plan">
-    <div class="plan-title">AM Coffee Baseline &mdash; Proven Settings</div>
+    <div class="plan-title">Plan &mdash; Opened Up (Evidence-Based)</div>
     <div class="row">
       <span class="ph" style="color:var(--green);">Warm</span>
       <span class="tm">0-6m</span>
       <span class="st">2.3 / 0%</span>
     </div>
+    <div class="row">
+      <span class="ph" style="color:var(--yellow);">Build</span>
+      <span class="tm">6-12m</span>
+      <span class="st">2.7 / 2%</span>
+    </div>
     <div class="row row-main">
-      <span class="ph" style="color:var(--green);">Main</span>
-      <span class="tm">6-28m</span>
-      <span class="st" style="color:var(--green);">2.5 / 1%</span>
+      <span class="ph" style="color:var(--orange);">Main</span>
+      <span class="tm">12-28m</span>
+      <span class="st" style="color:var(--orange);">2.7 / 3%</span>
     </div>
     <div class="row">
-      <span class="ph" style="color:var(--yellow);">Push</span>
+      <span class="ph" style="color:var(--yellow);">Ease</span>
       <span class="tm">28-34m</span>
-      <span class="st">2.5 / 2% <span style="color:var(--dim); font-size:11px;">(if HR &lt;115)</span></span>
+      <span class="st">2.7 / 2%</span>
     </div>
     <div class="row">
       <span class="ph" style="color:var(--blue);">Cool</span>
@@ -118,8 +125,13 @@
     </div>
   </div>
 
+  <div class="note">
+    <strong>What changed:</strong> Target up to 122 (was 118) &bull; Cap 128 (was 125) &bull; Incline 3% (was 1%)<br>
+    <strong>Why:</strong> CALR+ = lower risk &bull; No guideline contraindicates moderate exercise in ET &bull; Regular exercise protects platelet function (Heber 2015)
+  </div>
+
   <div class="foot">
-    Same plan as yesterday (125 max) &bull; Sleep 6.5h normal &bull; 500ml water before
+    500ml water before &bull; Sip every 10m &bull; Stop if headache, vision changes, or calf pain
   </div>
 
 </div>

@@ -227,12 +227,12 @@ body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; b
   <!-- HEADER -->
   <div class="hdr">
     <h1>Today's session</h1>
-    <div class="hdr-sub">Sun Apr 6 &middot; Garage ~77&deg;F</div>
+    <div class="hdr-sub">Mon Apr 7 &middot; Garage ~78&deg;F</div>
   </div>
   <div class="tags">
     <span class="tag tag-type">zone 2 &middot; 50 min</span>
     <span class="tag tag-coffee">coffee adj</span>
-    <span class="tag">sleep 6h</span>
+    <span class="tag">sleep 7h+</span>
   </div>
 
   <!-- STYLE 2: Timeline bar -->
@@ -247,9 +247,9 @@ body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; b
     <div class="tl-settings">
       <div class="tl-set s1">2.3<span>0%</span></div>
       <div class="tl-set s2">2.7<span>1%</span></div>
-      <div class="tl-set s3">2.7<span>2%</span></div>
-      <div class="tl-set s4">2.7<span>1%</span></div>
-      <div class="tl-set s5">2.0<span>0%</span></div>
+      <div class="tl-set s3">2.7<span>1%</span></div>
+      <div class="tl-set s4">2.5<span>0%</span></div>
+      <div class="tl-set s5">1.5<span>0%</span></div>
     </div>
   </div>
 
@@ -294,30 +294,30 @@ body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; b
         <div class="ph-hr">105&ndash;112 bpm</div>
       </div>
     </div>
-    <div class="phase-card phase-main" onclick="showZoom(this)" data-zoom-phase="Steady aerobic" data-zoom-main="2.7 mph &middot; 2%" data-zoom-hr="110&ndash;118 bpm" data-zoom-sub="15 &ndash; 35 min">
+    <div class="phase-card phase-main" onclick="showZoom(this)" data-zoom-phase="Steady aerobic" data-zoom-main="2.7 mph &middot; 1%" data-zoom-hr="110&ndash;118 bpm" data-zoom-sub="15 &ndash; 35 min &middot; bump to 2% if HR &lt;115 at min 20">
       <div class="ph-left">
         <div class="ph-name">Steady aerobic</div>
-        <div class="ph-settings">2.7 mph &middot; 2% incline</div>
+        <div class="ph-settings">2.7 mph &middot; 1% incline</div>
       </div>
       <div class="ph-right">
         <div class="ph-time">15 &ndash; 35 min</div>
         <div class="ph-hr">110&ndash;118 bpm</div>
       </div>
     </div>
-    <div class="phase-card" onclick="showZoom(this)" data-zoom-phase="Ease off" data-zoom-main="2.7 mph &middot; 1%" data-zoom-hr="108&ndash;115 bpm" data-zoom-sub="35 &ndash; 42 min">
+    <div class="phase-card" onclick="showZoom(this)" data-zoom-phase="Ease off" data-zoom-main="2.5 mph &middot; 0%" data-zoom-hr="105&ndash;112 bpm" data-zoom-sub="35 &ndash; 42 min">
       <div class="ph-left">
         <div class="ph-name">Ease off</div>
-        <div class="ph-settings">2.7 mph &middot; 1% incline</div>
+        <div class="ph-settings">2.5 mph &middot; 0% incline</div>
       </div>
       <div class="ph-right">
         <div class="ph-time">35 &ndash; 42 min</div>
-        <div class="ph-hr">108&ndash;115 bpm</div>
+        <div class="ph-hr">105&ndash;112 bpm</div>
       </div>
     </div>
-    <div class="phase-card" onclick="showZoom(this)" data-zoom-phase="Cool down" data-zoom-main="2.0 mph &middot; 0%" data-zoom-hr="&lt;100 bpm" data-zoom-sub="42 &ndash; 50 min">
+    <div class="phase-card" onclick="showZoom(this)" data-zoom-phase="Cool down" data-zoom-main="1.5 mph &middot; 0%" data-zoom-hr="&lt;100 bpm" data-zoom-sub="42 &ndash; 50 min">
       <div class="ph-left">
         <div class="ph-name">Cool down</div>
-        <div class="ph-settings">2.0 mph &middot; 0% incline</div>
+        <div class="ph-settings">1.5 mph &middot; 0% incline</div>
       </div>
       <div class="ph-right">
         <div class="ph-time">42 &ndash; 50 min</div>
@@ -340,22 +340,22 @@ body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; b
       <div class="pt-mid"><div class="pt-set">2.7 mph &middot; 1%</div></div>
       <div class="pt-hr">105&ndash;112 bpm</div>
     </div>
-    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Steady" data-zoom-main="2.7 mph &middot; 2%" data-zoom-hr="110&ndash;118 bpm" data-zoom-sub="15 &ndash; 35 min">
+    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Steady" data-zoom-main="2.7 mph &middot; 1%" data-zoom-hr="110&ndash;118 bpm" data-zoom-sub="15 &ndash; 35 min &middot; bump to 2% if HR &lt;115 at min 20">
       <div class="pt-dot" style="background:#4ade80;"></div>
       <div class="pt-left"><div class="pt-name" style="font-weight:900;">Steady</div><div class="pt-time">15 &ndash; 35 min</div></div>
-      <div class="pt-mid"><div class="pt-set" style="font-weight:800; color:#3a5a2e;">2.7 mph &middot; 2%</div></div>
+      <div class="pt-mid"><div class="pt-set" style="font-weight:800; color:#3a5a2e;">2.7 mph &middot; 1%</div></div>
       <div class="pt-hr" style="color:#3a5a2e; font-weight:900;">110&ndash;118 bpm</div>
     </div>
-    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Ease off" data-zoom-main="2.7 mph &middot; 1%" data-zoom-hr="108&ndash;115 bpm" data-zoom-sub="35 &ndash; 42 min">
+    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Ease off" data-zoom-main="2.5 mph &middot; 0%" data-zoom-hr="105&ndash;112 bpm" data-zoom-sub="35 &ndash; 42 min">
       <div class="pt-dot" style="background:#8aaa78;"></div>
       <div class="pt-left"><div class="pt-name">Ease off</div><div class="pt-time">35 &ndash; 42 min</div></div>
-      <div class="pt-mid"><div class="pt-set">2.7 mph &middot; 1%</div></div>
-      <div class="pt-hr">108&ndash;115 bpm</div>
+      <div class="pt-mid"><div class="pt-set">2.5 mph &middot; 0%</div></div>
+      <div class="pt-hr">105&ndash;112 bpm</div>
     </div>
-    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Cool down" data-zoom-main="2.0 mph &middot; 0%" data-zoom-hr="&lt;100 bpm" data-zoom-sub="42 &ndash; 50 min">
+    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Cool down" data-zoom-main="1.5 mph &middot; 0%" data-zoom-hr="&lt;100 bpm" data-zoom-sub="42 &ndash; 50 min">
       <div class="pt-dot" style="background:#b8cca8;"></div>
       <div class="pt-left"><div class="pt-name">Cool down</div><div class="pt-time">42 &ndash; 50 min</div></div>
-      <div class="pt-mid"><div class="pt-set">2.0 mph &middot; 0%</div></div>
+      <div class="pt-mid"><div class="pt-set">1.5 mph &middot; 0%</div></div>
       <div class="pt-hr">&lt;100 bpm</div>
     </div>
   </div>
@@ -372,7 +372,7 @@ body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; b
       <div class="sum-val sum-val-peak">110&ndash;118</div>
       <div class="sum-unit">bpm</div>
     </div>
-    <div class="sum-box sum-box-cap" onclick="showZoom(this)" data-zoom-main="125" data-zoom-sub="Hard Cap &middot; STOP" data-zoom-hr="flat at 2.0 mph">
+    <div class="sum-box sum-box-cap" onclick="showZoom(this)" data-zoom-main="125" data-zoom-sub="Hard Cap &middot; STOP" data-zoom-hr="flat at 1.5 mph">
       <div class="sum-label">Cap</div>
       <div class="sum-val sum-val-cap">125</div>
       <div class="sum-unit">hard stop</div>

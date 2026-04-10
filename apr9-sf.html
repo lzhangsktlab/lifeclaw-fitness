@@ -3,296 +3,448 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Apr 9 - SF Walk</title>
+<title>Today's Workout</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-  :root {
-    --bg: #0f0f0f;
-    --card: #1a1a1a;
-    --alt: #222;
-    --border: #2a2a2a;
-    --text: #e8e8e8;
-    --dim: #777;
-    --green: #4ade80;
-    --green-d: #22543d;
-    --yellow: #fbbf24;
-    --orange: #fb923c;
-    --red: #f87171;
-    --blue: #60a5fa;
-    --blue-d: #1e3a5f;
-    --cyan: #22d3ee;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: 'Inter', -apple-system, system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    padding: 12px;
-    -webkit-font-smoothing: antialiased;
-  }
-  .card {
-    width: 100%;
-    max-width: 400px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    overflow: hidden;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-  .hdr {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 20px 12px;
-    border-bottom: 1px solid var(--border);
-    background: linear-gradient(135deg, #0f1520, #0f1a1a);
-  }
-  .hdr-day { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; }
-  .hdr-sub { font-size: 11px; color: var(--dim); margin-top: 1px; }
-  .badge {
-    font-size: 10px; font-weight: 700;
-    padding: 4px 10px; border-radius: 20px;
-    background: var(--blue-d); color: var(--blue);
-    text-transform: uppercase; letter-spacing: 0.5px;
-  }
+* { margin:0; padding:0; box-sizing:border-box; }
 
-  /* HR Hero */
-  .hr-hero {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 28px;
-    padding: 22px 20px;
-    background: linear-gradient(135deg, #0f1a0f, #0f0f1a);
-    border-bottom: 1px solid var(--border);
-  }
-  .hr-block { text-align: center; }
-  .hr-label {
-    font-size: 9px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px;
-    margin-bottom: 4px;
-  }
-  .hr-num { font-size: 38px; font-weight: 900; line-height: 1; letter-spacing: -2px; }
-  .hr-range { font-size: 28px; font-weight: 900; line-height: 1; letter-spacing: -1px; color: var(--green); }
-  .hr-divider { width: 1px; height: 48px; background: var(--border); }
+body {
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+  -webkit-font-smoothing: antialiased;
+  background: #e8e4de;
+}
 
-  /* Guardrails */
-  .rails {
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .rail {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 0;
-  }
-  .rail-hr {
-    font-size: 20px; font-weight: 900;
-    min-width: 40px; text-align: center;
-    line-height: 1;
-  }
-  .rail-arrow { color: var(--dim); font-size: 14px; }
-  .rail-act { font-size: 13px; font-weight: 500; }
-  .rail-divider { border-top: 1px solid #1f1f1f; }
+.page { width: 100%; max-width: 430px; }
 
-  /* Conditions */
-  .conds {
-    display: flex;
-    gap: 6px;
-    padding: 12px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .c {
-    flex: 1;
-    text-align: center;
-    padding: 8px 4px;
-    background: var(--alt);
-    border-radius: 10px;
-  }
-  .c-icon { font-size: 14px; }
-  .c-val { font-size: 14px; font-weight: 700; margin-top: 2px; }
-  .c-lbl { font-size: 8px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 1px; }
+/* ==================== SHARED ==================== */
+.card {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: background 0.3s, color 0.3s;
+}
 
-  /* Plan */
-  .plan {
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .plan-title {
-    font-size: 10px; font-weight: 700;
-    color: var(--dim); text-transform: uppercase;
-    letter-spacing: 1px; margin-bottom: 10px;
-  }
-  .row {
-    display: flex;
-    align-items: center;
-    padding: 6px 0;
-    font-size: 13px;
-  }
-  .ph {
-    font-size: 10px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.3px;
-    width: 54px; flex-shrink: 0;
-  }
-  .tm { width: 68px; color: var(--dim); font-size: 12px; }
-  .st { flex: 1; text-align: right; font-weight: 600; }
-  .row-main {
-    background: rgba(96,165,250,0.08);
-    margin: 0 -20px;
-    padding: 6px 20px;
-    border-radius: 6px;
-  }
+.hdr { padding: 24px 22px 16px; }
+.hdr h1 { font-size: 24px; font-weight: 900; letter-spacing: -0.5px; }
+.hdr-sub { font-size: 13px; margin-top: 3px; opacity: 0.5; }
+.tags { display: flex; gap: 8px; padding: 0 22px 18px; flex-wrap: wrap; }
+.tag { font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 20px; }
 
-  /* Route hint */
-  .route {
-    padding: 12px 20px;
-    border-bottom: 1px solid var(--border);
-    font-size: 12px;
-    color: var(--dim);
-    line-height: 1.5;
-  }
-  .route strong { color: var(--text); font-weight: 600; }
+.summary { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 16px 22px; }
+.sum-box { text-align: center; padding: 12px 8px; border-radius: 12px; cursor: pointer; }
+.sum-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; }
+.sum-val { font-size: 22px; font-weight: 900; margin-top: 2px; letter-spacing: -0.5px; }
+.sum-unit { font-size: 10px; opacity: 0.5; margin-top: 1px; }
 
-  /* Rain alert */
-  .rain-alert {
-    padding: 12px 20px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(251, 191, 36, 0.06);
-    font-size: 12px;
-    color: var(--yellow);
-    line-height: 1.5;
-  }
-  .rain-alert strong { font-weight: 700; }
+.start-btn {
+  display: block; margin: 8px 22px 16px; padding: 16px; border-radius: 14px;
+  font-size: 16px; font-weight: 800; text-align: center; cursor: pointer;
+  border: none; width: calc(100% - 44px);
+}
 
-  .foot {
-    padding: 10px 20px;
-    font-size: 10px;
-    color: #555;
-    text-align: center;
-    line-height: 1.4;
-  }
+.warning { padding: 0 22px 20px; font-size: 12px; line-height: 1.5; opacity: 0.4; }
+
+.phases { padding: 0 22px; }
+.timeline-bar, .intensity-chart { display: none; }
+
+/* Tappable cursor */
+.phase-card, .pt-row, .sum-box { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+/* ==================== ZOOM OVERLAY ==================== */
+.zoom-overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4); z-index: 1000;
+  -webkit-tap-highlight-color: transparent;
+}
+.zoom-overlay.show { display: block; }
+.zoom-content {
+  position: absolute;
+  text-align: center; color: #fff;
+  background: #1a1a1a; border-radius: 16px; padding: 28px 22px 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+  border: 1px solid #333;
+  min-width: 200px; max-width: 300px;
+  transition: opacity 0.15s;
+}
+.zoom-content::before {
+  content: '';
+  position: absolute;
+  width: 12px; height: 12px;
+  background: #1a1a1a;
+  border-left: 1px solid #333;
+  border-top: 1px solid #333;
+  transform: rotate(45deg);
+}
+.zoom-content.arrow-top::before { top: -7px; left: var(--arrow-left, 50%); margin-left: -6px; }
+.zoom-content.arrow-bottom::before { bottom: -7px; left: var(--arrow-left, 50%); margin-left: -6px; transform: rotate(225deg); }
+.zoom-phase { font-size: 20px; font-weight: 800; color: #fbbf24; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.zoom-main { font-size: 42px; font-weight: 900; color: #fff; letter-spacing: -1px; line-height: 1.1; }
+.zoom-hr { font-size: 38px; font-weight: 900; margin-top: 14px; color: #4ade80; }
+.zoom-sub { font-size: 18px; color: #aaa; margin-top: 10px; font-weight: 500; }
+.zoom-hint { display: none; }
+
+/* ==================== STYLE 1: WARM ==================== */
+.style-warm { background: #faf8f4; color: #2a2a22; }
+.style-warm .hdr-sub { color: #8a8a7a; }
+.style-warm .tag { background: #eae8df; color: #5a5a4a; }
+.style-warm .tag-coffee { background: #e8dfc8; color: #6b5b2e; }
+.style-warm .tag-type { background: #dde8d8; color: #3a5a2e; }
+.style-warm .tag-rain { background: #d8dfe8; color: #2e3a5a; }
+
+.style-warm .phases { display: flex; flex-direction: column; gap: 10px; padding-bottom: 12px; }
+.style-warm .phase-card {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px; border-radius: 14px; background: #f0eee6;
+}
+.style-warm .phase-card.phase-main { background: #e8f0e4; border: 2px dashed #6a9a5a; }
+.style-warm .phase-card:active { opacity: 0.7; }
+.style-warm .ph-name { font-size: 16px; font-weight: 800; color: #2a2a22; }
+.style-warm .ph-settings { font-size: 13px; color: #7a8a6a; margin-top: 2px; }
+.style-warm .ph-right { text-align: right; }
+.style-warm .ph-time { font-size: 13px; color: #8a8a7a; }
+.style-warm .ph-hr { font-size: 17px; font-weight: 800; color: #2a2a22; margin-top: 1px; }
+
+.style-warm .sum-box { background: #f0eee6; border: 1px solid #e0ddd4; }
+.style-warm .sum-box:active { opacity: 0.7; }
+.style-warm .sum-val-cap { color: #c44; }
+.style-warm .start-btn { background: #2a5a3a; color: #fff; }
+
+.style-warm .phase-table, .style-warm .timeline-bar, .style-warm .intensity-chart { display: none; }
+.style-warm .phase-card { display: flex; }
+
+/* ==================== STYLE 2: TIMELINE ==================== */
+.style-timeline { background: #faf8f4; color: #2a2a22; }
+.style-timeline .hdr-sub { color: #8a8a7a; }
+.style-timeline .tag { background: #eae8df; color: #5a5a4a; }
+.style-timeline .tag-coffee { background: #e8dfc8; color: #6b5b2e; }
+.style-timeline .tag-type { background: #dde8d8; color: #3a5a2e; }
+.style-timeline .tag-rain { background: #d8dfe8; color: #2e3a5a; }
+
+.style-timeline .timeline-bar { display: block; padding: 16px 22px 8px; }
+.style-timeline .tl-row { display: flex; gap: 3px; border-radius: 10px; overflow: hidden; height: 44px; }
+.style-timeline .tl-seg { display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; }
+.style-timeline .tl-seg span { font-size: 10px; font-weight: 500; opacity: 0.8; }
+.style-timeline .tl-s1 { flex: 8; background: #c8d8c0; color: #3a5a2e; }
+.style-timeline .tl-s2 { flex: 10; background: #8aaa78; }
+.style-timeline .tl-s3 { flex: 22; background: #4a8a3a; }
+.style-timeline .tl-s4 { flex: 10; background: #b8cca8; color: #3a5a2e; }
+
+.style-timeline .tl-settings { display: flex; gap: 3px; margin-top: 6px; }
+.style-timeline .tl-set { display: flex; flex-direction: column; align-items: center; font-size: 13px; font-weight: 700; color: #4a4a3a; }
+.style-timeline .tl-set span { font-size: 11px; color: #9a9a8a; }
+.style-timeline .tl-set.s1 { flex: 8; }
+.style-timeline .tl-set.s2 { flex: 10; }
+.style-timeline .tl-set.s3 { flex: 22; }
+.style-timeline .tl-set.s4 { flex: 10; }
+
+.style-timeline .sum-box { background: #f0eee6; border: 1px solid #e0ddd4; }
+.style-timeline .sum-val-cap { color: #c44; }
+
+.style-timeline .phase-table { display: block; padding: 8px 22px 12px; }
+.style-timeline .pt-row { display: flex; align-items: center; padding: 14px 0; border-bottom: 1px solid #eae8e0; }
+.style-timeline .pt-row:last-child { border-bottom: none; }
+.style-timeline .pt-row:active { opacity: 0.7; }
+.style-timeline .pt-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; margin-right: 12px; }
+.style-timeline .pt-left { flex: 1; }
+.style-timeline .pt-name { font-weight: 700; font-size: 16px; color: #2a2a22; }
+.style-timeline .pt-time { color: #9a9a8a; font-size: 13px; margin-top: 1px; }
+.style-timeline .pt-mid { text-align: center; margin: 0 12px; }
+.style-timeline .pt-set { color: #5a5a4a; font-size: 15px; font-weight: 600; white-space: nowrap; }
+.style-timeline .pt-hr { font-weight: 800; text-align: right; font-size: 16px; white-space: nowrap; color: #3a3a2a; }
+
+.style-timeline .start-btn { background: #2a5a3a; color: #fff; }
+.style-timeline .phase-card { display: none !important; }
+.style-timeline .intensity-chart { display: none; }
+
+/* ==================== STYLE 3: DARK ==================== */
+.style-dark { background: #111; color: #e8e8e8; }
+.style-dark .hdr-sub { color: #777; }
+.style-dark .tag { background: #2a2a2a; color: #999; }
+.style-dark .tag-coffee { background: #3a3020; color: #d4a030; }
+.style-dark .tag-type { background: #1a2a1a; color: #6a9a5a; }
+.style-dark .tag-rain { background: #1a1a2a; color: #60a5fa; }
+
+.style-dark .intensity-chart { display: block; padding: 16px 22px 8px; }
+.style-dark .ic-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-bottom: 10px; }
+.style-dark .ic-bars { display: flex; gap: 6px; align-items: flex-end; height: 60px; margin-bottom: 6px; }
+.style-dark .ic-bar { flex: 1; border-radius: 4px 4px 0 0; }
+.style-dark .ic-labels { display: flex; gap: 6px; font-size: 11px; color: #666; }
+.style-dark .ic-labels span { flex: 1; text-align: center; }
+.style-dark .ic-labels .ic-active { color: #4ade80; font-weight: 700; }
+.style-dark .ic-b1 { height: 30%; background: #3a5a3a; }
+.style-dark .ic-b2 { height: 60%; background: #4a6a3a; }
+.style-dark .ic-b3 { height: 80%; background: #4ade80; }
+.style-dark .ic-b4 { height: 25%; background: #2a4a2a; }
+
+.style-dark .phase-table { display: block; padding: 8px 22px 12px; }
+.style-dark .pt-row { display: flex; align-items: center; padding: 14px 0; border-bottom: 1px solid #222; }
+.style-dark .pt-row:last-child { border-bottom: none; }
+.style-dark .pt-row:active { opacity: 0.7; }
+.style-dark .pt-dot { width: 4px; height: 32px; border-radius: 2px; flex-shrink: 0; margin-right: 12px; }
+.style-dark .pt-left { flex: 1; }
+.style-dark .pt-name { font-weight: 600; color: #ccc; font-size: 16px; }
+.style-dark .pt-time { color: #555; font-size: 13px; margin-top: 1px; }
+.style-dark .pt-mid { text-align: center; margin: 0 12px; }
+.style-dark .pt-set { color: #999; font-size: 15px; font-weight: 600; white-space: nowrap; }
+.style-dark .pt-hr { font-weight: 800; text-align: right; color: #888; font-size: 16px; white-space: nowrap; }
+
+.style-dark .sum-box { background: #1a1a1a; border: 1px solid #2a2a2a; }
+.style-dark .sum-box:active { opacity: 0.7; }
+.style-dark .sum-box-dur { border-color: #3a5a3a; }
+.style-dark .sum-box-peak { border-color: #5a4a1a; }
+.style-dark .sum-box-cap { border-color: #5a1a1a; }
+.style-dark .sum-val-peak { color: #fb923c; }
+.style-dark .sum-val-cap { color: #f87171; }
+.style-dark .start-btn { background: transparent; color: #4ade80; border: 2px solid #4ade80; }
+.style-dark .warning { color: #666; }
+.style-dark .phase-card { display: none !important; }
+.style-dark .timeline-bar { display: none; }
+
+/* ==================== STYLE SELECTOR ==================== */
+.style-selector { display: flex; gap: 8px; justify-content: center; padding: 24px 0 16px; }
+.style-selector button {
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+  padding: 8px 20px; border-radius: 10px; border: 2px solid #ccc;
+  background: #fff; color: #555; cursor: pointer; transition: all 0.2s;
+}
+.style-selector button.active { background: #2a5a3a; color: #fff; border-color: #2a5a3a; }
+body.bg-dark { background: #0a0a0a; }
+body.bg-dark .style-selector button { background: #222; color: #999; border-color: #333; }
+body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; border-color: #4ade80; }
 </style>
 </head>
 <body>
+<div class="page">
 
-<div class="card">
+<div class="card style-warm" id="card">
 
+  <!-- HEADER -->
   <div class="hdr">
-    <div>
-      <div class="hdr-day">Wed, Apr 9 &bull; SF Waterfront</div>
-      <div class="hdr-sub">Ferry Building &bull; Embarcadero &bull; 40-50 min</div>
-    </div>
-    <span class="badge">Outdoor Z2</span>
+    <h1>Today's session</h1>
+    <div class="hdr-sub">Wed Apr 9 &middot; SF Ferry Building &middot; ~54&deg;F</div>
+  </div>
+  <div class="tags">
+    <span class="tag tag-type">outdoor Z2 &middot; 40-50 min</span>
+    <span class="tag tag-rain">rain &middot; 0.9&Prime;</span>
+    <span class="tag">sleep 6.5h</span>
   </div>
 
-  <!-- HR Hero -->
-  <div class="hr-hero">
-    <div class="hr-block">
-      <div class="hr-label" style="color:var(--green);">Target Zone</div>
-      <div class="hr-range">105-118</div>
+  <!-- STYLE 2: Timeline bar -->
+  <div class="timeline-bar">
+    <div class="tl-row">
+      <div class="tl-seg tl-s1">Warm<span>8m</span></div>
+      <div class="tl-seg tl-s2">Build<span>10m</span></div>
+      <div class="tl-seg tl-s3">Brisk<span>22m</span></div>
+      <div class="tl-seg tl-s4">Cool<span>10m</span></div>
     </div>
-    <div class="hr-divider"></div>
-    <div class="hr-block">
-      <div class="hr-label" style="color:var(--yellow);">Cap</div>
-      <div class="hr-num" style="color:var(--yellow);">120</div>
-    </div>
-  </div>
-
-  <!-- Guardrails -->
-  <div class="rails">
-    <div class="rail">
-      <span class="rail-hr" style="color:var(--green);">105</span>
-      <span class="rail-arrow">&rarr;</span>
-      <span class="rail-act">You're in Zone 2 &mdash; maintain pace</span>
-    </div>
-    <div class="rail-divider"></div>
-    <div class="rail">
-      <span class="rail-hr" style="color:var(--blue);">110</span>
-      <span class="rail-arrow">&rarr;</span>
-      <span class="rail-act">Sweet spot &mdash; hold this pace</span>
-    </div>
-    <div class="rail-divider"></div>
-    <div class="rail">
-      <span class="rail-hr" style="color:var(--yellow);">118</span>
-      <span class="rail-arrow">&rarr;</span>
-      <span class="rail-act">Top of zone &mdash; ease off slightly</span>
-    </div>
-    <div class="rail-divider"></div>
-    <div class="rail" style="opacity:0.6;">
-      <span class="rail-hr" style="color:var(--dim);">&lt;100</span>
-      <span class="rail-arrow">&rarr;</span>
-      <span class="rail-act">Walk faster, add arm swing or stairs</span>
+    <div class="tl-settings">
+      <div class="tl-set s1">Easy<span>stroll</span></div>
+      <div class="tl-set s2">Moderate<span>pace</span></div>
+      <div class="tl-set s3">Brisk<span>walk</span></div>
+      <div class="tl-set s4">Easy<span>stroll</span></div>
     </div>
   </div>
 
-  <!-- Conditions -->
-  <div class="conds">
-    <div class="c">
-      <div class="c-icon">&#x1F321;&#xFE0F;</div>
-      <div class="c-val" style="color:var(--cyan);">~54&#xB0;</div>
-      <div class="c-lbl">Temp</div>
+  <!-- STYLE 3: Intensity chart -->
+  <div class="intensity-chart">
+    <div class="ic-label">Intensity Profile</div>
+    <div class="ic-bars">
+      <div class="ic-bar ic-b1"></div>
+      <div class="ic-bar ic-b2"></div>
+      <div class="ic-bar ic-b3"></div>
+      <div class="ic-bar ic-b4"></div>
     </div>
-    <div class="c">
-      <div class="c-icon">&#x1F327;&#xFE0F;</div>
-      <div class="c-val" style="color:var(--yellow);">Rain</div>
-      <div class="c-lbl">~0.9 in</div>
-    </div>
-    <div class="c">
-      <div class="c-icon">&#x1F634;</div>
-      <div class="c-val">6.5h</div>
-      <div class="c-lbl">Sleep</div>
-    </div>
-    <div class="c">
-      <div class="c-icon">&#x1F9CA;</div>
-      <div class="c-val" style="color:var(--cyan);">Cool</div>
-      <div class="c-lbl">No heat adj</div>
+    <div class="ic-labels">
+      <span>Warm</span>
+      <span>Build</span>
+      <span class="ic-active">Brisk</span>
+      <span>Cool</span>
     </div>
   </div>
 
-  <!-- Rain alert -->
-  <div class="rain-alert">
-    <strong>Rain today (~0.9"):</strong> If actively raining, Ferry Building interior + covered Embarcadero sections work. Or shorten to 30 min brisk walk between dry spells. Slippery surfaces &mdash; watch footing.
+  <!-- STYLE 1: Phase cards (tappable) -->
+  <div class="phases">
+    <div class="phase-card" onclick="showZoom(this)" data-zoom-phase="Warm up" data-zoom-main="Easy stroll" data-zoom-hr="&lt;100 bpm" data-zoom-sub="0 &ndash; 8 min &middot; Let body adjust to cool air">
+      <div class="ph-left">
+        <div class="ph-name">Warm up</div>
+        <div class="ph-settings">Easy stroll pace</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">0 &ndash; 8 min</div>
+        <div class="ph-hr">&lt;100 bpm</div>
+      </div>
+    </div>
+    <div class="phase-card" onclick="showZoom(this)" data-zoom-phase="Build" data-zoom-main="Moderate walk" data-zoom-hr="100&ndash;108 bpm" data-zoom-sub="8 &ndash; 18 min &middot; Gradually pick up pace">
+      <div class="ph-left">
+        <div class="ph-name">Build</div>
+        <div class="ph-settings">Moderate walk &middot; pick up pace</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">8 &ndash; 18 min</div>
+        <div class="ph-hr">100&ndash;108 bpm</div>
+      </div>
+    </div>
+    <div class="phase-card phase-main" onclick="showZoom(this)" data-zoom-phase="Brisk walk" data-zoom-main="Fast walk" data-zoom-hr="105&ndash;118 bpm" data-zoom-sub="18 &ndash; 40 min &middot; Swing arms &middot; Add stairs at Pier 14 if HR &lt;105">
+      <div class="ph-left">
+        <div class="ph-name">Brisk walk</div>
+        <div class="ph-settings">Fast walk &middot; swing arms</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">18 &ndash; 40 min</div>
+        <div class="ph-hr">105&ndash;118 bpm</div>
+      </div>
+    </div>
+    <div class="phase-card" onclick="showZoom(this)" data-zoom-phase="Cool down" data-zoom-main="Easy stroll" data-zoom-hr="&lt;100 bpm" data-zoom-sub="40 &ndash; 50 min &middot; Slow down gradually">
+      <div class="ph-left">
+        <div class="ph-name">Cool down</div>
+        <div class="ph-settings">Easy stroll &middot; slow down</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">40 &ndash; 50 min</div>
+        <div class="ph-hr">&lt;100 bpm</div>
+      </div>
+    </div>
   </div>
 
-  <!-- Plan -->
-  <div class="plan">
-    <div class="plan-title">Pacing Plan</div>
-    <div class="row">
-      <span class="ph" style="color:var(--green);">Warm</span>
-      <span class="tm">0-8 min</span>
-      <span class="st">Easy stroll &bull; HR &lt;100</span>
+  <!-- STYLE 2 & 3: Phase table (tappable) -->
+  <div class="phase-table">
+    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Warm up" data-zoom-main="Easy stroll" data-zoom-hr="&lt;100 bpm" data-zoom-sub="0 &ndash; 8 min &middot; Let body adjust to cool air">
+      <div class="pt-dot" style="background:#c8d8c0;"></div>
+      <div class="pt-left"><div class="pt-name">Warm up</div><div class="pt-time">0 &ndash; 8 min</div></div>
+      <div class="pt-mid"><div class="pt-set">Easy stroll</div></div>
+      <div class="pt-hr">&lt;100 bpm</div>
     </div>
-    <div class="row row-main">
-      <span class="ph" style="color:var(--blue);">Brisk</span>
-      <span class="tm">8-40 min</span>
-      <span class="st" style="color:var(--blue);">Brisk walk &bull; HR 105-118</span>
+    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Build" data-zoom-main="Moderate walk" data-zoom-hr="100&ndash;108 bpm" data-zoom-sub="8 &ndash; 18 min &middot; Gradually pick up pace">
+      <div class="pt-dot" style="background:#8aaa78;"></div>
+      <div class="pt-left"><div class="pt-name">Build</div><div class="pt-time">8 &ndash; 18 min</div></div>
+      <div class="pt-mid"><div class="pt-set">Moderate walk</div></div>
+      <div class="pt-hr">100&ndash;108 bpm</div>
     </div>
-    <div class="row">
-      <span class="ph" style="color:var(--green);">Cool</span>
-      <span class="tm">40-50 min</span>
-      <span class="st">Easy stroll &bull; HR &lt;100</span>
+    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Brisk walk" data-zoom-main="Fast walk" data-zoom-hr="105&ndash;118 bpm" data-zoom-sub="18 &ndash; 40 min &middot; Swing arms &middot; Add stairs at Pier 14 if HR &lt;105">
+      <div class="pt-dot" style="background:#4ade80;"></div>
+      <div class="pt-left"><div class="pt-name" style="font-weight:900;">Brisk walk</div><div class="pt-time">18 &ndash; 40 min</div></div>
+      <div class="pt-mid"><div class="pt-set" style="font-weight:800; color:#3a5a2e;">Fast walk &middot; arms</div></div>
+      <div class="pt-hr" style="color:#3a5a2e; font-weight:900;">105&ndash;118 bpm</div>
     </div>
-    <div style="margin-top:10px; padding-top:10px; border-top:1px solid #1f1f1f; font-size:11px; color:var(--dim); line-height:1.5;">
-      <strong style="color:var(--yellow);">6.5h sleep note:</strong> HR may run a bit higher today. If you hit 118+ early, slow down &mdash; don't push through. Cool air helps offset the sleep debt.
+    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Cool down" data-zoom-main="Easy stroll" data-zoom-hr="&lt;100 bpm" data-zoom-sub="40 &ndash; 50 min &middot; Slow down gradually">
+      <div class="pt-dot" style="background:#b8cca8;"></div>
+      <div class="pt-left"><div class="pt-name">Cool down</div><div class="pt-time">40 &ndash; 50 min</div></div>
+      <div class="pt-mid"><div class="pt-set">Easy stroll</div></div>
+      <div class="pt-hr">&lt;100 bpm</div>
     </div>
   </div>
 
-  <!-- Route -->
-  <div class="route">
-    <strong>Route idea:</strong> Ferry Building &rarr; south along Embarcadero toward Pier 14 / Cupid's Span &rarr; turn around at ~15 min &rarr; north past Ferry Building toward Pier 7 &rarr; return. Flat, paved, ~2 miles. Covered stretches near Ferry Building if rain picks up.
+  <!-- SUMMARY BOXES (tappable) -->
+  <div class="summary">
+    <div class="sum-box sum-box-dur" onclick="showZoom(this)" data-zoom-main="40-50 min" data-zoom-sub="Duration &middot; extend to 50 if feeling good">
+      <div class="sum-label">Duration</div>
+      <div class="sum-val">40-50</div>
+      <div class="sum-unit">min</div>
+    </div>
+    <div class="sum-box sum-box-peak" onclick="showZoom(this)" data-zoom-main="105&ndash;118" data-zoom-sub="Peak Target &middot; bpm">
+      <div class="sum-label">Peak HR</div>
+      <div class="sum-val sum-val-peak">105&ndash;118</div>
+      <div class="sum-unit">bpm</div>
+    </div>
+    <div class="sum-box sum-box-cap" onclick="showZoom(this)" data-zoom-main="120" data-zoom-sub="Hard Cap &middot; STOP &middot; 6.5h sleep" data-zoom-hr="ease off pace">
+      <div class="sum-label">Cap</div>
+      <div class="sum-val sum-val-cap">120</div>
+      <div class="sum-unit">hard stop</div>
+    </div>
   </div>
 
-  <div class="foot">
-    Flat + cool = HR runs 10-15 bpm lower than garage treadmill<br>
-    Rest day yesterday &mdash; good time to get moving again<br>
-    Hydrate well (cool air masks fluid loss)
-  </div>
+  <button class="start-btn">Start session</button>
+  <div class="warning">Rain: covered sections near Ferry Building if needed &middot; Watch footing on wet surfaces &middot; Hydrate even in cool air<br>Route: Ferry Building &rarr; south to Pier 14 &rarr; back north to Pier 7 &rarr; return &middot; ~2 mi flat</div>
 
 </div>
+
+<!-- ZOOM OVERLAY -->
+<div class="zoom-overlay" id="zoom" onclick="this.classList.remove('show')">
+  <div class="zoom-content" id="zoom-content"></div>
+</div>
+
+<!-- STYLE SELECTOR -->
+<div class="style-selector">
+  <button class="active" onclick="setStyle('warm')">Warm</button>
+  <button onclick="setStyle('timeline')">Timeline</button>
+  <button onclick="setStyle('dark')">Dark</button>
+</div>
+
+</div>
+
+<script>
+function setStyle(style) {
+  const card = document.getElementById('card');
+  card.className = 'card style-' + style;
+  document.body.classList.toggle('bg-dark', style === 'dark');
+  document.querySelectorAll('.style-selector button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  localStorage.setItem('cardStyle', style);
+}
+
+function showZoom(el) {
+  const phase = el.dataset.zoomPhase || '';
+  const main = el.dataset.zoomMain || '';
+  const hr = el.dataset.zoomHr || '';
+  const sub = el.dataset.zoomSub || '';
+  const content = document.getElementById('zoom-content');
+  const overlay = document.getElementById('zoom');
+
+  let html = '';
+  if (phase) html += '<div class="zoom-phase">' + phase + '</div>';
+  html += '<div class="zoom-main">' + main + '</div>';
+  if (hr) html += '<div class="zoom-hr">' + hr + '</div>';
+  if (sub) html += '<div class="zoom-sub">' + sub + '</div>';
+  content.innerHTML = html;
+
+  const rect = el.getBoundingClientRect();
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  overlay.classList.add('show');
+
+  const pw = content.offsetWidth;
+  const ph = content.offsetHeight;
+
+  let left = rect.left + rect.width / 2 - pw / 2;
+  left = Math.max(12, Math.min(left, vw - pw - 12));
+
+  const gap = 10;
+  let top = rect.bottom + gap;
+  let arrowClass = 'arrow-top';
+
+  if (top + ph > vh - 12) {
+    top = rect.top - ph - gap;
+    arrowClass = 'arrow-bottom';
+  }
+  top = Math.max(12, Math.min(top, vh - ph - 12));
+
+  content.style.left = left + 'px';
+  content.style.top = top + 'px';
+  content.className = 'zoom-content ' + arrowClass;
+
+  const arrowLeft = rect.left + rect.width / 2 - left;
+  const clamped = Math.max(20, Math.min(arrowLeft, pw - 20));
+  content.style.setProperty('--arrow-left', clamped + 'px');
+
+  event.stopPropagation();
+}
+
+const saved = localStorage.getItem('cardStyle');
+if (saved) {
+  document.getElementById('card').className = 'card style-' + saved;
+  document.body.classList.toggle('bg-dark', saved === 'dark');
+  document.querySelectorAll('.style-selector button').forEach(b => {
+    b.classList.toggle('active', b.textContent.toLowerCase() === saved);
+  });
+}
+</script>
 
 </body>
 </html>

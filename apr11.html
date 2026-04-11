@@ -248,7 +248,7 @@ body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; b
 .session-screen {
   width: 100%; max-width: 430px; flex: 1;
   display: flex; flex-direction: column; align-items: center;
-  padding: 56px 24px 36px;
+  padding: 60px 28px 44px;
   transition: opacity 0.3s;
 }
 .session-screen.switching { opacity: 0; }
@@ -257,33 +257,37 @@ body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; b
 .phase-header {
   width: 100%;
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
 }
 .nav-btn {
-  width: 30px; height: 30px; border-radius: 50%;
+  width: 40px; height: 40px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; border: none; background: none;
   -webkit-tap-highlight-color: transparent;
 }
+.nav-btn svg { width: 14px; height: 14px; }
 .nav-btn:active { opacity: 0.5; }
 .phase-center { text-align: center; }
 .phase-label-text {
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 3px; text-transform: uppercase;
+  font-size: 15px; font-weight: 700;
+  letter-spacing: 4px; text-transform: uppercase;
 }
 .phase-elapsed {
-  font-size: 10px; margin-top: 3px;
+  font-size: 13px; margin-top: 4px;
   font-variant-numeric: tabular-nums;
 }
 
 /* ---- Ring zone ---- */
 .ring-zone {
   position: relative;
-  width: 204px; height: 204px;
-  margin: 8px auto 12px;
+  width: 272px; height: 272px;
+  margin: 16px auto 24px;
   flex-shrink: 0;
 }
-.ring-zone svg { position: absolute; top: 0; left: 0; }
+.ring-zone svg {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+}
 .ring-text-overlay {
   position: absolute; top: 0; left: 0; right: 0; bottom: 0;
   display: flex; flex-direction: column;
@@ -291,50 +295,51 @@ body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; b
 }
 .timer-digits {
   font-family: 'Bebas Neue', system-ui;
-  font-size: 72px; line-height: 1; letter-spacing: 2px;
+  font-size: 96px; line-height: 1; letter-spacing: 3px;
 }
 .timer-sub {
-  font-size: 9px; letter-spacing: 4.5px; margin-top: 8px;
+  font-size: 12px; letter-spacing: 5px; margin-top: 10px;
   font-weight: 600; text-transform: uppercase;
 }
 
 /* ---- Metrics row ---- */
 .metrics-row {
   width: 100%; display: flex; align-items: center;
-  padding: 0 4px; margin-bottom: 18px;
+  padding: 0 8px; margin-bottom: 28px;
 }
 .metric-block { flex: 1; }
 .metric-block.right { text-align: right; }
 .metric-micro {
-  font-size: 9px; font-weight: 600;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  margin-bottom: 4px;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 6px;
 }
-.metric-value { font-size: 16px; font-weight: 600; }
-.metric-unit  { font-size: 12px; font-weight: 400; }
-.metric-divider { width: 1px; height: 36px; margin: 0 14px; flex-shrink: 0; }
+.metric-value { font-size: 21px; font-weight: 600; }
+.metric-unit  { font-size: 15px; font-weight: 400; }
+.metric-divider { width: 1px; height: 44px; margin: 0 18px; flex-shrink: 0; }
 .bpm-row {
   display: flex; align-items: center; justify-content: flex-end;
-  gap: 6px; font-size: 16px; font-weight: 600;
+  gap: 8px; font-size: 21px; font-weight: 600;
 }
-.bpm-unit { font-size: 12px; font-weight: 400; }
+.bpm-unit { font-size: 15px; font-weight: 400; }
+.hb { width: 9px; height: 9px; }
 
 /* ---- Segment bars ---- */
 .segments { width: 100%; margin-top: auto; }
-.seg-pills { display: flex; gap: 4px; margin-bottom: 5px; }
+.seg-pills { display: flex; gap: 5px; margin-bottom: 7px; }
 .seg-pill {
-  flex: 1; height: 5px; border-radius: 3px;
+  flex: 1; height: 7px; border-radius: 4px;
   position: relative; overflow: hidden;
 }
 .seg-fill {
   position: absolute; left: 0; top: 0; bottom: 0;
-  width: 0%; border-radius: 3px;
+  width: 0%; border-radius: 4px;
   transition: width 1s linear;
 }
-.seg-labels { display: flex; gap: 4px; margin-bottom: 10px; }
-.seg-label { flex: 1; text-align: center; font-size: 8px; font-weight: 500; }
+.seg-labels { display: flex; gap: 5px; margin-bottom: 14px; }
+.seg-label { flex: 1; text-align: center; font-size: 10px; font-weight: 500; }
 .seg-label.active { font-weight: 700; }
-.next-line { font-size: 11px; text-align: center; }
+.next-line { font-size: 14px; text-align: center; }
 
 /* ════ DARK THEME ════ */
 .session-overlay.dark { background: #000; }
@@ -596,7 +601,7 @@ body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; b
 
     <!-- SVG Ring + Timer -->
     <div class="ring-zone">
-      <svg width="204" height="204" viewBox="0 0 204 204">
+      <svg viewBox="0 0 204 204">
         <circle class="ring-track" cx="102" cy="102" r="88" fill="none" stroke-width="12" stroke-linecap="round"/>
         <circle class="ring-progress" id="s-ring" cx="102" cy="102" r="88" fill="none" stroke-width="12"
           stroke-dasharray="0 553" stroke-dashoffset="138" stroke-linecap="round"/>
@@ -635,6 +640,7 @@ body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; b
       <div class="next-line" id="s-next">
         Next: <span class="next-name">Build</span>&ensp;<span class="next-detail">2.8 mph · 2%</span>
       </div>
+      <div style="margin-top:8px;font-size:9px;color:#999;text-align:center;">build 3</div>
     </div>
 
   </div>

@@ -1096,7 +1096,12 @@ function renderPhase(idx) {
 function navPhase(dir) {
   if (!session.running) return;
   var target = session.currentPhase + dir;
-  if (target < 0 || target >= session.phases.length) return;
+  if (target < 0) return;
+  if (target >= session.phases.length) {
+    // Past last phase — end session
+    endSession();
+    return;
+  }
   session.startTime = Date.now() - session.phases[target].start * 60000;
   session.currentPhase = -1;
   updateSession();

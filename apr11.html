@@ -397,6 +397,142 @@ body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; b
 .session-overlay.light .ring-inner { stroke: #EBEBEB; }
 .session-overlay.light .nav-arrow { stroke: #AAA; }
 
+/* ==================== COMPLETION SCREEN ==================== */
+.complete-screen {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 3000;
+  flex-direction: column; align-items: center;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+}
+.complete-screen.show { display: flex; }
+.complete-canvas {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 10;
+}
+.complete-body {
+  position: relative; z-index: 11;
+  width: 100%; max-width: 430px; flex: 1;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 80px 28px 44px;
+}
+
+/* Trophy */
+.trophy-zone {
+  position: relative;
+  width: 200px; height: 200px;
+  margin: 0 auto 20px; flex-shrink: 0;
+}
+.trophy-zone svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+/* Text */
+.complete-layer { position: relative; z-index: 11; }
+.badge-label {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 5px; text-transform: uppercase;
+  margin-bottom: 6px; text-align: center;
+}
+.headline {
+  font-family: 'Bebas Neue', system-ui;
+  font-size: 60px; line-height: 1; letter-spacing: 2px; text-align: center;
+}
+.subline {
+  font-size: 13px; text-align: center; margin-bottom: 24px;
+}
+
+/* Stats */
+.stat-grid {
+  width: 100%; display: grid;
+  grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-bottom: 14px; position: relative; z-index: 11;
+}
+.stat-card { border-radius: 16px; padding: 14px 16px; }
+.stat-micro {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px;
+}
+.stat-value {
+  font-family: 'Bebas Neue', system-ui;
+  font-size: 34px; line-height: 1; letter-spacing: 1px;
+}
+.stat-unit { font-size: 16px; font-weight: 400; }
+
+/* CTAs */
+.cta-stack {
+  width: 100%; display: flex; flex-direction: column;
+  gap: 10px; position: relative; z-index: 11;
+}
+.btn-primary {
+  width: 100%; padding: 16px; border: none; border-radius: 16px;
+  font-family: system-ui; font-size: 16px; font-weight: 700; cursor: pointer;
+}
+.btn-ghost {
+  width: 100%; padding: 14px; background: transparent; border-radius: 16px;
+  font-family: system-ui; font-size: 14px; font-weight: 500; cursor: pointer;
+}
+
+/* Animations */
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(0.4) rotate(-10deg); }
+  65%  { transform: scale(1.12) rotate(2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes checkDraw {
+  from { stroke-dashoffset: 60; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes shimmer {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.8; }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.pop        { animation: popIn  0.7s cubic-bezier(.34,1.56,.64,1) 0.2s both; }
+.fu1        { animation: fadeUp 0.45s 0.70s ease both; }
+.fu2        { animation: fadeUp 0.45s 0.85s ease both; }
+.fu3        { animation: fadeUp 0.45s 1.00s ease both; }
+.fu4        { animation: fadeUp 0.45s 1.15s ease both; }
+.check-path { stroke-dasharray: 60; stroke-dashoffset: 60; animation: checkDraw 0.5s 0.9s ease forwards; }
+.ring-glow  { animation: shimmer 2s 1.2s ease-in-out infinite; }
+.ring-spin  { transform-origin: 76px 76px; animation: spin 8s linear infinite; }
+.bounce-txt { animation: bounce 2s 1.5s ease-in-out infinite; }
+
+/* Complete dark theme */
+.complete-screen.dark { background: #060606; }
+.complete-screen.dark .badge-label { color: #34D46B; }
+.complete-screen.dark .headline { color: #FFF; }
+.complete-screen.dark .subline { color: #2E2E2E; }
+.complete-screen.dark .stat-card { background: #0D0D0D; border: 1px solid #1C1C1C; }
+.complete-screen.dark .stat-micro { color: #2A2A2A; }
+.complete-screen.dark .stat-value { color: #FFF; }
+.complete-screen.dark .stat-value.accent { color: #34D46B; }
+.complete-screen.dark .stat-unit { color: #383838; }
+.complete-screen.dark .stat-unit.accent { color: #246B3A; }
+.complete-screen.dark .btn-primary { background: #34D46B; color: #061A0E; }
+.complete-screen.dark .btn-ghost { border: 1px solid #1A1A1A; color: #333; }
+
+/* Complete light theme */
+.complete-screen.light { background: #F5F5F5; }
+.complete-screen.light .badge-label { color: #16A34A; }
+.complete-screen.light .headline { color: #111; }
+.complete-screen.light .subline { color: #C8C8C8; }
+.complete-screen.light .stat-card { background: #FFF; border: 1px solid #EBEBEB; }
+.complete-screen.light .stat-micro { color: #CACACA; }
+.complete-screen.light .stat-value { color: #111; }
+.complete-screen.light .stat-value.accent { color: #16A34A; }
+.complete-screen.light .stat-unit { color: #D0D0D0; }
+.complete-screen.light .stat-unit.accent { color: #86EFAC; }
+.complete-screen.light .btn-primary { background: #16A34A; color: #FFF; }
+.complete-screen.light .btn-ghost { border: 1px solid #E5E5E5; color: #CACACA; }
+
 /* Start button active state */
 .start-btn.active { position: relative; }
 .start-btn.active::after {
@@ -644,6 +780,69 @@ body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; b
 
     <div style="margin-top:auto;font-size:9px;color:#999;text-align:center;padding-bottom:4px;">FitFlow build 3.1 &copy; NeuralNets Technologies LLC</div>
 
+  </div>
+</div>
+
+<!-- COMPLETION SCREEN -->
+<div class="complete-screen dark" id="complete">
+  <canvas id="fw-canvas" class="complete-canvas"></canvas>
+  <div class="complete-body">
+
+    <!-- Trophy -->
+    <div class="trophy-zone pop">
+      <svg viewBox="0 0 152 152">
+        <defs>
+          <radialGradient id="gd" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1E4A2E"/>
+            <stop offset="100%" stop-color="#0A1F12"/>
+          </radialGradient>
+          <radialGradient id="gl" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#D1FAE5"/>
+            <stop offset="100%" stop-color="#BBF7D0"/>
+          </radialGradient>
+        </defs>
+        <circle class="ring-spin" cx="76" cy="76" r="70" fill="none" id="trophy-dash" stroke-width="6" stroke-linecap="round" stroke-dasharray="8 14"/>
+        <circle class="ring-glow" cx="76" cy="76" r="62" fill="none" id="trophy-glow" stroke-width="1.5"/>
+        <circle cx="76" cy="76" r="58" fill="none" id="trophy-ring" stroke-width="3"/>
+        <circle cx="76" cy="76" r="52" id="trophy-fill"/>
+        <polyline class="check-path" points="58,76 70,88 96,62" fill="none" id="trophy-check" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Headline -->
+    <div class="complete-layer fu1" style="text-align:center;margin-bottom:4px;">
+      <div class="badge-label">Workout Complete</div>
+      <div class="headline bounce-txt">Great Work!</div>
+    </div>
+    <div class="complete-layer fu2 subline" id="c-subline"></div>
+
+    <!-- Stats -->
+    <div class="stat-grid fu3">
+      <div class="stat-card">
+        <div class="stat-micro">Duration</div>
+        <div class="stat-value" id="c-duration">50<span class="stat-unit"> min</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-micro">Peak Setting</div>
+        <div class="stat-value" id="c-peak">2.9<span class="stat-unit"> mph 4%</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-micro">Phases</div>
+        <div class="stat-value" id="c-phases">5<span class="stat-unit"> completed</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-micro">Target HR</div>
+        <div class="stat-value accent" id="c-hr">126<span class="stat-unit accent"> bpm</span></div>
+      </div>
+    </div>
+
+    <!-- CTAs -->
+    <div class="cta-stack fu4">
+      <button class="btn-primary" onclick="closeComplete()">Done</button>
+      <button class="btn-ghost" onclick="closeComplete()">Dismiss</button>
+    </div>
+
+    <div style="margin-top:auto;font-size:9px;color:#999;text-align:center;padding-bottom:4px;">FitFlow build 3.1 &copy; NeuralNets Technologies LLC</div>
   </div>
 </div>
 
@@ -916,14 +1115,216 @@ function endSession() {
   var btn = document.querySelector('.start-btn');
   btn.textContent = 'Session complete \u2714';
   btn.classList.remove('active');
-  document.getElementById('s-phase').textContent = 'Complete';
-  document.getElementById('s-timer').textContent = session.totalDuration + ':00';
-  document.getElementById('s-elapsed').textContent = 'finished';
-  document.getElementById('s-speed').innerHTML = '';
-  document.getElementById('s-hr').innerHTML = '\u2714';
-  document.getElementById('s-next').innerHTML = '<span class="next-name">Hydrate</span>&ensp;<span class="next-detail">cool down · stretch</span>';
-  var ring = document.getElementById('s-ring');
-  ring.setAttribute('stroke-dasharray', RING_C + ' 0');
+
+  // Hide session overlay, show completion screen
+  hideSession();
+  showComplete();
+}
+
+function showComplete() {
+  var isDark = document.getElementById('session').classList.contains('dark');
+  var el = document.getElementById('complete');
+  el.className = 'complete-screen ' + (isDark ? 'dark' : 'light');
+
+  // Set trophy colors based on theme
+  var green = isDark ? '#34D46B' : '#16A34A';
+  var dashColor = isDark ? '#1B3D26' : '#BBF7D0';
+  var fillId = isDark ? 'url(#gd)' : 'url(#gl)';
+  document.getElementById('trophy-dash').setAttribute('stroke', dashColor);
+  document.getElementById('trophy-glow').setAttribute('stroke', green);
+  document.getElementById('trophy-ring').setAttribute('stroke', green);
+  document.getElementById('trophy-fill').setAttribute('fill', fillId);
+  document.getElementById('trophy-check').setAttribute('stroke', green);
+
+  // Populate stats
+  var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var now = new Date();
+  document.getElementById('c-subline').textContent =
+    days[now.getDay()] + ' \u00B7 ' + months[now.getMonth()] + ' ' + now.getDate() + ' \u00B7 Treadmill Walk';
+
+  document.getElementById('c-duration').innerHTML =
+    session.totalDuration + '<span class="stat-unit"> min</span>';
+
+  // Find the push/main phase for peak setting
+  var peakPhase = session.phases[0];
+  for (var i = 0; i < session.phases.length; i++) {
+    if (session.phases[i].phase.toLowerCase().indexOf('push') >= 0 ||
+        session.phases[i].phase.toLowerCase().indexOf('steady') >= 0) {
+      peakPhase = session.phases[i]; break;
+    }
+  }
+  document.getElementById('c-peak').innerHTML =
+    peakPhase.speed + '<span class="stat-unit"> mph ' + peakPhase.grade + '</span>';
+
+  document.getElementById('c-phases').innerHTML =
+    session.phases.length + '<span class="stat-unit"> completed</span>';
+
+  // HR from push phase
+  var hrText = peakPhase.hr.replace(/[<>]/g,'').replace(/\s*bpm\s*/i,'').replace(/\u2013/g,'-');
+  document.getElementById('c-hr').innerHTML =
+    hrText + '<span class="stat-unit accent"> bpm</span>';
+
+  el.classList.add('show');
+
+  // Start fireworks
+  initFireworks(isDark);
+}
+
+function closeComplete() {
+  document.getElementById('complete').classList.remove('show');
+}
+
+function initFireworks(isDark) {
+  var canvas = document.getElementById('fw-canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+
+  var COLORS_DARK  = ['#34D46B','#86EFAC','#6EE7B7','#FDE68A','#FCA5A5','#A5F3FC','#C4B5FD','#FDB97D'];
+  var COLORS_LIGHT = ['#16A34A','#4ADE80','#FBBF24','#F472B6','#60A5FA','#A78BFA','#34D478','#FB923C'];
+  var COLORS = isDark ? COLORS_DARK : COLORS_LIGHT;
+
+  function Particle(x, y, color) {
+    this.x = x; this.y = y; this.color = color;
+    var angle = Math.random() * Math.PI * 2;
+    var speed = 2 + Math.random() * 5;
+    this.vx = Math.cos(angle) * speed;
+    this.vy = Math.sin(angle) * speed - 2;
+    this.alpha = 1;
+    this.decay = 0.012 + Math.random() * 0.015;
+    this.radius = 2 + Math.random() * 3;
+    this.gravity = 0.08;
+    this.trail = [];
+    this.isCircle = Math.random() > 0.4;
+  }
+  Particle.prototype.update = function() {
+    this.trail.push({x:this.x,y:this.y});
+    if (this.trail.length > 5) this.trail.shift();
+    this.vx *= 0.97;
+    this.vy = this.vy * 0.97 + this.gravity;
+    this.x += this.vx; this.y += this.vy;
+    this.alpha -= this.decay;
+  };
+  Particle.prototype.draw = function() {
+    ctx.save();
+    for (var i = 0; i < this.trail.length; i++) {
+      ctx.globalAlpha = (i / this.trail.length) * this.alpha * 0.4;
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      ctx.arc(this.trail[i].x, this.trail[i].y, this.radius * 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = this.alpha;
+    ctx.fillStyle = this.color;
+    if (this.isCircle) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      ctx.fillRect(this.x - this.radius*0.6, this.y - this.radius*0.6, this.radius*1.4, this.radius*1.4);
+    }
+    ctx.restore();
+  };
+
+  function Firework() { this.reset(); }
+  Firework.prototype.reset = function() {
+    this.x = 30 + Math.random() * (W - 60);
+    this.y = H;
+    this.tx = 20 + Math.random() * (W - 40);
+    this.ty = 40 + Math.random() * (H * 0.45);
+    var dx = this.tx - this.x, dy = this.ty - this.y;
+    var dist = Math.sqrt(dx*dx + dy*dy);
+    var speed = 8 + Math.random() * 5;
+    this.vx = (dx/dist)*speed; this.vy = (dy/dist)*speed;
+    this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
+    this.exploded = false;
+  };
+  Firework.prototype.update = function(particles) {
+    this.x += this.vx; this.y += this.vy; this.vy += 0.04;
+    if (Math.abs(this.x-this.tx)<8 && Math.abs(this.y-this.ty)<8) {
+      var count = 40 + Math.floor(Math.random()*30);
+      for (var i = 0; i < count; i++) particles.push(new Particle(this.x, this.y, this.color));
+      this.exploded = true;
+    }
+  };
+  Firework.prototype.draw = function() {
+    ctx.save();
+    ctx.fillStyle = this.color;
+    ctx.shadowBlur = 6; ctx.shadowColor = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 3, 0, Math.PI*2);
+    ctx.fill(); ctx.restore();
+  };
+
+  function ConfettiPiece(init) { this.reset(init); }
+  ConfettiPiece.prototype.reset = function(init) {
+    this.x = Math.random()*W;
+    this.y = init ? Math.random()*-H : -20;
+    this.w = 6 + Math.random()*8;
+    this.h = 4 + Math.random()*5;
+    this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
+    this.vy = 1.2 + Math.random()*2;
+    this.vx = -1 + Math.random()*2;
+    this.rot = Math.random()*Math.PI*2;
+    this.rotSpeed = -0.08 + Math.random()*0.16;
+    this.alpha = 0.7 + Math.random()*0.3;
+  };
+  ConfettiPiece.prototype.update = function() {
+    this.y += this.vy; this.x += this.vx; this.rot += this.rotSpeed;
+    if (this.y > H+20) this.reset(false);
+  };
+  ConfettiPiece.prototype.draw = function() {
+    ctx.save();
+    ctx.globalAlpha = this.alpha;
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rot);
+    ctx.fillStyle = this.color;
+    ctx.fillRect(-this.w/2, -this.h/2, this.w, this.h);
+    ctx.restore();
+  };
+
+  var fireworks = [], particles = [], confetti = [];
+  var frame = 0, active = true;
+  for (var i = 0; i < 45; i++) confetti.push(new ConfettiPiece(true));
+
+  var burstAt = [40, 90, 150, 220, 350, 500];
+  var burstIdx = 0;
+
+  function loop() {
+    if (!active) return;
+    frame++;
+    ctx.clearRect(0, 0, W, H);
+    if (burstIdx < burstAt.length && frame === burstAt[burstIdx]) {
+      fireworks.push(new Firework());
+      if (frame > 80) fireworks.push(new Firework());
+      burstIdx++;
+    }
+    if (frame > 200 && frame % 120 === 0) fireworks.push(new Firework());
+
+    for (var i = 0; i < confetti.length; i++) { confetti[i].update(); confetti[i].draw(); }
+
+    fireworks = fireworks.filter(function(fw) {
+      fw.update(particles);
+      if (!fw.exploded) fw.draw();
+      return !fw.exploded;
+    });
+    particles = particles.filter(function(p) {
+      p.update(); p.draw();
+      return p.alpha > 0.02;
+    });
+    requestAnimationFrame(loop);
+  }
+  setTimeout(function() { loop(); }, 800);
+  setTimeout(function() {
+    active = false;
+    (function slowConf() {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < confetti.length; i++) { confetti[i].update(); confetti[i].draw(); }
+      requestAnimationFrame(slowConf);
+    })();
+  }, 12000);
 }
 
 document.querySelector('.start-btn').addEventListener('click', startSession);

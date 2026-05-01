@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Today's Workout</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+  -webkit-font-smoothing: antialiased;
+  background: #e8e4de;
+}
+
+.page { width: 100%; max-width: 430px; }
+
+/* ==================== SHARED ==================== */
+.card {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+
+.hdr { padding: 24px 22px 16px; }
+.hdr h1 { font-size: 24px; font-weight: 900; letter-spacing: -0.5px; }
+.hdr-sub { font-size: 13px; margin-top: 3px; opacity: 0.5; }
+.tags { display: flex; gap: 8px; padding: 0 22px 18px; flex-wrap: wrap; }
+.tag { font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 20px; }
+
+.summary { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 16px 22px; }
+.sum-box { text-align: center; padding: 12px 8px; border-radius: 12px; cursor: pointer; }
+.sum-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; }
+.sum-val { font-size: 22px; font-weight: 900; margin-top: 2px; letter-spacing: -0.5px; }
+.sum-unit { font-size: 10px; opacity: 0.5; margin-top: 1px; }
+
+.start-btn {
+  display: block; margin: 8px 22px 16px; padding: 16px; border-radius: 14px;
+  font-size: 16px; font-weight: 800; text-align: center; cursor: pointer;
+  border: none; width: calc(100% - 44px);
+}
+
+.warning { padding: 0 22px 20px; font-size: 12px; line-height: 1.5; opacity: 0.4; }
+
+.phases { padding: 0 22px; }
+.timeline-bar, .intensity-chart { display: none; }
+
+/* Tappable cursor */
+.phase-card, .pt-row, .sum-box { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+/* ==================== ZOOM OVERLAY ==================== */
+.zoom-overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4); z-index: 1000;
+  -webkit-tap-highlight-color: transparent;
+}
+.zoom-overlay.show { display: block; }
+.zoom-content {
+  position: absolute;
+  text-align: center; color: #fff;
+  background: #1a1a1a; border-radius: 16px; padding: 28px 22px 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+  border: 1px solid #333;
+  min-width: 200px; max-width: 300px;
+  transition: opacity 0.15s;
+}
+.zoom-content::before {
+  content: '';
+  position: absolute;
+  width: 12px; height: 12px;
+  background: #1a1a1a;
+  border-left: 1px solid #333;
+  border-top: 1px solid #333;
+  transform: rotate(45deg);
+}
+.zoom-content.arrow-top::before { top: -7px; left: var(--arrow-left, 50%); margin-left: -6px; }
+.zoom-content.arrow-bottom::before { bottom: -7px; left: var(--arrow-left, 50%); margin-left: -6px; transform: rotate(225deg); }
+.zoom-phase { font-size: 20px; font-weight: 800; color: #fbbf24; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.zoom-main { font-size: 42px; font-weight: 900; color: #fff; letter-spacing: -1px; line-height: 1.1; }
+.zoom-hr { font-size: 38px; font-weight: 900; margin-top: 14px; color: #4ade80; }
+.zoom-sub { font-size: 18px; color: #aaa; margin-top: 10px; font-weight: 500; }
+.zoom-hint { display: none; }
+
+/* ==================== STYLE 1: WARM ==================== */
+.style-warm { background: #faf8f4; color: #2a2a22; }
+.style-warm .hdr-sub { color: #8a8a7a; }
+.style-warm .tag { background: #eae8df; color: #5a5a4a; }
+.style-warm .tag-coffee { background: #e8dfc8; color: #6b5b2e; }
+.style-warm .tag-type { background: #dde8d8; color: #3a5a2e; }
+
+.style-warm .phases { display: flex; flex-direction: column; gap: 10px; padding-bottom: 12px; }
+.style-warm .phase-card {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px; border-radius: 14px; background: #f0eee6;
+}
+.style-warm .phase-card.phase-main { background: #e8f0e4; border: 2px dashed #6a9a5a; }
+.style-warm .phase-card:active { opacity: 0.7; }
+.style-warm .ph-name { font-size: 16px; font-weight: 800; color: #2a2a22; }
+.style-warm .ph-settings { font-size: 13px; color: #7a8a6a; margin-top: 2px; }
+.style-warm .ph-right { text-align: right; }
+.style-warm .ph-time { font-size: 13px; color: #8a8a7a; }
+.style-warm .ph-hr { font-size: 17px; font-weight: 800; color: #2a2a22; margin-top: 1px; }
+
+.style-warm .sum-box { background: #f0eee6; border: 1px solid #e0ddd4; }
+.style-warm .sum-box:active { opacity: 0.7; }
+.style-warm .sum-val-cap { color: #c44; }
+.style-warm .start-btn { background: #2a5a3a; color: #fff; }
+
+.style-warm .phase-table, .style-warm .timeline-bar, .style-warm .intensity-chart { display: none; }
+.style-warm .phase-card { display: flex; }
+
+/* ==================== STYLE 2: TIMELINE ==================== */
+.style-timeline { background: #faf8f4; color: #2a2a22; }
+.style-timeline .hdr-sub { color: #8a8a7a; }
+.style-timeline .tag { background: #eae8df; color: #5a5a4a; }
+.style-timeline .tag-coffee { background: #e8dfc8; color: #6b5b2e; }
+.style-timeline .tag-type { background: #dde8d8; color: #3a5a2e; }
+
+.style-timeline .timeline-bar { display: block; padding: 16px 22px 8px; }
+.style-timeline .tl-row { display: flex; gap: 3px; border-radius: 10px; overflow: hidden; height: 44px; }
+.style-timeline .tl-seg { display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; }
+.style-timeline .tl-seg span { font-size: 10px; font-weight: 500; opacity: 0.8; }
+.style-timeline .tl-s1 { flex: 8; background: #c8d8c0; color: #3a5a2e; }
+.style-timeline .tl-s2 { flex: 7; background: #8aaa78; }
+.style-timeline .tl-s3 { flex: 17; background: #4a8a3a; }
+.style-timeline .tl-s4 { flex: 10; background: #8aaa78; }
+.style-timeline .tl-s5 { flex: 8; background: #b8cca8; color: #3a5a2e; }
+
+.style-timeline .tl-settings { display: flex; gap: 3px; margin-top: 6px; }
+.style-timeline .tl-set { display: flex; flex-direction: column; align-items: center; font-size: 13px; font-weight: 700; color: #4a4a3a; }
+.style-timeline .tl-set span { font-size: 11px; color: #9a9a8a; }
+.style-timeline .tl-set.s1 { flex: 8; }
+.style-timeline .tl-set.s2 { flex: 7; }
+.style-timeline .tl-set.s3 { flex: 17; }
+.style-timeline .tl-set.s4 { flex: 10; }
+.style-timeline .tl-set.s5 { flex: 8; }
+
+.style-timeline .sum-box { background: #f0eee6; border: 1px solid #e0ddd4; }
+.style-timeline .sum-val-cap { color: #c44; }
+
+.style-timeline .phase-table { display: block; padding: 8px 22px 12px; }
+.style-timeline .pt-row { display: flex; align-items: center; padding: 14px 0; border-bottom: 1px solid #eae8e0; }
+.style-timeline .pt-row:last-child { border-bottom: none; }
+.style-timeline .pt-row:active { opacity: 0.7; }
+.style-timeline .pt-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; margin-right: 12px; }
+.style-timeline .pt-left { flex: 1; }
+.style-timeline .pt-name { font-weight: 700; font-size: 16px; color: #2a2a22; }
+.style-timeline .pt-time { color: #9a9a8a; font-size: 13px; margin-top: 1px; }
+.style-timeline .pt-mid { text-align: center; margin: 0 12px; }
+.style-timeline .pt-set { color: #5a5a4a; font-size: 15px; font-weight: 600; white-space: nowrap; }
+.style-timeline .pt-hr { font-weight: 800; text-align: right; font-size: 16px; white-space: nowrap; color: #3a3a2a; }
+
+.style-timeline .start-btn { background: #2a5a3a; color: #fff; }
+.style-timeline .phase-card { display: none !important; }
+.style-timeline .intensity-chart { display: none; }
+
+/* ==================== STYLE 3: DARK ==================== */
+.style-dark { background: #111; color: #e8e8e8; }
+.style-dark .hdr-sub { color: #777; }
+.style-dark .tag { background: #2a2a2a; color: #999; }
+.style-dark .tag-coffee { background: #3a3020; color: #d4a030; }
+.style-dark .tag-type { background: #1a2a1a; color: #6a9a5a; }
+
+.style-dark .intensity-chart { display: block; padding: 16px 22px 8px; }
+.style-dark .ic-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-bottom: 10px; }
+.style-dark .ic-bars { display: flex; gap: 6px; align-items: flex-end; height: 60px; margin-bottom: 6px; }
+.style-dark .ic-bar { flex: 1; border-radius: 4px 4px 0 0; }
+.style-dark .ic-labels { display: flex; gap: 6px; font-size: 11px; color: #666; }
+.style-dark .ic-labels span { flex: 1; text-align: center; }
+.style-dark .ic-labels .ic-active { color: #4ade80; font-weight: 700; }
+.style-dark .ic-b1 { height: 30%; background: #3a5a3a; }
+.style-dark .ic-b2 { height: 55%; background: #4a6a3a; }
+.style-dark .ic-b3 { height: 85%; background: #4ade80; }
+.style-dark .ic-b4 { height: 50%; background: #3a6a3a; }
+.style-dark .ic-b5 { height: 25%; background: #2a4a2a; }
+
+.style-dark .phase-table { display: block; padding: 8px 22px 12px; }
+.style-dark .pt-row { display: flex; align-items: center; padding: 14px 0; border-bottom: 1px solid #222; }
+.style-dark .pt-row:last-child { border-bottom: none; }
+.style-dark .pt-row:active { opacity: 0.7; }
+.style-dark .pt-dot { width: 4px; height: 32px; border-radius: 2px; flex-shrink: 0; margin-right: 12px; }
+.style-dark .pt-left { flex: 1; }
+.style-dark .pt-name { font-weight: 600; color: #ccc; font-size: 16px; }
+.style-dark .pt-time { color: #555; font-size: 13px; margin-top: 1px; }
+.style-dark .pt-mid { text-align: center; margin: 0 12px; }
+.style-dark .pt-set { color: #999; font-size: 15px; font-weight: 600; white-space: nowrap; }
+.style-dark .pt-hr { font-weight: 800; text-align: right; color: #888; font-size: 16px; white-space: nowrap; }
+
+.style-dark .sum-box { background: #1a1a1a; border: 1px solid #2a2a2a; }
+.style-dark .sum-box:active { opacity: 0.7; }
+.style-dark .sum-box-dur { border-color: #3a5a3a; }
+.style-dark .sum-box-peak { border-color: #5a4a1a; }
+.style-dark .sum-box-cap { border-color: #5a1a1a; }
+.style-dark .sum-val-peak { color: #fb923c; }
+.style-dark .sum-val-cap { color: #f87171; }
+.style-dark .start-btn { background: transparent; color: #4ade80; border: 2px solid #4ade80; }
+.style-dark .warning { color: #666; }
+.style-dark .phase-card { display: none !important; }
+.style-dark .timeline-bar { display: none; }
+
+/* ==================== STYLE SELECTOR ==================== */
+.style-selector { display: flex; gap: 8px; justify-content: center; padding: 24px 0 16px; }
+.style-selector button {
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+  padding: 8px 20px; border-radius: 10px; border: 2px solid #ccc;
+  background: #fff; color: #555; cursor: pointer; transition: all 0.2s;
+}
+.style-selector button.active { background: #2a5a3a; color: #fff; border-color: #2a5a3a; }
+body.bg-dark { background: #0a0a0a; }
+body.bg-dark .style-selector button { background: #222; color: #999; border-color: #333; }
+body.bg-dark .style-selector button.active { background: #2a5a3a; color: #fff; border-color: #4ade80; }
+
+/* ==================== SESSION OVERLAY ==================== */
+@keyframes heartbeat {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  40%       { opacity: 0.2; transform: scale(0.8); }
+  70%       { opacity: 0.9; transform: scale(1.15); }
+}
+.hb {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  animation: heartbeat 1.3s ease-in-out infinite;
+}
+
+.session-overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 2000;
+  flex-direction: column; align-items: center;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+}
+.session-overlay.show { display: flex; }
+
+.session-screen {
+  width: 100%; max-width: 430px; flex: 1;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 60px 28px 44px;
+  transition: opacity 0.3s;
+}
+.session-screen.switching { opacity: 0; }
+
+/* ---- Phase nav header ---- */
+.phase-header {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.nav-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; border: none; background: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-btn svg { width: 14px; height: 14px; }
+.nav-btn:active { opacity: 0.5; }
+.phase-center { text-align: center; }
+.phase-label-text {
+  font-size: 15px; font-weight: 700;
+  letter-spacing: 4px; text-transform: uppercase;
+}
+.phase-elapsed {
+  font-size: 13px; margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Ring zone ---- */
+.ring-zone {
+  position: relative;
+  width: 272px; height: 272px;
+  margin: 16px auto 24px;
+  flex-shrink: 0;
+}
+.ring-zone svg {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+.ring-text-overlay {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.timer-digits {
+  font-family: 'Bebas Neue', system-ui;
+  font-size: 96px; line-height: 1; letter-spacing: 3px;
+}
+.timer-sub {
+  font-size: 12px; letter-spacing: 5px; margin-top: 10px;
+  font-weight: 600; text-transform: uppercase;
+}
+
+/* ---- Metrics row ---- */
+.metrics-row {
+  width: 100%; display: flex; align-items: center;
+  padding: 0 8px; margin-bottom: 28px;
+}
+.metric-block { flex: 1; }
+.metric-block.right { text-align: right; }
+.metric-micro {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.metric-value { font-size: 21px; font-weight: 600; }
+.metric-unit  { font-size: 15px; font-weight: 400; }
+.metric-divider { width: 1px; height: 44px; margin: 0 18px; flex-shrink: 0; }
+.bpm-row {
+  display: flex; align-items: center; justify-content: flex-end;
+  gap: 8px; font-size: 21px; font-weight: 600;
+}
+.bpm-unit { font-size: 15px; font-weight: 400; }
+.hb { width: 9px; height: 9px; }
+
+/* ---- Segment bars ---- */
+.segments { width: 100%; }
+.seg-pills { display: flex; gap: 5px; margin-bottom: 7px; }
+.seg-pill {
+  flex: 1; height: 7px; border-radius: 4px;
+  position: relative; overflow: hidden;
+}
+.seg-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 0%; border-radius: 4px;
+  transition: width 1s linear;
+}
+.seg-labels { display: flex; gap: 5px; margin-bottom: 14px; }
+.seg-label { flex: 1; text-align: center; font-size: 10px; font-weight: 500; }
+.seg-label.active { font-weight: 700; }
+.next-line { font-size: 14px; text-align: center; }
+
+/* ════ DARK THEME ════ */
+.session-overlay.dark { background: #000; }
+.session-overlay.dark .nav-btn { border: 1px solid #282828; }
+.session-overlay.dark .phase-label-text { color: #34D46B; }
+.session-overlay.dark .phase-elapsed { color: #3A3A3A; }
+.session-overlay.dark .timer-digits { color: #FFF; }
+.session-overlay.dark .timer-sub { color: #383838; }
+.session-overlay.dark .metric-micro { color: #383838; }
+.session-overlay.dark .metric-value { color: #FFF; }
+.session-overlay.dark .metric-unit { color: #555; }
+.session-overlay.dark .metric-muted { color: #666; font-size: 14px; font-weight: 400; }
+.session-overlay.dark .metric-divider { background: #1C1C1C; }
+.session-overlay.dark .bpm-row { color: #34D46B; }
+.session-overlay.dark .bpm-unit { color: #246B3A; }
+.session-overlay.dark .hb { background: #34D46B; }
+.session-overlay.dark .seg-pill { background: #161616; }
+.session-overlay.dark .seg-pill.active { background: #142B1C; }
+.session-overlay.dark .seg-fill { background: #34D46B; }
+.session-overlay.dark .seg-label { color: #2E2E2E; }
+.session-overlay.dark .seg-label.active { color: #34D46B; }
+.session-overlay.dark .next-line { color: #333; }
+.session-overlay.dark .next-name { color: #CACACA; font-weight: 600; }
+.session-overlay.dark .next-detail { color: #2E2E2E; }
+.session-overlay.dark .ring-track { stroke: #141414; }
+.session-overlay.dark .ring-progress { stroke: #34D46B; }
+.session-overlay.dark .ring-inner { stroke: #111; }
+.session-overlay.dark .nav-arrow { stroke: #555; }
+
+/* ════ LIGHT THEME ════ */
+.session-overlay.light { background: #F4F4F4; }
+.session-overlay.light .nav-btn { border: 1px solid #E0E0E0; background: #ECECEC; }
+.session-overlay.light .phase-label-text { color: #16A34A; }
+.session-overlay.light .phase-elapsed { color: #C0C0C0; }
+.session-overlay.light .timer-digits { color: #111; }
+.session-overlay.light .timer-sub { color: #CACACA; }
+.session-overlay.light .metric-micro { color: #C8C8C8; }
+.session-overlay.light .metric-value { color: #111; }
+.session-overlay.light .metric-unit { color: #CCC; }
+.session-overlay.light .metric-muted { color: #CCC; font-size: 14px; font-weight: 400; }
+.session-overlay.light .metric-divider { background: #E5E5E5; }
+.session-overlay.light .bpm-row { color: #16A34A; }
+.session-overlay.light .bpm-unit { color: #86EFAC; }
+.session-overlay.light .hb { background: #16A34A; }
+.session-overlay.light .seg-pill { background: #EBEBEB; }
+.session-overlay.light .seg-pill.active { background: #DCFCE7; }
+.session-overlay.light .seg-fill { background: #16A34A; }
+.session-overlay.light .seg-label { color: #D0D0D0; }
+.session-overlay.light .seg-label.active { color: #16A34A; }
+.session-overlay.light .next-line { color: #CECECE; }
+.session-overlay.light .next-name { color: #374151; font-weight: 600; }
+.session-overlay.light .next-detail { color: #D8D8D8; }
+.session-overlay.light .ring-track { stroke: #E4E4E4; }
+.session-overlay.light .ring-progress { stroke: #16A34A; }
+.session-overlay.light .ring-inner { stroke: #EBEBEB; }
+.session-overlay.light .nav-arrow { stroke: #AAA; }
+
+/* ==================== COMPLETION SCREEN ==================== */
+.complete-screen {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 3000;
+  flex-direction: column; align-items: center;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+}
+.complete-screen.show { display: flex; }
+.complete-canvas {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 10;
+}
+.complete-body {
+  position: relative; z-index: 11;
+  width: 100%; max-width: 430px; flex: 1;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 80px 28px 44px;
+}
+
+/* Trophy */
+.trophy-zone {
+  position: relative;
+  width: 200px; height: 200px;
+  margin: 0 auto 20px; flex-shrink: 0;
+}
+.trophy-zone svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+/* Text */
+.complete-layer { position: relative; z-index: 11; }
+.badge-label {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 5px; text-transform: uppercase;
+  margin-bottom: 6px; text-align: center;
+}
+.headline {
+  font-family: 'Bebas Neue', system-ui;
+  font-size: 60px; line-height: 1; letter-spacing: 2px; text-align: center;
+}
+.subline {
+  font-size: 13px; text-align: center; margin-bottom: 24px;
+}
+
+/* Stats */
+.stat-grid {
+  width: 100%; display: grid;
+  grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-bottom: 14px; position: relative; z-index: 11;
+}
+.stat-card { border-radius: 16px; padding: 14px 16px; }
+.stat-micro {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px;
+}
+.stat-value {
+  font-family: 'Bebas Neue', system-ui;
+  font-size: 34px; line-height: 1; letter-spacing: 1px;
+}
+.stat-unit { font-size: 16px; font-weight: 400; }
+
+/* CTAs */
+.cta-stack {
+  width: 100%; display: flex; flex-direction: column;
+  gap: 10px; position: relative; z-index: 11;
+}
+.btn-primary {
+  width: 100%; padding: 16px; border: none; border-radius: 16px;
+  font-family: system-ui; font-size: 16px; font-weight: 700; cursor: pointer;
+}
+.btn-ghost {
+  width: 100%; padding: 14px; background: transparent; border-radius: 16px;
+  font-family: system-ui; font-size: 14px; font-weight: 500; cursor: pointer;
+}
+
+/* Animations */
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(0.4) rotate(-10deg); }
+  65%  { transform: scale(1.12) rotate(2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes checkDraw {
+  from { stroke-dashoffset: 60; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes shimmer {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.8; }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.pop        { animation: popIn  0.7s cubic-bezier(.34,1.56,.64,1) 0.2s both; }
+.fu1        { animation: fadeUp 0.45s 0.70s ease both; }
+.fu2        { animation: fadeUp 0.45s 0.85s ease both; }
+.fu3        { animation: fadeUp 0.45s 1.00s ease both; }
+.fu4        { animation: fadeUp 0.45s 1.15s ease both; }
+.check-path { stroke-dasharray: 60; stroke-dashoffset: 60; animation: checkDraw 0.5s 0.9s ease forwards; }
+.ring-glow  { animation: shimmer 2s 1.2s ease-in-out infinite; }
+.ring-spin  { transform-origin: 76px 76px; animation: spin 8s linear infinite; }
+.bounce-txt { animation: bounce 2s 1.5s ease-in-out infinite; }
+
+/* Complete dark theme */
+.complete-screen.dark { background: #060606; }
+.complete-screen.dark .badge-label { color: #34D46B; }
+.complete-screen.dark .headline { color: #FFF; }
+.complete-screen.dark .subline { color: #2E2E2E; }
+.complete-screen.dark .stat-card { background: #0D0D0D; border: 1px solid #1C1C1C; }
+.complete-screen.dark .stat-micro { color: #2A2A2A; }
+.complete-screen.dark .stat-value { color: #FFF; }
+.complete-screen.dark .stat-value.accent { color: #34D46B; }
+.complete-screen.dark .stat-unit { color: #383838; }
+.complete-screen.dark .stat-unit.accent { color: #246B3A; }
+.complete-screen.dark .btn-primary { background: #34D46B; color: #061A0E; }
+.complete-screen.dark .btn-ghost { border: 1px solid #1A1A1A; color: #333; }
+
+/* Complete light theme */
+.complete-screen.light { background: #F5F5F5; }
+.complete-screen.light .badge-label { color: #16A34A; }
+.complete-screen.light .headline { color: #111; }
+.complete-screen.light .subline { color: #C8C8C8; }
+.complete-screen.light .stat-card { background: #FFF; border: 1px solid #EBEBEB; }
+.complete-screen.light .stat-micro { color: #CACACA; }
+.complete-screen.light .stat-value { color: #111; }
+.complete-screen.light .stat-value.accent { color: #16A34A; }
+.complete-screen.light .stat-unit { color: #D0D0D0; }
+.complete-screen.light .stat-unit.accent { color: #86EFAC; }
+.complete-screen.light .btn-primary { background: #16A34A; color: #FFF; }
+.complete-screen.light .btn-ghost { border: 1px solid #E5E5E5; color: #CACACA; }
+
+/* Start button active state */
+.start-btn.active { position: relative; }
+.start-btn.active::after {
+  content: '';
+  position: absolute; top: 6px; right: 14px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #4ade80;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="card style-warm" id="card">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <h1>Today's session</h1>
+    <div class="hdr-sub">Fri May 1 &middot; Garage temp TBD &middot; Light Moderate</div>
+  </div>
+  <div class="tags">
+    <span class="tag tag-type">moderate &middot; 45 min</span>
+    <span class="tag tag-coffee">coffee adj</span>
+    <span class="tag">fri &middot; first mod since flag</span>
+  </div>
+
+  <!-- STYLE 2: Timeline bar -->
+  <div class="timeline-bar">
+    <div class="tl-row">
+      <div class="tl-seg tl-s1">Warm<span>6m</span></div>
+      <div class="tl-seg tl-s2">Build<span>6m</span></div>
+      <div class="tl-seg tl-s3">Push<span>20m</span></div>
+      <div class="tl-seg tl-s4">Ease<span>6m</span></div>
+      <div class="tl-seg tl-s5">Cool<span>7m</span></div>
+    </div>
+    <div class="tl-settings">
+      <div class="tl-set s1">2.3<span>0%</span></div>
+      <div class="tl-set s2">2.7<span>2%</span></div>
+      <div class="tl-set s3">2.9<span>4%</span></div>
+      <div class="tl-set s4">2.6<span>2%</span></div>
+      <div class="tl-set s5">1.8<span>0%</span></div>
+    </div>
+  </div>
+
+  <!-- STYLE 3: Intensity chart -->
+  <div class="intensity-chart">
+    <div class="ic-label">Intensity Profile</div>
+    <div class="ic-bars">
+      <div class="ic-bar ic-b1"></div>
+      <div class="ic-bar ic-b2"></div>
+      <div class="ic-bar ic-b3"></div>
+      <div class="ic-bar ic-b4"></div>
+      <div class="ic-bar ic-b5"></div>
+    </div>
+    <div class="ic-labels">
+      <span>Warm</span>
+      <span>Build</span>
+      <span class="ic-active">Push</span>
+      <span>Ease</span>
+      <span>Cool</span>
+    </div>
+  </div>
+
+  <!-- STYLE 1: Phase cards (tappable) -->
+  <div class="phases">
+    <div class="phase-card" onclick="showZoom(this)" data-zoom-phase="Warm up" data-zoom-main="2.3 mph &middot; 0%" data-zoom-hr="&lt;110 bpm" data-zoom-sub="0 &ndash; 6 min">
+      <div class="ph-left">
+        <div class="ph-name">Warm up</div>
+        <div class="ph-settings">2.3 mph &middot; 0% incline</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">0 &ndash; 6 min</div>
+        <div class="ph-hr">&lt;110 bpm</div>
+      </div>
+    </div>
+    <div class="phase-card" onclick="showZoom(this)" data-zoom-phase="Build" data-zoom-main="2.7 mph &middot; 2%" data-zoom-hr="108&ndash;115 bpm" data-zoom-sub="6 &ndash; 12 min">
+      <div class="ph-left">
+        <div class="ph-name">Build</div>
+        <div class="ph-settings">2.7 mph &middot; 2% incline</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">6 &ndash; 12 min</div>
+        <div class="ph-hr">108&ndash;115 bpm</div>
+      </div>
+    </div>
+    <div class="phase-card phase-main" onclick="showZoom(this)" data-zoom-phase="Push" data-zoom-main="2.9 mph &middot; 4%" data-zoom-hr="115&ndash;125 bpm" data-zoom-sub="12 &ndash; 32 min &middot; Drop to 3% if HR &gt;125 at min 22">
+      <div class="ph-left">
+        <div class="ph-name">Push</div>
+        <div class="ph-settings">2.9 mph &middot; 4% incline</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">12 &ndash; 32 min</div>
+        <div class="ph-hr">115&ndash;125 bpm</div>
+      </div>
+    </div>
+    <div class="phase-card" onclick="showZoom(this)" data-zoom-phase="Ease off" data-zoom-main="2.6 mph &middot; 2%" data-zoom-hr="108&ndash;115 bpm" data-zoom-sub="32 &ndash; 38 min">
+      <div class="ph-left">
+        <div class="ph-name">Ease off</div>
+        <div class="ph-settings">2.6 mph &middot; 2% incline</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">32 &ndash; 38 min</div>
+        <div class="ph-hr">108&ndash;115 bpm</div>
+      </div>
+    </div>
+    <div class="phase-card" onclick="showZoom(this)" data-zoom-phase="Cool down" data-zoom-main="1.8 mph &middot; 0%" data-zoom-hr="&lt;105 bpm" data-zoom-sub="38 &ndash; 45 min">
+      <div class="ph-left">
+        <div class="ph-name">Cool down</div>
+        <div class="ph-settings">1.8 mph &middot; 0% incline</div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-time">38 &ndash; 45 min</div>
+        <div class="ph-hr">&lt;105 bpm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STYLE 2 & 3: Phase table (tappable) -->
+  <div class="phase-table">
+    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Warm up" data-zoom-main="2.3 mph &middot; 0%" data-zoom-hr="&lt;110 bpm" data-zoom-sub="0 &ndash; 6 min">
+      <div class="pt-dot" style="background:#c8d8c0;"></div>
+      <div class="pt-left"><div class="pt-name">Warm up</div><div class="pt-time">0 &ndash; 6 min</div></div>
+      <div class="pt-mid"><div class="pt-set">2.3 mph &middot; 0%</div></div>
+      <div class="pt-hr">&lt;110 bpm</div>
+    </div>
+    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Build" data-zoom-main="2.7 mph &middot; 2%" data-zoom-hr="108&ndash;115 bpm" data-zoom-sub="6 &ndash; 12 min">
+      <div class="pt-dot" style="background:#8aaa78;"></div>
+      <div class="pt-left"><div class="pt-name">Build</div><div class="pt-time">6 &ndash; 12 min</div></div>
+      <div class="pt-mid"><div class="pt-set">2.7 mph &middot; 2%</div></div>
+      <div class="pt-hr">108&ndash;115 bpm</div>
+    </div>
+    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Push" data-zoom-main="2.9 mph &middot; 4%" data-zoom-hr="115&ndash;125 bpm" data-zoom-sub="12 &ndash; 32 min &middot; Drop to 3% if HR &gt;125 at min 22">
+      <div class="pt-dot" style="background:#4ade80;"></div>
+      <div class="pt-left"><div class="pt-name" style="font-weight:900;">Push</div><div class="pt-time">12 &ndash; 32 min</div></div>
+      <div class="pt-mid"><div class="pt-set" style="font-weight:800; color:#3a5a2e;">2.9 mph &middot; 4%</div></div>
+      <div class="pt-hr" style="color:#3a5a2e; font-weight:900;">115&ndash;125 bpm</div>
+    </div>
+    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Ease off" data-zoom-main="2.6 mph &middot; 2%" data-zoom-hr="108&ndash;115 bpm" data-zoom-sub="32 &ndash; 38 min">
+      <div class="pt-dot" style="background:#8aaa78;"></div>
+      <div class="pt-left"><div class="pt-name">Ease off</div><div class="pt-time">32 &ndash; 38 min</div></div>
+      <div class="pt-mid"><div class="pt-set">2.6 mph &middot; 2%</div></div>
+      <div class="pt-hr">108&ndash;115 bpm</div>
+    </div>
+    <div class="pt-row" onclick="showZoom(this)" data-zoom-phase="Cool down" data-zoom-main="1.8 mph &middot; 0%" data-zoom-hr="&lt;105 bpm" data-zoom-sub="38 &ndash; 45 min">
+      <div class="pt-dot" style="background:#b8cca8;"></div>
+      <div class="pt-left"><div class="pt-name">Cool down</div><div class="pt-time">38 &ndash; 45 min</div></div>
+      <div class="pt-mid"><div class="pt-set">1.8 mph &middot; 0%</div></div>
+      <div class="pt-hr">&lt;105 bpm</div>
+    </div>
+  </div>
+
+  <!-- SUMMARY BOXES (tappable) -->
+  <div class="summary">
+    <div class="sum-box sum-box-dur" onclick="showZoom(this)" data-zoom-main="45 min" data-zoom-sub="Duration">
+      <div class="sum-label">Duration</div>
+      <div class="sum-val">45</div>
+      <div class="sum-unit">min</div>
+    </div>
+    <div class="sum-box sum-box-peak" onclick="showZoom(this)" data-zoom-main="115&ndash;125" data-zoom-sub="Peak Target &middot; bpm">
+      <div class="sum-label">Peak HR</div>
+      <div class="sum-val sum-val-peak">115&ndash;125</div>
+      <div class="sum-unit">bpm</div>
+    </div>
+    <div class="sum-box sum-box-cap" onclick="showZoom(this)" data-zoom-main="128" data-zoom-sub="Hard Cap &middot; coffee AM" data-zoom-hr="drop to 1.5 mph flat">
+      <div class="sum-label">Cap</div>
+      <div class="sum-val sum-val-cap">128</div>
+      <div class="sum-unit">hard stop</div>
+    </div>
+  </div>
+
+  <button class="start-btn">Start session</button>
+  <div class="warning">First moderate since Apr 25 flag &mdash; conservative push 2.9/4% baseline<br>STOP if headache, dizzy, vision changes, or calf pain<br>Tell me garage temp &mdash; I'll fine-tune. If HR &gt;128, drop incline 1%<br>Sit 2 min before standing post cool-down</div>
+
+</div>
+
+<!-- SESSION OVERLAY -->
+<div class="session-overlay dark" id="session" onclick="hideSession()">
+  <div class="session-screen" id="session-screen">
+
+    <!-- Phase navigation -->
+    <div class="phase-header">
+      <div class="nav-btn" onclick="event.stopPropagation();navPhase(-1)">
+        <svg width="10" height="10" viewBox="0 0 10 10">
+          <polyline class="nav-arrow" points="6.5,1.5 3,5 6.5,8.5" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="phase-center">
+        <div class="phase-label-text" id="s-phase">Warm Up</div>
+        <div class="phase-elapsed" id="s-elapsed">0:00 elapsed</div>
+      </div>
+      <div class="nav-btn" onclick="event.stopPropagation();navPhase(1)">
+        <svg width="10" height="10" viewBox="0 0 10 10">
+          <polyline class="nav-arrow" points="3.5,1.5 7,5 3.5,8.5" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- SVG Ring + Timer -->
+    <div class="ring-zone">
+      <svg viewBox="0 0 204 204">
+        <circle class="ring-track" cx="102" cy="102" r="88" fill="none" stroke-width="12" stroke-linecap="round"/>
+        <circle class="ring-progress" id="s-ring" cx="102" cy="102" r="88" fill="none" stroke-width="12"
+          stroke-dasharray="0 553" stroke-dashoffset="138" stroke-linecap="round"/>
+        <circle class="ring-inner" cx="102" cy="102" r="72" fill="none" stroke-width="1"/>
+      </svg>
+      <div class="ring-text-overlay">
+        <div class="timer-digits" id="s-timer">8:00</div>
+        <div class="timer-sub">Remaining</div>
+      </div>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics-row">
+      <div class="metric-block">
+        <div class="metric-micro">Speed · Grade</div>
+        <div class="metric-value" id="s-speed">
+          2.5 <span class="metric-unit">mph</span>
+          &nbsp;·&nbsp;
+          <span class="metric-muted" id="s-grade">0%</span>
+        </div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric-block right">
+        <div class="metric-micro">Target HR</div>
+        <div class="bpm-row" id="s-hr">
+          <span class="hb"></span>
+          &lt;105 <span class="bpm-unit">bpm</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Segments -->
+    <div class="segments">
+      <div class="seg-pills" id="s-pills"></div>
+      <div class="seg-labels" id="s-labels"></div>
+      <div class="next-line" id="s-next">
+        Next: <span class="next-name">Build</span>&ensp;<span class="next-detail">2.8 mph · 2%</span>
+      </div>
+    </div>
+
+    <div style="margin-top:auto;font-size:9px;color:#999;text-align:center;padding-bottom:4px;">FitFlow build 3.1 &copy; NeuralNets Technologies LLC</div>
+
+  </div>
+</div>
+
+<!-- COMPLETION SCREEN -->
+<div class="complete-screen dark" id="complete">
+  <canvas id="fw-canvas" class="complete-canvas"></canvas>
+  <div class="complete-body">
+
+    <!-- Trophy -->
+    <div class="trophy-zone pop">
+      <svg viewBox="0 0 152 152">
+        <defs>
+          <radialGradient id="gd" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1E4A2E"/>
+            <stop offset="100%" stop-color="#0A1F12"/>
+          </radialGradient>
+          <radialGradient id="gl" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#D1FAE5"/>
+            <stop offset="100%" stop-color="#BBF7D0"/>
+          </radialGradient>
+        </defs>
+        <circle class="ring-spin" cx="76" cy="76" r="70" fill="none" id="trophy-dash" stroke-width="6" stroke-linecap="round" stroke-dasharray="8 14"/>
+        <circle class="ring-glow" cx="76" cy="76" r="62" fill="none" id="trophy-glow" stroke-width="1.5"/>
+        <circle cx="76" cy="76" r="58" fill="none" id="trophy-ring" stroke-width="3"/>
+        <circle cx="76" cy="76" r="52" id="trophy-fill"/>
+        <polyline class="check-path" points="58,76 70,88 96,62" fill="none" id="trophy-check" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Headline -->
+    <div class="complete-layer fu1" style="text-align:center;margin-bottom:4px;">
+      <div class="badge-label">Workout Complete</div>
+      <div class="headline bounce-txt">Great Work!</div>
+    </div>
+    <div class="complete-layer fu2 subline" id="c-subline"></div>
+
+    <!-- Stats -->
+    <div class="stat-grid fu3">
+      <div class="stat-card">
+        <div class="stat-micro">Duration</div>
+        <div class="stat-value" id="c-duration">50<span class="stat-unit"> min</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-micro">Peak Setting</div>
+        <div class="stat-value" id="c-peak">2.9<span class="stat-unit"> mph 4%</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-micro">Phases</div>
+        <div class="stat-value" id="c-phases">5<span class="stat-unit"> completed</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-micro">Target HR</div>
+        <div class="stat-value accent" id="c-hr">126<span class="stat-unit accent"> bpm</span></div>
+      </div>
+    </div>
+
+    <!-- CTAs -->
+    <div class="cta-stack fu4">
+      <button class="btn-primary" onclick="closeComplete()">Done</button>
+      <button class="btn-ghost" onclick="closeComplete()">Dismiss</button>
+    </div>
+
+    <div style="margin-top:auto;font-size:9px;color:#999;text-align:center;padding-bottom:4px;">FitFlow build 3.1 &copy; NeuralNets Technologies LLC</div>
+  </div>
+</div>
+
+<!-- ZOOM OVERLAY -->
+<div class="zoom-overlay" id="zoom" onclick="this.classList.remove('show')">
+  <div class="zoom-content" id="zoom-content"></div>
+</div>
+
+<!-- STYLE SELECTOR -->
+<div class="style-selector">
+  <button class="active" onclick="setStyle('warm')">Warm</button>
+  <button onclick="setStyle('timeline')">Timeline</button>
+  <button onclick="setStyle('dark')">Dark</button>
+</div>
+
+</div>
+
+<script>
+function setStyle(style) {
+  const card = document.getElementById('card');
+  card.className = 'card style-' + style;
+  document.body.classList.toggle('bg-dark', style === 'dark');
+  document.querySelectorAll('.style-selector button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  localStorage.setItem('cardStyle', style);
+}
+
+function showZoom(el) {
+  const phase = el.dataset.zoomPhase || '';
+  const main = el.dataset.zoomMain || '';
+  const hr = el.dataset.zoomHr || '';
+  const sub = el.dataset.zoomSub || '';
+  const content = document.getElementById('zoom-content');
+  const overlay = document.getElementById('zoom');
+
+  let html = '';
+  if (phase) html += '<div class="zoom-phase">' + phase + '</div>';
+  html += '<div class="zoom-main">' + main + '</div>';
+  if (hr) html += '<div class="zoom-hr">' + hr + '</div>';
+  if (sub) html += '<div class="zoom-sub">' + sub + '</div>';
+  content.innerHTML = html;
+
+  const rect = el.getBoundingClientRect();
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  overlay.classList.add('show');
+
+  const pw = content.offsetWidth;
+  const ph = content.offsetHeight;
+
+  let left = rect.left + rect.width / 2 - pw / 2;
+  left = Math.max(12, Math.min(left, vw - pw - 12));
+
+  const gap = 10;
+  let top = rect.bottom + gap;
+  let arrowClass = 'arrow-top';
+
+  if (top + ph > vh - 12) {
+    top = rect.top - ph - gap;
+    arrowClass = 'arrow-bottom';
+  }
+  top = Math.max(12, Math.min(top, vh - ph - 12));
+
+  content.style.left = left + 'px';
+  content.style.top = top + 'px';
+  content.className = 'zoom-content ' + arrowClass;
+
+  const arrowLeft = rect.left + rect.width / 2 - left;
+  const clamped = Math.max(20, Math.min(arrowLeft, pw - 20));
+  content.style.setProperty('--arrow-left', clamped + 'px');
+
+  event.stopPropagation();
+}
+
+const saved = localStorage.getItem('cardStyle');
+if (saved) {
+  document.getElementById('card').className = 'card style-' + saved;
+  document.body.classList.toggle('bg-dark', saved === 'dark');
+  document.querySelectorAll('.style-selector button').forEach(b => {
+    b.classList.toggle('active', b.textContent.toLowerCase() === saved);
+  });
+}
+
+// ==================== SESSION TIMER ====================
+// ==================== SOUNDS ====================
+var audioCtx = null;
+function getAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playTone(freq, duration, delay, type, vol) {
+  var ctx = getAudio();
+  var osc = ctx.createOscillator();
+  var gain = ctx.createGain();
+  osc.type = type || 'sine';
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(vol || 0.15, ctx.currentTime + delay);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(ctx.currentTime + delay);
+  osc.stop(ctx.currentTime + delay + duration);
+}
+
+function soundPhaseChange() {
+  // Two-note ascending chime
+  playTone(523, 0.15, 0, 'sine', 0.12);      // C5
+  playTone(659, 0.2, 0.12, 'sine', 0.15);     // E5
+}
+
+function soundStart() {
+  // Three rising notes
+  playTone(392, 0.12, 0, 'sine', 0.1);        // G4
+  playTone(523, 0.12, 0.1, 'sine', 0.12);     // C5
+  playTone(659, 0.18, 0.2, 'sine', 0.14);     // E5
+}
+
+function soundComplete() {
+  // Triumphant arpeggio — C E G C' E'
+  playTone(523, 0.2, 0, 'sine', 0.12);        // C5
+  playTone(659, 0.2, 0.12, 'sine', 0.13);     // E5
+  playTone(784, 0.2, 0.24, 'sine', 0.14);     // G5
+  playTone(1047, 0.25, 0.36, 'sine', 0.15);   // C6
+  playTone(1319, 0.4, 0.5, 'triangle', 0.12); // E6
+}
+
+function soundCountdown() {
+  // Single soft tick for last 3 seconds
+  playTone(880, 0.08, 0, 'sine', 0.08);       // A5
+}
+
+var RING_R = 88;
+var RING_C = 2 * Math.PI * RING_R; // ~553
+var session = {
+  phases: [],
+  running: false,
+  startTime: null,
+  interval: null,
+  currentPhase: -1,
+  totalDuration: 0,
+  segLabels: ['WU','BLD','PK','CLN','CD']
+};
+
+function parsePhases() {
+  var cards = document.querySelectorAll('.phase-card');
+  var phases = [];
+  cards.forEach(function(el) {
+    var sub = el.dataset.zoomSub || '';
+    var m = sub.match(/(\d+)\s*[–-]\s*(\d+)\s*min/);
+    if (m) {
+      var main = el.dataset.zoomMain || '';
+      var speedMatch = main.match(/([\d.]+)\s*mph/);
+      var gradeMatch = main.match(/([\d]+)%/);
+      phases.push({
+        phase: el.dataset.zoomPhase || '',
+        main: main,
+        hr: el.dataset.zoomHr || '',
+        speed: speedMatch ? speedMatch[1] : '',
+        grade: gradeMatch ? gradeMatch[1] + '%' : '0%',
+        start: parseInt(m[1]),
+        end: parseInt(m[2])
+      });
+    }
+  });
+  return phases;
+}
+
+function startSession() {
+  var btn = document.querySelector('.start-btn');
+  if (session.running) { showSession(); return; }
+
+  session.phases = parsePhases();
+  if (!session.phases.length) return;
+  session.totalDuration = session.phases[session.phases.length - 1].end;
+  session.running = true;
+  session.startTime = Date.now();
+  session.currentPhase = -1;
+
+  btn.textContent = 'Session active \u2014 tap to view';
+  btn.classList.add('active');
+  soundStart();
+
+  // Theme: dark if card is dark, else light
+  var overlay = document.getElementById('session');
+  var isDark = document.getElementById('card').className.includes('style-dark');
+  overlay.className = 'session-overlay ' + (isDark ? 'dark' : 'light');
+
+  // Build segment pills + labels
+  var pillsHtml = '', labelsHtml = '';
+  for (var i = 0; i < session.phases.length; i++) {
+    var dur = session.phases[i].end - session.phases[i].start;
+    var label = session.segLabels[i] || session.phases[i].phase.substring(0,2).toUpperCase();
+    pillsHtml += '<div class="seg-pill" id="s-pill-' + i + '" style="flex:' + dur + '"><div class="seg-fill" id="s-fill-' + i + '"></div></div>';
+    labelsHtml += '<div class="seg-label" id="s-lbl-' + i + '" style="flex:' + dur + '">' + label + '</div>';
+  }
+  document.getElementById('s-pills').innerHTML = pillsHtml;
+  document.getElementById('s-labels').innerHTML = labelsHtml;
+
+  updateSession();
+  session.interval = setInterval(updateSession, 1000);
+  showSession();
+}
+
+function updateSession() {
+  var elapsed = (Date.now() - session.startTime) / 60000;
+  var p = session.phases;
+  var idx = -1;
+
+  for (var i = 0; i < p.length; i++) {
+    if (elapsed >= p[i].start && elapsed < p[i].end) { idx = i; break; }
+  }
+  if (idx === -1 && elapsed >= p[p.length - 1].end) { endSession(); return; }
+  if (idx === -1) idx = 0;
+
+  var phase = p[idx];
+  var phaseElapsed = elapsed - phase.start;
+  var phaseDuration = phase.end - phase.start;
+  var phaseRemaining = phaseDuration - phaseElapsed;
+  var phasePct = Math.min(1, phaseElapsed / phaseDuration);
+
+  // Phase transition
+  if (idx !== session.currentPhase) {
+    if (session.currentPhase !== -1) soundPhaseChange();
+    var scr = document.getElementById('session-screen');
+    scr.classList.add('switching');
+    setTimeout(function() {
+      renderPhase(idx);
+      scr.classList.remove('switching');
+    }, idx === 0 && session.currentPhase === -1 ? 0 : 300);
+    session.currentPhase = idx;
+  }
+
+  // Countdown ticks for last 3 seconds of phase
+  if (remSec <= 3 && remSec > 0 && phaseRemaining * 60 - remSec < 0.5) {
+    soundCountdown();
+  }
+
+  // Timer countdown
+  var remSec = Math.max(0, Math.ceil(phaseRemaining * 60));
+  var mm = Math.floor(remSec / 60);
+  var ss = remSec % 60;
+  document.getElementById('s-timer').textContent = mm + ':' + (ss < 10 ? '0' : '') + ss;
+
+  // Elapsed
+  var totalSec = Math.floor(elapsed * 60);
+  var tm = Math.floor(totalSec / 60);
+  var ts = totalSec % 60;
+  document.getElementById('s-elapsed').textContent = tm + ':' + (ts < 10 ? '0' : '') + ts + ' elapsed';
+
+  // Ring: arc length = pct * circumference
+  var ring = document.getElementById('s-ring');
+  var arcLen = phasePct * RING_C;
+  var gap = RING_C - arcLen;
+  ring.setAttribute('stroke-dasharray', arcLen.toFixed(1) + ' ' + gap.toFixed(1));
+  ring.setAttribute('stroke-dashoffset', (RING_C * 0.25).toFixed(1)); // start at top
+
+  // Segment pills
+  for (var i = 0; i < p.length; i++) {
+    var pill = document.getElementById('s-pill-' + i);
+    var fill = document.getElementById('s-fill-' + i);
+    var lbl = document.getElementById('s-lbl-' + i);
+    if (!pill) continue;
+    pill.className = 'seg-pill';
+    lbl.className = 'seg-label';
+    lbl.style.flex = (p[i].end - p[i].start);
+    pill.style.flex = (p[i].end - p[i].start);
+    if (i < idx) {
+      pill.classList.add('done');
+      fill.style.width = '100%';
+    } else if (i === idx) {
+      pill.classList.add('active');
+      lbl.classList.add('active');
+      fill.style.width = (phasePct * 100).toFixed(1) + '%';
+    } else {
+      fill.style.width = '0%';
+    }
+  }
+}
+
+function renderPhase(idx) {
+  var phase = session.phases[idx];
+
+  document.getElementById('s-phase').textContent = phase.phase;
+  document.getElementById('s-speed').innerHTML =
+    phase.speed + ' <span class="metric-unit">mph</span>' +
+    '&nbsp;·&nbsp;<span class="metric-muted">' + phase.grade + '</span>';
+
+  // HR
+  var hrText = phase.hr.replace(/\s*bpm\s*/i, '');
+  document.getElementById('s-hr').innerHTML =
+    '<span class="hb"></span>' + hrText + ' <span class="bpm-unit">bpm</span>';
+
+  // Next
+  var next = document.getElementById('s-next');
+  if (idx < session.phases.length - 1) {
+    var np = session.phases[idx + 1];
+    next.innerHTML = 'Next: <span class="next-name">' + np.phase +
+      '</span>&ensp;<span class="next-detail">' + np.speed + ' mph · ' + np.grade + '</span>';
+  } else {
+    next.innerHTML = '<span class="next-name">Final phase</span>&ensp;<span class="next-detail">finish strong</span>';
+  }
+}
+
+function navPhase(dir) {
+  if (!session.running) return;
+  var target = session.currentPhase + dir;
+  if (target < 0) return;
+  if (target >= session.phases.length) {
+    // Past last phase — end session
+    endSession();
+    return;
+  }
+  session.startTime = Date.now() - session.phases[target].start * 60000;
+  session.currentPhase = -1;
+  updateSession();
+}
+
+function showSession() {
+  document.getElementById('session').classList.add('show');
+}
+function hideSession() {
+  document.getElementById('session').classList.remove('show');
+}
+
+function endSession() {
+  clearInterval(session.interval);
+  session.running = false;
+  var btn = document.querySelector('.start-btn');
+  btn.textContent = 'Session complete \u2714';
+  btn.classList.remove('active');
+
+  // Hide session overlay, show completion screen
+  hideSession();
+  soundComplete();
+  showComplete();
+}
+
+function showComplete() {
+  var isDark = document.getElementById('session').classList.contains('dark');
+  var el = document.getElementById('complete');
+  el.className = 'complete-screen ' + (isDark ? 'dark' : 'light');
+
+  // Set trophy colors based on theme
+  var green = isDark ? '#34D46B' : '#16A34A';
+  var dashColor = isDark ? '#1B3D26' : '#BBF7D0';
+  var fillId = isDark ? 'url(#gd)' : 'url(#gl)';
+  document.getElementById('trophy-dash').setAttribute('stroke', dashColor);
+  document.getElementById('trophy-glow').setAttribute('stroke', green);
+  document.getElementById('trophy-ring').setAttribute('stroke', green);
+  document.getElementById('trophy-fill').setAttribute('fill', fillId);
+  document.getElementById('trophy-check').setAttribute('stroke', green);
+
+  // Populate stats
+  var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var now = new Date();
+  document.getElementById('c-subline').textContent =
+    days[now.getDay()] + ' \u00B7 ' + months[now.getMonth()] + ' ' + now.getDate() + ' \u00B7 Treadmill Walk';
+
+  document.getElementById('c-duration').innerHTML =
+    session.totalDuration + '<span class="stat-unit"> min</span>';
+
+  // Find the push/main phase for peak setting
+  var peakPhase = session.phases[0];
+  for (var i = 0; i < session.phases.length; i++) {
+    if (session.phases[i].phase.toLowerCase().indexOf('push') >= 0 ||
+        session.phases[i].phase.toLowerCase().indexOf('steady') >= 0) {
+      peakPhase = session.phases[i]; break;
+    }
+  }
+  document.getElementById('c-peak').innerHTML =
+    peakPhase.speed + '<span class="stat-unit"> mph ' + peakPhase.grade + '</span>';
+
+  document.getElementById('c-phases').innerHTML =
+    session.phases.length + '<span class="stat-unit"> completed</span>';
+
+  // HR from push phase
+  var hrText = peakPhase.hr.replace(/[<>]/g,'').replace(/\s*bpm\s*/i,'').replace(/\u2013/g,'-');
+  document.getElementById('c-hr').innerHTML =
+    hrText + '<span class="stat-unit accent"> bpm</span>';
+
+  el.classList.add('show');
+
+  // Start fireworks
+  initFireworks(isDark);
+}
+
+function closeComplete() {
+  document.getElementById('complete').classList.remove('show');
+}
+
+function initFireworks(isDark) {
+  var canvas = document.getElementById('fw-canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+
+  var COLORS_DARK  = ['#34D46B','#86EFAC','#6EE7B7','#FDE68A','#FCA5A5','#A5F3FC','#C4B5FD','#FDB97D'];
+  var COLORS_LIGHT = ['#16A34A','#4ADE80','#FBBF24','#F472B6','#60A5FA','#A78BFA','#34D478','#FB923C'];
+  var COLORS = isDark ? COLORS_DARK : COLORS_LIGHT;
+
+  function Particle(x, y, color) {
+    this.x = x; this.y = y; this.color = color;
+    var angle = Math.random() * Math.PI * 2;
+    var speed = 2 + Math.random() * 5;
+    this.vx = Math.cos(angle) * speed;
+    this.vy = Math.sin(angle) * speed - 2;
+    this.alpha = 1;
+    this.decay = 0.012 + Math.random() * 0.015;
+    this.radius = 2 + Math.random() * 3;
+    this.gravity = 0.08;
+    this.trail = [];
+    this.isCircle = Math.random() > 0.4;
+  }
+  Particle.prototype.update = function() {
+    this.trail.push({x:this.x,y:this.y});
+    if (this.trail.length > 5) this.trail.shift();
+    this.vx *= 0.97;
+    this.vy = this.vy * 0.97 + this.gravity;
+    this.x += this.vx; this.y += this.vy;
+    this.alpha -= this.decay;
+  };
+  Particle.prototype.draw = function() {
+    ctx.save();
+    for (var i = 0; i < this.trail.length; i++) {
+      ctx.globalAlpha = (i / this.trail.length) * this.alpha * 0.4;
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      ctx.arc(this.trail[i].x, this.trail[i].y, this.radius * 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = this.alpha;
+    ctx.fillStyle = this.color;
+    if (this.isCircle) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      ctx.fillRect(this.x - this.radius*0.6, this.y - this.radius*0.6, this.radius*1.4, this.radius*1.4);
+    }
+    ctx.restore();
+  };
+
+  function Firework() { this.reset(); }
+  Firework.prototype.reset = function() {
+    this.x = 30 + Math.random() * (W - 60);
+    this.y = H;
+    this.tx = 20 + Math.random() * (W - 40);
+    this.ty = 40 + Math.random() * (H * 0.45);
+    var dx = this.tx - this.x, dy = this.ty - this.y;
+    var dist = Math.sqrt(dx*dx + dy*dy);
+    var speed = 8 + Math.random() * 5;
+    this.vx = (dx/dist)*speed; this.vy = (dy/dist)*speed;
+    this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
+    this.exploded = false;
+  };
+  Firework.prototype.update = function(particles) {
+    this.x += this.vx; this.y += this.vy; this.vy += 0.04;
+    if (Math.abs(this.x-this.tx)<8 && Math.abs(this.y-this.ty)<8) {
+      var count = 40 + Math.floor(Math.random()*30);
+      for (var i = 0; i < count; i++) particles.push(new Particle(this.x, this.y, this.color));
+      this.exploded = true;
+    }
+  };
+  Firework.prototype.draw = function() {
+    ctx.save();
+    ctx.fillStyle = this.color;
+    ctx.shadowBlur = 6; ctx.shadowColor = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 3, 0, Math.PI*2);
+    ctx.fill(); ctx.restore();
+  };
+
+  function ConfettiPiece(init) { this.reset(init); }
+  ConfettiPiece.prototype.reset = function(init) {
+    this.x = Math.random()*W;
+    this.y = init ? Math.random()*-H : -20;
+    this.w = 6 + Math.random()*8;
+    this.h = 4 + Math.random()*5;
+    this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
+    this.vy = 1.2 + Math.random()*2;
+    this.vx = -1 + Math.random()*2;
+    this.rot = Math.random()*Math.PI*2;
+    this.rotSpeed = -0.08 + Math.random()*0.16;
+    this.alpha = 0.7 + Math.random()*0.3;
+  };
+  ConfettiPiece.prototype.update = function() {
+    this.y += this.vy; this.x += this.vx; this.rot += this.rotSpeed;
+    if (this.y > H+20) this.reset(false);
+  };
+  ConfettiPiece.prototype.draw = function() {
+    ctx.save();
+    ctx.globalAlpha = this.alpha;
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rot);
+    ctx.fillStyle = this.color;
+    ctx.fillRect(-this.w/2, -this.h/2, this.w, this.h);
+    ctx.restore();
+  };
+
+  var fireworks = [], particles = [], confetti = [];
+  var frame = 0, active = true;
+  for (var i = 0; i < 45; i++) confetti.push(new ConfettiPiece(true));
+
+  var burstAt = [40, 90, 150, 220, 350, 500];
+  var burstIdx = 0;
+
+  function loop() {
+    if (!active) return;
+    frame++;
+    ctx.clearRect(0, 0, W, H);
+    if (burstIdx < burstAt.length && frame === burstAt[burstIdx]) {
+      fireworks.push(new Firework());
+      if (frame > 80) fireworks.push(new Firework());
+      burstIdx++;
+    }
+    if (frame > 200 && frame % 120 === 0) fireworks.push(new Firework());
+
+    for (var i = 0; i < confetti.length; i++) { confetti[i].update(); confetti[i].draw(); }
+
+    fireworks = fireworks.filter(function(fw) {
+      fw.update(particles);
+      if (!fw.exploded) fw.draw();
+      return !fw.exploded;
+    });
+    particles = particles.filter(function(p) {
+      p.update(); p.draw();
+      return p.alpha > 0.02;
+    });
+    requestAnimationFrame(loop);
+  }
+  setTimeout(function() { loop(); }, 800);
+  setTimeout(function() {
+    active = false;
+    (function slowConf() {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < confetti.length; i++) { confetti[i].update(); confetti[i].draw(); }
+      requestAnimationFrame(slowConf);
+    })();
+  }, 12000);
+}
+
+document.querySelector('.start-btn').addEventListener('click', startSession);
+</script>
+
+</body>
+</html>
